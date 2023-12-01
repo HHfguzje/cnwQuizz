@@ -1,5 +1,5 @@
 <?php
 session_start();
 $_SESSION['currentUser'] = '';
-header('Location: dang_nhap.php');
+header('Location: login.php');
 ?>
