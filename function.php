@@ -57,3 +57,37 @@ function isLogin(){
 	}
 	return false;
 }
+//đổi mật khẩu
+function validateChangePassword($oldPassword, $newPassword, $confirmPassword) {
+    $errors = array();
+    if (empty($oldPassword) || empty($newPassword) || empty($confirmPassword)) {
+        $errors[] = "Vui lòng nhập đầy đủ thông tin.";
+    }
+    if (md5($oldPassword) != $_SESSION['currentUser']['password']) {
+        $errors[] = "Mật khẩu cũ không chính xác.";
+    }
+    if (strlen($newPassword) < 8 || strlen($newPassword) > 20) {
+        $errors[] = "Mật khẩu mới phải từ 8 đến 20 ký tự.";
+    }
+    if ($newPassword !== $confirmPassword) {
+        $errors[] = "Mật khẩu mới và xác nhận mật khẩu không khớp.";
+    }
+    if ($oldPassword === $newPassword) {
+        $errors[] = "Mật khẩu mới phải khác mật khẩu cũ.";
+    }
+    return $errors;
+}
+
+function updatePassword($username, $newPassword) {
+    global $conn;
+    $sql = "UPDATE user SET password = '$newPassword' WHERE username = '$username'";
+    return mysqli_query($conn, $sql);
+}
+//Khóa học
+function getAllCourses(){
+	global $conn;
+	$sql = "SELECT * FROM courses";
+	$result = mysqli_query($conn, $sql);
+	$courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+	return $courses;
+}

@@ -14,11 +14,12 @@
           <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
             <?php
-            echo $_SESSION['currentUser']['username'];
+            echo $_SESSION['currentUser']['fullname'];
             ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="dang_xuat.php">Đăng xuất</a></li>
+            <li><a class="dropdown-item" href="ChangePassword.php">Đổi mật khẩu</a></li>
+            <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
           </ul>
         </li>
       </ul>
