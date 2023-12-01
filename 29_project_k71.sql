@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 01, 2023 lúc 05:05 AM
+-- Thời gian đã tạo: Th12 01, 2023 lúc 06:17 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -34,8 +34,17 @@ CREATE TABLE `answers` (
   `answer2` varchar(255) DEFAULT NULL,
   `answer3` varchar(255) DEFAULT NULL,
   `answer4` varchar(255) DEFAULT NULL,
-  `answer5` varchar(255) DEFAULT NULL
+  `answer5` varchar(255) DEFAULT NULL,
+  `fill_answer` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `answers`
+--
+
+INSERT INTO `answers` (`id`, `question_id`, `answer1`, `answer2`, `answer3`, `answer4`, `answer5`, `fill_answer`) VALUES
+(1, 3, NULL, NULL, NULL, NULL, NULL, 'No'),
+(2, 4, NULL, NULL, NULL, NULL, NULL, 'No');
 
 -- --------------------------------------------------------
 
@@ -71,6 +80,14 @@ CREATE TABLE `questions` (
   `user_id` int(10) NOT NULL,
   `state` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `questions`
+--
+
+INSERT INTO `questions` (`id`, `question`, `type`, `course_id`, `image`, `user_id`, `state`) VALUES
+(3, 'Is HTML a languague?', 'Điền', 2, '', 3, 0),
+(4, 'Is HTML a languague?', 'Điền', 2, '', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -203,7 +220,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `courses`
@@ -215,7 +232,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT cho bảng `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `result`
