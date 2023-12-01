@@ -1,5 +1,8 @@
 <?php
 // session_start();
+if (!isLogin()){
+  header("Location: login.php");
+}
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">

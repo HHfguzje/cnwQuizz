@@ -3,12 +3,10 @@ include_once "../function.php";
 session_start();
 $courses = getAllCourses();
 // print_r($courses);
-if (!isLogin()){
-    header("Location: login.php");
-}
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en	">
 
 <head>
 	<meta charset="UTF-8">
@@ -41,7 +39,7 @@ if (!isLogin()){
 					<img src='../images/khoahoc.jpg' class='card-img-top' alt='Course Image'>
 					<div class='card-body'>
 						<h5 class='card-title'>" . $course['course'] . "</h5>
-						<a href='bien_tap.php?id_khoa_hoc=" . $course['id'] . "' class='btn btn-primary'>Truy cập</a>
+						<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Truy cập</a>
 					</div>
 				</div>
 			</div>

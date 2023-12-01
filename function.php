@@ -57,6 +57,18 @@ function isLogin(){
 	}
 	return false;
 }
+
+function getFullname($id){
+	global $conn;
+	$sql = "SELECT fullname from user WHERE id = '$id'";
+	$result = mysqli_query($conn, $sql);
+	if ($result) {
+        $user = mysqli_fetch_assoc($result);
+        return $user ? $user['fullname'] : false;
+    } else {
+        die("Query failed: " . mysqli_error($conn));
+    }   
+}
 //đổi mật khẩu
 function validateChangePassword($oldPassword, $newPassword, $confirmPassword) {
     $errors = array();
@@ -91,3 +103,46 @@ function getAllCourses(){
 	$courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 	return $courses;
 }
+
+function getCourse($id){
+	global $conn;
+	$sql = "SELECT course FROM courses WHERE id = '$id'";
+	$result = mysqli_query($conn, $sql);
+	$course = mysqli_fetch_assoc($result);
+	return $course;
+}
+
+function getQuestionsWithAnswersByCourseId($id) {
+    global $conn;
+    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.fill_answer
+            FROM questions q
+            LEFT JOIN answers a ON q.id = a.question_id
+            WHERE q.course_id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        die("Query failed: " . mysqli_error($conn));
+    }
+    return $listQuestion;
+}
+function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer) {
+    global $conn;
+    $userId = $_SESSION['currentUser']['id'];
+    $state = 0;
+    $sqlQuestion = "INSERT INTO questions (question, type, course_id, image, user_id, state)
+                    VALUES ('$questionName', '$typeQuestion', '$course_id', '$image', $userId, $state)";
+    $resultQuestion = mysqli_query($conn, $sqlQuestion);
+
+    if ($resultQuestion) {
+        $questionId = mysqli_insert_id($conn);
+        $sqlAnswers = "INSERT INTO answers (question_id, fill_answer)
+                       VALUES ($questionId, '$answer')";
+        $resultAnswers = mysqli_query($conn, $sqlAnswers);
+
+        return $resultAnswers; 
+    } else {
+        return false; 
+    }
+}
+
