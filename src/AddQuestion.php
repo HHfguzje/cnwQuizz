@@ -45,8 +45,7 @@ $nameCourse = $course['course'];
             </div>
             <div class="form-group">
                 <label for="name_quiz">Ảnh cho câu hỏi</label>
-                <input class="form-control" type="file" name="file" id=""
-                    accept="image/png, image/jpeg, image/jpg">
+                <input class="form-control" type="file" name="file" id="" accept="image/png, image/jpeg, image/jpg">
             </div>
             <div class="form-group">
                 <label for="name_quiz">Dạng câu hỏi</label>
@@ -76,18 +75,18 @@ $nameCourse = $course['course'];
             $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answers);
             if ($result) {
                 echo "<div class='alert alert-success text-center' role='alert'>Thêm câu hỏi thành công</div>";
-    
+
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại". mysqli_error($conn)."</div>";
+                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
             }
         } else {
             echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
         }
-        
-        
+
+
     }
 
-    include 'footer.php'; 
+    include 'footer.php';
     ?>
 
 </body>

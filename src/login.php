@@ -31,7 +31,8 @@ session_start();
 			<form class="w-25" method="POST">
 				<div class="mb-3">
 					<label for="username" class="form-label">Username</label>
-					<input type="text" class="form-control" id="username" name="username" placeholder="Nhập username" value = "<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>">
+					<input type="text" class="form-control" id="username" name="username" placeholder="Nhập username"
+						value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>">
 				</div>
 				<div class="mb-3">
 					<label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
@@ -44,17 +45,17 @@ session_start();
 			</form>
 		</div>
 		<div class="d-flex justify-content-center mt-3">
-            <p>Bạn chưa có tài khoản? <a href="register.php">Đăng ký</a></p>
-        </div>
+			<p>Bạn chưa có tài khoản? <a href="register.php">Đăng ký</a></p>
+		</div>
 		<?php
 		if (isset($_POST['btnLogin'])) {
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			// checkLogin($username, $password);
-			if (!empty($username)|| !empty($password)) {
+			if (!empty($username) || !empty($password)) {
 				if (checkLogin($username, $password)) {
 					$_SESSION['currentUser'] = checkLogin($username, $password);
-					header('Location: courses.php'); 
+					header('Location: courses.php');
 				} else {
 					echo '<div class="alert alert-danger text-center" role="alert">Tài khoản hoặc mật khẩu không chính xác</div>';
 				}

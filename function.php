@@ -126,8 +126,7 @@ function getQuestionsWithAnswersByCourseId($id)
 {
     global $conn;
 
-    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.answer, a.is_true
-
+    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.answer
             FROM questions q
             LEFT JOIN answers a ON q.id = a.question_id
             WHERE q.course_id = '$id'";
@@ -139,6 +138,7 @@ function getQuestionsWithAnswersByCourseId($id)
     }
     return $listQuestion;
 }
+
 
 function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, $trueAnswer)
 {

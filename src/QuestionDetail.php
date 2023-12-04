@@ -24,9 +24,9 @@ session_start();
 <body>
     <?php
     include 'navbar.php';
-    
 
-    include 'footer.php'; 
+
+    include 'footer.php';
     ?>
 </body>
 

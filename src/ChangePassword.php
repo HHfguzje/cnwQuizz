@@ -1,8 +1,8 @@
 <?php
 include '../function.php';
 session_start();
-if (!isLogin()){
-    header("Location: login.php");
+if (!isLogin()) {
+	header("Location: login.php");
 }
 ?>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ if (!isLogin()){
 		</div>
 		<div class="d-flex justify-content-center">
 			<form class="w-25" method="POST">
-			<div class="mb-3">
+				<div class="mb-3">
 					<label for="inputPassword" class=" col-form-label">Old Password</label>
 					<div class="col">
 						<input type="password" class="form-control" id="inputPassword" placeholder="Nhập Password cũ"
@@ -44,25 +44,25 @@ if (!isLogin()){
 							name="new_password">
 					</div>
 				</div>
-                <div class="mb-3">
-                    <label for="inputPassword" class=" col-form-label">Confirm Password</label>
+				<div class="mb-3">
+					<label for="inputPassword" class=" col-form-label">Confirm Password</label>
 					<div class="col">
-						<input type="password" class="form-control" id="inputPassword" placeholder="Nhập lại Password mới"
-							name="confirm_new_password">
+						<input type="password" class="form-control" id="inputPassword"
+							placeholder="Nhập lại Password mới" name="confirm_new_password">
 					</div>
 				</div>
 				<input type="submit" class="btn btn-primary" name="btnChangePassword" value="Đổi mật khẩu">
 			</form>
 		</div>
-        <div class="d-flex justify-content-center mt-3">
-            <p>Quay lại trang chủ <a href="courses.php">Khóa học</a></p>
-        </div>
+		<div class="d-flex justify-content-center mt-3">
+			<p>Quay lại trang chủ <a href="courses.php">Khóa học</a></p>
+		</div>
 
 		<?php
 		if (isset($_POST['btnChangePassword'])) {
 			$oldPW = $_POST['old_password'];
 			$newPW = $_POST['new_password'];
-            $confirmNewPW = $_POST['confirm_new_password'];
+			$confirmNewPW = $_POST['confirm_new_password'];
 			$validationErrors = validateChangePassword($oldPW, $newPW, $confirmNewPW);
 
 			if (empty($validationErrors)) {
