@@ -3,7 +3,7 @@ include 'function.php';
 session_start();
 // dùng hàm kiểm tra đăng nhập trong file funciton
 if (isLogin()) {
-	header('Location: ./src/coures.php');
+	header('Location: ./src/courses.php');
 	// echo 'Đã đăng nhập';
 } else {
 	header('Location: ./src/login.php');

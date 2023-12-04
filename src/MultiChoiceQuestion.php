@@ -21,6 +21,19 @@ $nameCourse = $course['course'];
         integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <!-- End bootstrap cdn -->
+    <style>
+        .form-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+
+        .form-check-input[type=checkbox] {
+            margin-bottom: 5px;
+        }
+    </style>
 
 </head>
 
@@ -45,55 +58,90 @@ $nameCourse = $course['course'];
             </div>
             <div class="form-group">
                 <label for="name_quiz">Ảnh cho câu hỏi</label>
-                <input class="form-control" type="file" name="file" id=""
-                    accept="image/png, image/jpeg, image/jpg">
+                <input class="form-control" type="file" name="file" id="" accept="image/png, image/jpeg, image/jpg">
             </div>
             <div class="form-group">
                 <label for="name_quiz">Câu hỏi trắc nghiệm</label>
                 <input class="form-control" value="Trắc nghiệm" readonly type="text" name="type_question" id="     ">
             </div>
-            <div style='margin: 20px 0 0 0;' class='input-group mb-3'>
-                <input name='numberAnswer' type='text' class='form-control' placeholder='Số lượng đáp án' value="<?php
-                echo isset($_POST['numberAnswer']) ? $_POST['numberAnswer'] : "";
-                ?>">
+            <div style='margin: 20px 0 0 0;' class='form-group mb-3'>
+                <label for="numberAnswer">Số lượng đáp án</label>
+                <input name='numberAnswer' id="numberAnswer" type='text' class='form-control'
+                    placeholder='Nhập số lượng đáp án' value="<?php
+                    echo isset($_POST['numberAnswer']) ? $_POST['numberAnswer'] : "";
+                    ?>">
             </div>
             <?php
-                function saveValue($i)
-                {
-                    if (isset($_POST['a' . $i])) {
-                        return $_POST['a' . $i];
-                    }
-                    return "";
+            function saveValue($i)
+            {
+                if (isset($_POST['a' . $i])) {
+                    return $_POST['a' . $i];
                 }
-                
-                $numberQuestion = 0;
-                if (isset($_POST['numberAnswer'])) {
-                    $numberQuestion = $_POST['numberAnswer'];
-                }
-                if (isset($_POST['btn-answer']) || isset($_POST['btn'])){
-                    echo "<div class='form-group'>";
-                    for ($i = 1; $i <= $numberQuestion; $i++) {
-                        echo "
+                return "";
+            }
+
+            $numberQuestion = 0;
+            if (isset($_POST['numberAnswer'])) {
+                $numberQuestion = $_POST['numberAnswer'];
+            }
+            if (isset($_POST['btn-answer']) || isset($_POST['btn'])) {
+                echo "<div class='form-group'>";
+                for ($i = 1; $i <= $numberQuestion; $i++) {
+                    echo "
                         <label for='name_quiz'>Đáp án " . $i . "</label>
-                        <input class='form-control' value='" . saveValue($i) . "' type='text' name='a" . $i . "'>";
-                    }
-                    echo "</div>";  
+                        <div class='form-check'>
+                        <input class='form-check-input' type='checkbox' name='true" . $i . "' value='" . $i . "' id='flexCheckDefault'>
+                        <input class='form-control' value='" . saveValue($i) . "' type='text' name='a" . $i . "'>
+                        </div>
+                       ";
                 }
+                echo "</div>";
+            }
             ?>
-             <div style="margin: 20px 0 0 0;" class="d-grid">
+            <div style="margin: 20px 0 0 0; width: 50px;" class="d-grid">
                 <input class="btn btn-primary btn-block" name="btn-answer" type="submit" value="Thêm đáp án">
             </div>
             <div style="margin: 20px 0 0 0;" class="d-grid">
-                <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm câu hỏi">
+                <input class="btn btn-primary btn-block" name="btn-add" type="submit" value="Thêm câu hỏi">
             </div>
         </div>
         </form>
 
+        <?php
+        if (isset($_POST['btn-add'])) {
+            $question_name = $_POST['question_name'];
+            $type_question = $_POST['type_question'];
+            $numberAnswer = $_POST['numberAnswer'];
+            //lấy đáp án
+            if ($numberAnswer > 0) {
+                $answer = array();
+                for ($i = 1; $i <= $numberAnswer; $i++) {
+                    $answer[$i] = $_POST['a' . $i];
+                }
+
+                //lấy đáp án đúng
+                $true_answer = array();
+                for ($i = 1; $i <= $numberAnswer; $i++) {
+                    if (isset($_POST['true' . $i])) {
+                        $true_answer[] = $_POST['true' . $i];
+                    }
+                }
+            }
+
+            $question = createQuestionChoice('áhcadkbcad', 'Trawsc nghiệm', 'sfv', $course_id, 'skdvbjsdvmds', 1);
+            echo $question;
+
+
+
+        }
+        ?>
+
     </main>
 
     <?php
-    include 'footer.php'; 
+    include 'footer.php';
     ?>
 
 </body>
+
 </html>

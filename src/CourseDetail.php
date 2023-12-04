@@ -5,7 +5,7 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-$listQuestion =  getQuestionsWithAnswersByCourseId($course_id);
+$listQuestion = getQuestionsWithAnswersByCourseId($course_id);
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -59,8 +59,10 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi sắp xếp</a></li>
-                <li><a class="dropdown-item" href="MultiChoiceQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi trắc nghiệm</a></li>
-                <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi điền</a></li>
+                <li><a class="dropdown-item" href="MultiChoiceQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi
+                        trắc nghiệm</a></li>
+                <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi điền</a>
+                </li>
             </ul>
 
         </div>
@@ -86,7 +88,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         echo "<td>" . $stt . "</td>";
                         echo "<td>" . $value['question'] . "</td>";
                         echo "<td>" . $value['type'] . "</td>";
-                        echo "<td>" . $value['fill_answer'] . "</td>";
+                        echo "<td>" . $value['answer'] . "</td>";
                         echo "<td>" . getFullname($value['user_id']) . "</td>";
                         echo "<td>";
                         echo $value['state'] == 1 ? "Đã duyệt" : "Chưa duyệt";
@@ -96,12 +98,12 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         <form method='POST'>
                         <input type='hidden' value='" . $value['id'] . "' name='id'/>
                         <button type='submit' class='btn btn-primary' name='btn'>Xem trước</button>";
-                if ($currentUser['role'] == 1) {
-                    echo $value['state'] == 1 ? "" :
-                        " <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>";
-                    echo "<input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>";
-                }
-                echo " </form></td>";
+                        if ($currentUser['role'] == 1) {
+                            echo $value['state'] == 1 ? "" :
+                                " <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>";
+                            echo "<input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>";
+                        }
+                        echo " </form></td>";
                     }
                 } else {
                     echo "<tr>
@@ -109,13 +111,13 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                     </tr>";
                 }
 
-                if (isset($_POST["btn-state"])){
+                if (isset($_POST["btn-state"])) {
                     $id = $_POST['id'];
-                    approveQuestion( $id );
+                    approveQuestion($id);
                 }
-                if (isset($_POST["btn-delete"])){
+                if (isset($_POST["btn-delete"])) {
                     $id = $_POST['id'];
-                    deleteQuestion( $id );
+                    deleteQuestion($id);
 
                 }
                 ?>
@@ -123,7 +125,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
         </div>
     </main>
     <?php
-    include 'footer.php'; 
+    include 'footer.php';
     ?>
 </body>
 

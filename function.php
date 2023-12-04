@@ -125,7 +125,7 @@ function getCourse($id)
 function getQuestionsWithAnswersByCourseId($id)
 {
     global $conn;
-    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.fill_answer
+    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.answer
             FROM questions q
             LEFT JOIN answers a ON q.id = a.question_id
             WHERE q.course_id = '$id'";
@@ -137,6 +137,8 @@ function getQuestionsWithAnswersByCourseId($id)
     }
     return $listQuestion;
 }
+
+//dạng điền đáp án
 function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer)
 {
     global $conn;
@@ -148,7 +150,7 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
 
     if ($resultQuestion) {
         $questionId = mysqli_insert_id($conn);
-        $sqlAnswers = "INSERT INTO answers (question_id, fill_answer)
+        $sqlAnswers = "INSERT INTO answers (question_id, answer)
                        VALUES ($questionId, '$answer')";
         $resultAnswers = mysqli_query($conn, $sqlAnswers);
 
@@ -157,7 +159,26 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
         return false;
     }
 }
+//dạng trắc nghiệm
+function createQuestionChoice($questionName, $typeQuestion, $image, $course_id, $answer, $is_true)
+{
+    global $conn;
+    $userId = $_SESSION['currentUser']['id'];
+    $state = 0;
+    $sqlQuestion = "INSERT INTO questions (question, type, course_id, image, user_id, state)
+                    VALUES ('$questionName', '$typeQuestion', '$course_id', '$image', $userId, $state)";
+    $resultQuestion = mysqli_query($conn, $sqlQuestion);
+    if ($resultQuestion) {
+        $questionId = mysqli_insert_id($conn);
+        $sqlAnswers = "INSERT INTO answers (question_id, fill_answer, is_true)
+                       VALUES ($questionId, '$answer', '$is_true')";
+        $resultAnswers = mysqli_query($conn, $sqlAnswers);
 
+        return $resultAnswers;
+    } else {
+        return false;
+    }
+}
 function approveQuestion($questionId)
 {
     global $conn;
