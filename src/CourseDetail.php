@@ -87,7 +87,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         echo "<td>" . $stt . "</td>";
                         echo "<td>" . $value['question'] . "</td>";
                         echo "<td>" . $value['type'] . "</td>";
-                        echo "<td>" . $value['fill_answer'] . "</td>";
+                        echo "<td>" . $value['answer'] . "</td>";
                         echo "<td>" . getFullname($value['user_id']) . "</td>";
                         echo "<td>";
                         echo $value['state'] == 1 ? "Đã duyệt" : "Chưa duyệt";
@@ -113,7 +113,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                            <h6> Đáp án :</h6>  ' . $value['fill_answer'] . '
+                            <h6> Đáp án :</h6>  ' . $value['answer'] . '
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
