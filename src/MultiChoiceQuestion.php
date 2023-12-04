@@ -70,15 +70,19 @@ $nameCourse = $course['course'];
                 if (isset($_POST['numberAnswer'])) {
                     $numberQuestion = $_POST['numberAnswer'];
                 }
-                
-                echo "<div class='form-group'>";
-                for ($i = 1; $i <= $numberQuestion; $i++) {
-                    echo "
-                    <label for='name_quiz'>Đáp án " . $i . "</label>
-                    <input class='form-control' value='" . saveValue($i) . "' type='text' name='a" . $i . "'>";
+                if (isset($_POST['btn-answer'])){
+                    echo "<div class='form-group'>";
+                    for ($i = 1; $i <= $numberQuestion; $i++) {
+                        echo "
+                        <label for='name_quiz'>Đáp án " . $i . "</label>
+                        <input class='form-control' value='" . saveValue($i) . "' type='text' name='a" . $i . "'>";
+                    }
+                    echo "</div>";  
                 }
-                echo "</div>";  
             ?>
+             <div style="margin: 20px 0 0 0;" class="d-grid">
+                <input class="btn btn-primary btn-block" name="btn-answer" type="submit" value="Thêm đáp án">
+            </div>
             <div style="margin: 20px 0 0 0;" class="d-grid">
                 <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm câu hỏi">
             </div>
