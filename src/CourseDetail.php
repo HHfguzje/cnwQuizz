@@ -58,9 +58,9 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                 Thêm câu hỏi
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi singleChoice</a></li>
-                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi multiChoice</a></li>
-                 <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi điền</a></li>
+                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi sắp xếp</a></li>
+                <li><a class="dropdown-item" href="MultiChoiceQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi trắc nghiệm</a></li>
+                <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi điền</a></li>
             </ul>
 
         </div>
