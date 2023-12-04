@@ -160,7 +160,8 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
     }
 }
 //dạng trắc nghiệm
-function createQuestionChoice($questionName, $typeQuestion, $image, $course_id, $answer, $is_true)
+
+function createQuestionChoice($questionName, $typeQuestion, $image, $course_id, $answer)
 {
     global $conn;
     $userId = $_SESSION['currentUser']['id'];
@@ -170,13 +171,15 @@ function createQuestionChoice($questionName, $typeQuestion, $image, $course_id, 
     $resultQuestion = mysqli_query($conn, $sqlQuestion);
     if ($resultQuestion) {
         $questionId = mysqli_insert_id($conn);
-        $sqlAnswers = "INSERT INTO answers (question_id, fill_answer, is_true)
-                       VALUES ($questionId, '$answer', '$is_true')";
-        $resultAnswers = mysqli_query($conn, $sqlAnswers);
+        foreach ($answer as $key => $value) {
+            $sqlAnswers = "INSERT INTO answers (question_id, answer, is_true)
+                           VALUES ($questionId, '$value[answer]', $value[is_true])";
+            $resultAnswers = mysqli_query($conn, $sqlAnswers);
 
+        }
         return $resultAnswers;
-    } else {
-        return false;
+
+
     }
 }
 function approveQuestion($questionId)

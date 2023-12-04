@@ -114,11 +114,6 @@ $nameCourse = $course['course'];
             $numberAnswer = $_POST['numberAnswer'];
             //lấy đáp án
             if ($numberAnswer > 0) {
-                $answer = array();
-                for ($i = 1; $i <= $numberAnswer; $i++) {
-                    $answer[$i] = $_POST['a' . $i];
-                }
-
                 //lấy đáp án đúng
                 $true_answer = array();
                 for ($i = 1; $i <= $numberAnswer; $i++) {
@@ -126,10 +121,31 @@ $nameCourse = $course['course'];
                         $true_answer[] = $_POST['true' . $i];
                     }
                 }
+
+                $answer = array();
+                for ($i = 1; $i <= $numberAnswer; $i++) {
+                    foreach ($true_answer as $key => $value) {
+                        if ($i == $value) {
+                            $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
+                        } else {
+                            $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
+                        }
+                    }
+
+                }
+
+                $result = createQuestionChoice($question_name, $type_question, '', $course_id, $answer);
+                if ($result) {
+                    echo "<script>alert('Thêm câu hỏi thành công')</script>";
+                } else {
+                    echo "<script>alert('Thêm câu hỏi thất bại')</script>";
+                }
+
             }
 
-            $question = createQuestionChoice('áhcadkbcad', 'Trawsc nghiệm', 'sfv', $course_id, 'skdvbjsdvmds', 1);
-            echo $question;
+
+            // createQuestionChoice('advbdn', 'Trắc nghiệm', '', $course_id, 'gjghjngdsb', 1);
+        
 
 
 
