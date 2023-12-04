@@ -203,3 +203,11 @@ function getAnswer($question_id)
     return $a;
 }
 
+function getCorrectAnswer($questionId)
+{
+    global $conn;
+    $sql = "SELECT answer FROM answers WHERE question_id = $questionId AND is_true = 1";
+    $result = mysqli_query($conn, $sql);
+    $trueAnswer = mysqli_fetch_assoc($result);
+    return $trueAnswer;
+}

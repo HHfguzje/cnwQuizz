@@ -87,39 +87,48 @@ function checkType($type)
     <div class="container">
         <h2>BÀI THI</h2>
         <?php
-        $i = 0;
         // echo "<pre>";
         // print_r(getAnswer($q['id']));
         // print_r($questionForQuizz);
+        // print_r(getCorrectAnswer(8));
         // echo "</pre>"; 
+        $i = 0;
+        echo "<form method = 'POST'>";
         foreach ($questionForQuizz as $q) {
             $i++;
             if (checkType($q['type']) == 0) {
                 echo "
-                <div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
-                    <input type='hidden' name='' value=" . $q['id'] . ">
-                    <input class='form-control' type='text' name='' value=''>
-                </div>
-                ";
+        <div class='form-group'>
+            <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+            <input type='hidden' name='question_" . $i . "_id' value=" . $q['id'] . ">
+            <input class='form-control' type='text' name='answer_" . $i . "'>
+        </div>
+        ";
             } else if (checkType($q["type"]) == 1) {
                 echo "<div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>";
+            <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>";
                 foreach (getAnswer($q['id']) as $a) {
                     echo "
-                        <div class='form-check'>
-                            <input class='form-check-input' type='checkbox' value='' id='flexCheckDefault'>
-                            <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
-                        </div>
-                    ";
+                <div class='form-check'>
+                    <input class='form-check-input' type='checkbox' value='" . $a['answer'] . "' name='answer_" . $i . "[]' id='flexCheckDefault'>
+                    <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
+                </div>
+            ";
                 }
                 echo "</div>";
             } else {
                 echo "";
             }
         }
+
+        if (isset($_POST["btn-submit"])) {
+
+        }
+        echo "<p>Điểm của bạn: </p>";
+        echo "<button class='btn-submit' type='submit' name='btn-submit'>Nộp bài</button>
+        </form>";
         ?>
-        <button class="btn-submit">Submit</button>
+
     </div>
     <?php include 'footer.php'; ?>
 </body>
