@@ -58,9 +58,14 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                 Thêm câu hỏi
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi singleChoice</a></li>
-                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi multiChoice</a></li>
-                <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi điền</a>
+
+                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi sắp xếp</a></li>
+                <li><a class="dropdown-item" href="MultiChoiceQuestion.php?course_id=<?php echo $course_id ?>">Câu
+                        hỏi
+                        trắc nghiệm</a></li>
+
+                <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi
+                        điền</a>
                 </li>
             </ul>
 
@@ -96,13 +101,16 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         echo "<td>
                         <form method='POST'>
                         <input type='hidden' value='" . $value['id'] . "' name='id'/>
+
                         <button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#staticBackdrop" . $value['id'] . "'>Xem trước</button>";
+
                         if ($currentUser['role'] == 1) {
                             echo $value['state'] == 1 ? "" :
                                 " <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>";
                             echo "<input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>";
                         }
                         echo " </form></td>";
+
 
                         echo '
                         <div class="modal fade" id="staticBackdrop' . $value['id'] . '" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -123,6 +131,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         </div>
                       </div>
                         ';
+
                     }
                 } else {
                     echo "<tr>
