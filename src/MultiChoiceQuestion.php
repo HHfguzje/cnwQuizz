@@ -70,7 +70,7 @@ $nameCourse = $course['course'];
                 if (isset($_POST['numberAnswer'])) {
                     $numberQuestion = $_POST['numberAnswer'];
                 }
-                if (isset($_POST['btn-answer'])){
+                if (isset($_POST['btn-answer']) || isset($_POST['btn'])){
                     echo "<div class='form-group'>";
                     for ($i = 1; $i <= $numberQuestion; $i++) {
                         echo "
