@@ -3,10 +3,10 @@ include 'function.php';
 session_start();
 // dùng hàm kiểm tra đăng nhập trong file funciton
 if (isLogin()) {
-	header('Location: ./src/khoa_hoc.php');
+	header('Location: ./src/coures.php');
 	// echo 'Đã đăng nhập';
 } else {
-	header('Location: ./src/dang_nhap.php');
+	header('Location: ./src/login.php');
 	// echo 'Chưa đăng nhập';
 }
 // nếu đăng nhập rồi thì truy cập vào trang khóa học

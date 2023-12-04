@@ -6,18 +6,8 @@ $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $listQuestion =  getQuestionsWithAnswersByCourseId($course_id);
-if (isset($_POST['btn-state'])) {
-    action($_POST['id']);
+if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
-}
-
-if (isset($_POST['btn-delete'])) {
-    $result = deleteQuestion($_POST['id']);
-    if ($result) {
-        echo "<div class='alert alert-success text-center' role='alert'>Xóa câu hỏi thành công</div>";
-    }
-    header("Refresh:0");
-
 }
 ?>
 <!DOCTYPE html>
@@ -103,29 +93,33 @@ if (isset($_POST['btn-delete'])) {
                         echo "</td>";
 
                         echo "<td>
-                    <form method='POST'>
-                    <input type='hidden' value='" . $value['id'] . "' name='id'/>
-                    <button class='btn btn-primary' name='btn'>Xem trước</button>";
-                        if ($currentUser['role'] == 1) {
-                            echo $value['state'] == 1 ? "" :
-                                " <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>";
-                            echo "<input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>";
-                        }
-
-                        echo " </form></td>";
-                        echo "</tr>";
+                        <form method='POST'>
+                        <input type='hidden' value='" . $value['id'] . "' name='id'/>
+                        <button type='submit' class='btn btn-primary' name='btn'>Xem trước</button>";
+                if ($currentUser['role'] == 1) {
+                    echo $value['state'] == 1 ? "" :
+                        " <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>";
+                    echo "<input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>";
+                }
+                echo " </form></td>";
                     }
                 } else {
                     echo "<tr>
                         <td colspan='7' align='center'><h1>Chưa có câu hỏi</h1></td>
                     </tr>";
                 }
-               
 
+                if (isset($_POST["btn-state"])){
+                    $id = $_POST['id'];
+                    approveQuestion( $id );
+                }
+                if (isset($_POST["btn-delete"])){
+                    $id = $_POST['id'];
+                    deleteQuestion( $id );
+
+                }
                 ?>
-
             </table>
-
         </div>
     </main>
     <?php
