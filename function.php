@@ -125,7 +125,7 @@ function getCourse($id)
 function getQuestionsWithAnswersByCourseId($id)
 {
     global $conn;
-    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.fill_answer
+    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.answer, a.is_true
             FROM questions q
             LEFT JOIN answers a ON q.id = a.question_id
             WHERE q.course_id = '$id'";
@@ -137,7 +137,7 @@ function getQuestionsWithAnswersByCourseId($id)
     }
     return $listQuestion;
 }
-function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer)
+function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, $trueAnswer)
 {
     global $conn;
     $userId = $_SESSION['currentUser']['id'];
@@ -148,8 +148,8 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
 
     if ($resultQuestion) {
         $questionId = mysqli_insert_id($conn);
-        $sqlAnswers = "INSERT INTO answers (question_id, fill_answer)
-                       VALUES ($questionId, '$answer')";
+        $sqlAnswers = "INSERT INTO answers (question_id, answer, is_true)
+                       VALUES ($questionId, '$answer', $trueAnswer)";
         $resultAnswers = mysqli_query($conn, $sqlAnswers);
 
         return $resultAnswers;
@@ -176,3 +176,39 @@ function deleteQuestion($questionId)
     $sqlDeleteQuestion = "DELETE FROM questions WHERE id = $questionId";
     mysqli_query($conn, $sqlDeleteQuestion);
 }
+
+function getQuestionsForQUizz($id)
+{
+    global $conn;
+    $sql = "SELECT q.question, q.type, q.id
+            FROM questions q
+            WHERE q.course_id = '$id' && q.state = 1
+            ORDER BY rand() limit 10";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        die("Query failed: " . mysqli_error($conn));
+    }
+
+    return $listQuestion;
+}
+
+function getAnswer($question_id)
+{
+    global $conn;
+    $sql = "SELECT * FROM answers WHERE question_id = $question_id";
+    $result = mysqli_query($conn, $sql);
+    $a = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $a;
+}
+
+function getCorrectAnswer($questionId)
+{
+    global $conn;
+    $sql = "SELECT answer FROM answers WHERE question_id = $questionId AND is_true = 1";
+    $result = mysqli_query($conn, $sql);
+    $trueAnswer = mysqli_fetch_assoc($result);
+    return $trueAnswer;
+}
+
