@@ -182,7 +182,6 @@ function getQuestionsForQUizz($id)
     global $conn;
     $sql = "SELECT q.question, q.type, q.id
             FROM questions q
-            LEFT JOIN answers a ON q.id = a.question_id
             WHERE q.course_id = '$id' && q.state = 1
             ORDER BY rand() limit 10";
     $result = mysqli_query($conn, $sql);
@@ -200,12 +199,6 @@ function getAnswer($question_id)
     global $conn;
     $sql = "SELECT * FROM answers WHERE question_id = $question_id";
     $result = mysqli_query($conn, $sql);
-
-    // if (!$result) {
-    //     echo "Error: " . mysqli_error($conn);
-    //     return array(); // hoặc bất kỳ giá trị mặc định nào bạn muốn
-    // }
-
     $a = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $a;
 }
