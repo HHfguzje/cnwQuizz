@@ -28,9 +28,13 @@ if (!isLogin()) {
 		<div class="d-flex justify-content-center">
 			<h1>Đổi mật khẩu</h1>
 		</div>
+		<div class="align-items-center">
+			<a href="courses.php" class="btn btn-primary">Trở lại</a>
+		</div>
 		<div class="d-flex justify-content-center">
 			<form class="w-25" method="POST">
 				<div class="mb-3">
+
 					<label for="inputPassword" class=" col-form-label">Old Password</label>
 					<div class="col">
 						<input type="password" class="form-control" id="inputPassword" placeholder="Nhập Password cũ"

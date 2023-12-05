@@ -84,6 +84,9 @@ function checkType($type)
 <body>
     <form method="POST">
         <?php include 'navbar.php'; ?>
+        <div class="align-items-center">
+            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+        </div>
         <div class="countdowncontainer" id='countdowncontainer'
             style='width: 20%;min-width:5%;display: flex; justify-content: center;position: absolute; top: 20%;left: 0;'>
         </div>

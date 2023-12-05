@@ -33,9 +33,19 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['b
         <div class="" style="text-align: center;">
             <h2>Danh sách khóa học</h2>
         </div>
-        <div class=" align-items-center">
-            <button type="button" class="btn btn-primary"><a href="AddCourse.php">Thêm khóa học</a></button>
+        <style>
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+        </style>
+
+        <div class="align-items-center">
+            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+            <button type="button" class="btn btn-primary">
+                <a href="AddCourse.php" style="color: inherit; text-decoration: none;">Thêm khóa học</a>
+            </button>
         </div>
+
         <div class="d-flex flex-wrap flex-column align-items-center" style="padding: 1%;margin: 5% 0 0 0; ">
             <table class="table table-striped">
                 <tr>

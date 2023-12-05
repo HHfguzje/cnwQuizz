@@ -21,6 +21,7 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 </head>
 
 <body>
+
     <?php include 'navbar.php' ?>
     <div class="container mt-5">
         <div class="row">
@@ -28,7 +29,9 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
                 <h1 class="text-center">Lịch sử làm bài</h1>
             </div>
         </div>
-
+        <div class="align-items-center">
+            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+        </div>
         <div class="row mt-4">
             <div class="col-12">
                 <table class="table">
