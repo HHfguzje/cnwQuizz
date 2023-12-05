@@ -97,7 +97,7 @@ function checkType($type)
                 $numberAnswer = 0;
                 $i++;
                 if (checkType($q['type']) == 0) {
-                    // $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
+                    $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
                 <div class='form-group'>
                     <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
