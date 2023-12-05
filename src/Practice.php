@@ -36,6 +36,7 @@ function checkType($type)
     <style>
         body {
             background-color: #f8f9fa;
+
         }
 
         .container {
@@ -81,41 +82,91 @@ function checkType($type)
 </head>
 
 <body>
-    <?php include 'navbar.php'; ?>
-    <div class="container">
-        <h2>BÀI THI</h2>
-        <?php
-        $i = 0;
-        foreach ($questionForQuizz as $q) {
-            $i++;
-            if (checkType($q['type']) == 0) {
-                echo "
+    <form method="POST">
+        <?php include 'navbar.php'; ?>
+        <div class="countdowncontainer" id='countdowncontainer'
+            style='width: 20%;min-width:5%;display: flex; justify-content: center;position: absolute; top: 20%;left: 0;'>
+        </div>
+        <div class="container">
+            <h2>BÀI THI</h2>
+            <?php
+            $true_answer = [];
+            $i = 0;
+
+            foreach ($questionForQuizz as $index => $q) {
+                $numberAnswer = 0;
+                $i++;
+                if (checkType($q['type']) == 0) {
+                    $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
+                    echo "
                 <div class='form-group'>
                     <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                     <input type='hidden' name='' value=" . $q['id'] . ">
                     <input class='form-control' type='text' name='' value=''>
                 </div>
                 ";
-            } else if (checkType($q["type"]) == 1) {
-                echo "<div class='form-group'>
+                } else if (checkType($q["type"]) == 1) {
+                    echo "<div class='form-group'>
                     <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>";
-                foreach (getAnswer($q['id']) as $a) {
-                    echo "
-                        <div class='form-check'>
-                            <input class='form-check-input' type='checkbox' value='' id='flexCheckDefault'>
-                            <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
-                        </div>
-                    ";
+
+
+                    foreach (getAnswer($q['id']) as $key => $a) {
+                        if ($a['is_true'] == 1) {
+                            $numberAnswer++;
+                            $true_answer[$index][] = $key;
+                        }
+                    }
+                    foreach (getAnswer($q['id']) as $key => $a) {
+                        if ($numberAnswer > 1) {
+                            echo "
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='checkbox' value='' id='flexCheckDefault'>
+                                    <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
+                                </div>";
+                        } else {
+                            echo "
+                            <div class='form-check'>
+                                <input class='form-check-input' type='radio' name='flexRadioDefault' id='flexRadioDefault" . $key . "'>
+                                <label class='form-check-label' for='flexRadioDefault1'>
+                                    " . $a['answer'] . "
+                                </label>
+                          </div>";
+                        }
+                    }
+                    echo "</div>";
+                } else {
+                    echo "";
                 }
-                echo "</div>";
-            } else {
-                echo "";
             }
-        }
-        ?>
-        <button class="btn-submit">Submit</button>
-    </div>
-    <?php include 'footer.php'; ?>
+            $_SESSION['true_answer'] = $true_answer;
+            ?>
+            <button class="btn-submit" type="submit" name="btn-submit">Submit</button>
+            <?php include 'footer.php'; ?>
+    </form>
+    <script type="text/javascript">
+        var duration = 5 * 60 * 1000;
+        var countDownBtn = document.getElementById("countdownbtn");
+        var x;
+
+        window.onload = e => {
+            e.preventDefault();
+
+            var startTime = new Date().getTime();
+            if (x) clearInterval(x);
+            x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = startTime + duration - now;
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
+                if (distance <= 0) {
+                    clearInterval(x);
+                    document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
+                    document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
+                }
+            }, 1000);
+        };
+    </script>
 </body>
 
 </html>

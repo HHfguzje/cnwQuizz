@@ -136,7 +136,7 @@ function getQuestionsByCourseId($id)
 }
 
 
-function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, $trueAnswer)
+function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, $is_true)
 {
     global $conn;
     $userId = $_SESSION['currentUser']['id'];
@@ -149,7 +149,7 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
         $questionId = mysqli_insert_id($conn);
 
         $sqlAnswers = "INSERT INTO answers (question_id, answer, is_true)
-                       VALUES ($questionId, '$answer', $trueAnswer)";
+                       VALUES ($questionId, '$answer', '$is_true')";
 
         $resultAnswers = mysqli_query($conn, $sqlAnswers);
 

@@ -72,7 +72,7 @@ $nameCourse = $course['course'];
         $answers = $_POST['answer'];
         $image = "";
         if (!empty($questionName) && !empty($answers)) {
-            $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answers);
+            $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answers, 1);
             if ($result) {
                 echo "<div class='alert alert-success text-center' role='alert'>Thêm câu hỏi thành công</div>";
 

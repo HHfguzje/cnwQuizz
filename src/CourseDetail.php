@@ -103,6 +103,13 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                                 echo "</li>";
                             }
                             echo "</ol></td>";
+                        } else {
+                            echo "<td>";
+                            $listAnswers = getAnswer($value['id']);
+                            foreach ($listAnswers as $answer) {
+                                echo $answer['answer'];
+                            }
+                            echo "</td>";
                         }
                         echo "<td>" . getFullname($value['user_id']) . "</td>";
                         echo "<td>";
