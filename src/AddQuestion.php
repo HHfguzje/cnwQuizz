@@ -73,8 +73,8 @@ $nameCourse = $course['course'];
         $file = $_FILES['file'];
         $answer = $_POST['answer'];
         $image = "";
-        if (!empty($questionName) && !empty($answers)) {
-            $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answers, 1);
+        if (!empty($questionName) && !empty($answer)) {
+            $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, 1);
             if ($result) {
                 echo "<div class='alert alert-success text-center' role='alert'>Thêm câu hỏi thành công</div>";
 
