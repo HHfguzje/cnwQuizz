@@ -102,7 +102,7 @@ function checkType($type)
                 <div class='form-group'>
                     <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                     <input type='hidden' name='' value=" . $q['id'] . ">
-                    <input class='form-control' type='text' name='' value=''>
+                    <input class='form-control' type='text' name='" . $q['id'] . "' value=''>
                 </div>
                 ";
                 } else if (checkType($q["type"]) == 1) {
@@ -116,11 +116,13 @@ function checkType($type)
                             $true_answer[$index][] = $key;
                         }
                     }
+
                     foreach (getAnswer($q['id']) as $key => $a) {
+
                         if ($numberAnswer > 1) {
                             echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='' id='flexCheckDefault'>
+                                    <input class='form-check-input' type='checkbox' value='' name='" . $q['id'] . $key . "' id='flexCheckDefault'>
                                     <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
                                 </div>";
                         } else {
@@ -140,9 +142,40 @@ function checkType($type)
             }
             $_SESSION['true_answer'] = $true_answer;
             ?>
-            <button class="btn-submit" type="submit" name="btn-submit">Submit</button>
+            <input class="btn-submit" type="submit" name="btn-submit" value='Nộp bài' />
+            <?php
+            if (isset($_POST['btn-submit'])) {
+                // echo "<h2>Điểm của bạn là: 80</h2>";
+                $score = 0;
+                $true_answer = $_SESSION['true_answer'];
+                foreach ($true_answer as $index => $value) {
+                    if (checkType($questionForQuizz[$index]['type']) == 0) {
+
+                        if (!empty($_POST[$questionForQuizz[$index]['id']])) {
+                            if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
+                                $score++;
+                            }
+                        }
+
+                    } else if (checkType($questionForQuizz[$index]['type']) == 1) {
+                        $check = true;
+                        foreach ($value as $key => $v) {
+                            if (!isset($_POST[$questionForQuizz[$index]['id'] . $v])) {
+                                $check = false;
+                            }
+                        }
+                        if ($check) {
+                            $score++;
+                        }
+                    }
+                }
+                echo "<h2>Điểm của bạn là: " . $score . "</h2>";
+            }
+            ?>
             <?php include 'footer.php'; ?>
     </form>
+
+    <!-- count down -->
     <script type="text/javascript">
         var duration = 5 * 60 * 1000;
         var countDownBtn = document.getElementById("countdownbtn");
