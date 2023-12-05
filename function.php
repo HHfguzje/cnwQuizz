@@ -177,8 +177,6 @@ function createQuestionChoice($questionName, $typeQuestion, $image, $course_id, 
 
         }
         return $resultAnswers;
-
-
     }
 }
 function approveQuestion($questionId)
@@ -204,16 +202,16 @@ function getQuestionsForQUizz($id)
 {
     global $conn;
     $sql = "SELECT q.question, q.type, q.id
-            FROM questions q
-            WHERE q.course_id = '$id' && q.state = 1
-            ORDER BY rand() limit 10";
+                FROM questions q
+                WHERE q.course_id = '$id' && q.state = 1
+                ORDER BY rand() limit 10";
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $_SESSION['quiz_questions'] = $listQuestion;
     } else {
         die("Query failed: " . mysqli_error($conn));
     }
-
     return $listQuestion;
 }
 
@@ -233,5 +231,14 @@ function getCorrectAnswer($questionId)
     $result = mysqli_query($conn, $sql);
     $trueAnswer = mysqli_fetch_assoc($result);
     return $trueAnswer;
+}
+
+function getResultByUserandCourseId($userId, $courseId)
+{
+    global $conn;
+    $sql = "SELECT * FROM result WHERE user_id = $userId AND course_id= $courseId ";
+    $result = mysqli_query($conn, $sql);
+    $listResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $listResult;
 }
 

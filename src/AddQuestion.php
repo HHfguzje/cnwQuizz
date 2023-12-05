@@ -51,10 +51,12 @@ $nameCourse = $course['course'];
                 <label for="name_quiz">Dạng câu hỏi</label>
                 <input class="form-control" value="Điền" readonly type="text" name="type_question" id="     ">
             </div>
-            <div style='margin: 20px 0 0 0;' class='input-group mb-3'>
-                <input name='answer' type='text' class='form-control' placeholder='Nhập đáp án' value="<?php
-                echo isset($_POST['answer']) ? $_POST['answer'] : "";
-                ?>">
+            <div class="form-group">
+                <label for="name_quiz"><span style="color: red;">*</span>Nhập đáp án</label>
+                <input class="form-control" name='answer' type='text' class='form-control' placeholder='Nhập đáp án'
+                    value="<?php
+                    echo isset($_POST['answer']) ? $_POST['answer'] : "";
+                    ?>">
             </div>
             <div style="margin: 20px 0 0 0;" class="d-grid">
                 <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm câu hỏi">
@@ -69,7 +71,7 @@ $nameCourse = $course['course'];
         $questionName = $_POST['question_name'];
         $typeQuestion = $_POST['type_question'];
         $file = $_FILES['file'];
-        $answers = $_POST['answer'];
+        $answer = $_POST['answer'];
         $image = "";
         if (!empty($questionName) && !empty($answers)) {
             $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answers, 1);

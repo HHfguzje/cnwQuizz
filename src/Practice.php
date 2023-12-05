@@ -10,7 +10,7 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
 $questionForQuizz = getQuestionsForQUizz($course_id);
-// print_r(getQuestionsForQUizz($course_id));
+// $_SESSION['question'] = $questionForQuizz;
 
 function checkType($type)
 {
