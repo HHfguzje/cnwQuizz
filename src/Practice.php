@@ -5,7 +5,7 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-$listQuestion = getQuestionsWithAnswersByCourseId($course_id);
+// $listQuestion = getQuestionsWithAnswersByCourseId($course_id);
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }

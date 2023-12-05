@@ -122,20 +122,16 @@ function getCourse($id)
     return $course;
 }
 
-function getQuestionsWithAnswersByCourseId($id)
+function getQuestionsByCourseId($id)
 {
     global $conn;
 
-    $sql = "SELECT q.id, q.question, q.type, q.user_id, q.state, a.answer
+    $sql = "SELECT *
             FROM questions q
-            LEFT JOIN answers a ON q.id = a.question_id
-            WHERE q.course_id = '$id'";
+           
+            WHERE course_id = '$id'";
     $result = mysqli_query($conn, $sql);
-    if ($result) {
-        $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        die("Query failed: " . mysqli_error($conn));
-    }
+    $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $listQuestion;
 }
 

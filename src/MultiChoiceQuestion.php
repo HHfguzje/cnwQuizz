@@ -118,22 +118,25 @@ $nameCourse = $course['course'];
                 $true_answer = array();
                 for ($i = 1; $i <= $numberAnswer; $i++) {
                     if (isset($_POST['true' . $i])) {
-                        $true_answer[] = $_POST['true' . $i];
+                        $true_answer[$i] = $_POST['true' . $i];
                     }
                 }
 
-                $answer = array();
+                $answer = [];
                 for ($i = 1; $i <= $numberAnswer; $i++) {
+                    $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
                     foreach ($true_answer as $key => $value) {
                         if ($i == $value) {
                             $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
-                        } else {
-                            $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
                         }
                     }
 
                 }
-
+                // echo "<pre>";
+                // print_r($true_answer);
+                // print_r($answer);
+                // echo "</pre>";
+        
                 $result = createQuestionChoice($question_name, $type_question, '', $course_id, $answer);
                 if ($result) {
                     echo "<script>alert('Thêm câu hỏi thành công')</script>";
