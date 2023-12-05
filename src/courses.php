@@ -3,7 +3,7 @@ include_once "../function.php";
 session_start();
 $courses = getAllCourses();
 // print_r($courses);
-
+$currentUser = $_SESSION['currentUser'];
 ?>
 <!DOCTYPE html>
 <html lang="en	">
@@ -41,6 +41,7 @@ $courses = getAllCourses();
 						<h5 class='card-title'>" . $course['course'] . "</h5>
 						<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Biên tập</a>
 						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Luyện tập</a>
+						<a href='Result.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Lịch sử làm bài</a>
 					</div>
 				</div>
 			</div>

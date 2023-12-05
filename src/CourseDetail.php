@@ -5,7 +5,7 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-$listQuestion = getQuestionsWithAnswersByCourseId($course_id);
+$listQuestion = getQuestionsByCourseId($course_id);
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -92,7 +92,25 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         echo "<td>" . $stt . "</td>";
                         echo "<td>" . $value['question'] . "</td>";
                         echo "<td>" . $value['type'] . "</td>";
-                        echo "<td>" . $value['answer'] . "</td>";
+                        if ($value['type'] == 'Trắc nghiệm') {
+                            echo "<td> <ol type='A' style='padding-left: 8px;'>";
+                            $listAnswers = getAnswer($value['id']);
+                            foreach ($listAnswers as $answer) {
+                                echo "<li>" . $answer['answer'];
+                                if ($answer['is_true'] == 1) {
+                                    echo "<span style='color: green; margin-left: 10px'>(Đáp án đúng)</span>";
+                                }
+                                echo "</li>";
+                            }
+                            echo "</ol></td>";
+                        } else {
+                            echo "<td>";
+                            $listAnswers = getAnswer($value['id']);
+                            foreach ($listAnswers as $answer) {
+                                echo $answer['answer'];
+                            }
+                            echo "</td>";
+                        }
                         echo "<td>" . getFullname($value['user_id']) . "</td>";
                         echo "<td>";
                         echo $value['state'] == 1 ? "Đã duyệt" : "Chưa duyệt";
@@ -121,11 +139,19 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                            <h6> Đáp án :</h6>  ' . $value['answer'] . '
+                            <h6> Đáp án :</h6>  <ol type="A">';
+                        foreach ($listAnswers as $answer) {
+                            echo "<li>" . $answer['answer'];
+                            if ($answer['is_true'] == 1) {
+                                echo "<span style='color: green; margin-left: 10px'>(Đáp án đúng)</span>";
+                            }
+                            echo "</li>";
+                        }
+                        echo '
+                            </ol>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Understood</button>
                             </div>
                           </div>
                         </div>
