@@ -30,10 +30,10 @@ $currentUser = $_SESSION['currentUser'];
 		</div>
 		<div class="row row-cols-1 row-cols-md-3 g-4" style="margin: 0 auto; width: 80%;">
 			<!-- begin khóa học -->
-
 			<?php
 			foreach ($courses as $course) {
-				echo "
+				if ($course['state'] == 1) {
+					echo "
 				<div class='col'>
 				<div class='card'>
 					<img src='../images/khoahoc.jpg' class='card-img-top' alt='Course Image'>
@@ -46,6 +46,7 @@ $currentUser = $_SESSION['currentUser'];
 				</div>
 			</div>
 				";
+				}
 			}
 			?>
 			<!-- end khóa học -->

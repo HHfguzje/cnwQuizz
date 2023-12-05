@@ -21,6 +21,10 @@ if (!isLogin()) {
             ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <?php
+            if ($currentUser['role'] == 1) {
+              echo "<li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa hoc</a></li>";
+            } ?>
             <li><a class="dropdown-item" href="ChangePassword.php">Đổi mật khẩu</a></li>
             <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
           </ul>

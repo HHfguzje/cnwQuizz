@@ -35,8 +35,9 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Số thứ tự</th>
-                            <th scope="col">Thời gian làm bài</th>
+                            <th scope="col">Thời gian nộp bài</th>
                             <th scope="col">Điểm làm bài</th>
+                            <th scope="col">Thời gian làm bàii</th>
                         </tr>
                     </thead>
                     <tbody>

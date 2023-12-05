@@ -187,6 +187,20 @@ function approveQuestion($questionId)
     return $result;
 }
 
+function approveCourse($courseId)
+{
+    global $conn;
+    $sql = "UPDATE courses SET state = '1' WHERE id = '$courseId'";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
+function hiddenCourse($courseId)
+{
+    global $conn;
+    $sql = "UPDATE courses SET state = '0' WHERE id = '$courseId'";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
 function deleteQuestion($questionId)
 {
     global $conn;
@@ -197,6 +211,14 @@ function deleteQuestion($questionId)
     $sqlDeleteQuestion = "DELETE FROM questions WHERE id = $questionId";
     mysqli_query($conn, $sqlDeleteQuestion);
 }
+
+function deleteCourse($courseId)
+{
+    global $conn;
+    $sql = "DELETE FROM courses WHERE id = $courseId";
+    $result = mysqli_query($conn, $sql);
+}
+
 
 function getQuestionsForQUizz($id)
 {
@@ -242,3 +264,11 @@ function getResultByUserandCourseId($userId, $courseId)
     return $listResult;
 }
 
+function createCourse($courseName)
+{
+    global $conn;
+    $state = 0;
+    $sql = "INSERT INTO courses (course, state) VALUE ($courseName, $state)";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
