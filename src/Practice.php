@@ -177,7 +177,6 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
         var duration = 5 * 60 * 1000;
         var countDownBtn = document.getElementById("countdownbtn");
         var x;
-        var finalCountdownTime = 0;
 
         window.onload = e => {
             e.preventDefault();
@@ -196,13 +195,6 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
                     document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
                 }
             }, 1000);
-
-            document.querySelector("form").addEventListener("submit", function () {
-                clearInterval(x); // Stop the countdown
-                var remainingTime = duration - (new Date().getTime() - startTime);
-                finalCountdownTime = remainingTime;
-                document.getElementById("countdown_time").value = remainingTime;
-            });
         };
     </script>
 
