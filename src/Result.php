@@ -52,7 +52,7 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
                             $i++;
                             echo "<tr>
                             <td>" . $i . "</td>
-                            <td>" . $r['time'] . "</td>
+                            <td>" . $r['timeSubmit'] . "</td>
                             <td>" . $r['score'] . "</td>
                             </tr>";
                         }

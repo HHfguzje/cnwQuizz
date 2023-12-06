@@ -271,3 +271,14 @@ function createCourse($courseName)
     $result = mysqli_query($conn, $sql);
     return $result;
 }
+
+function saveResult($userId, $score, $courseId, $timeSubmit)
+{
+    global $conn;
+    $sql = "INSERT INTO result (user_id, score, course_id, timeSubmit) VALUES ($userId, $score, $courseId, '$timeSubmit')";
+    $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
+    return $result;
+}
