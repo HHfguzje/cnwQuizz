@@ -202,7 +202,7 @@ function deleteQuestion($questionId)
 function getQuestionsForQUizz($id)
 {
     global $conn;
-    $sql = "SELECT q.question, q.type, q.id
+    $sql = "SELECT *
             FROM questions q
             WHERE q.course_id = '$id' && q.state = 1
             ORDER BY rand() limit 10";

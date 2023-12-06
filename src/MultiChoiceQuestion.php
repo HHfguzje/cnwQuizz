@@ -72,26 +72,25 @@ $nameCourse = $course['course'];
                     ?>">
             </div>
             <?php
-            function saveValue($i)
-            {
-                if (isset($_POST['a' . $i])) {
-                    return $_POST['a' . $i];
+            function saveValue($i) {
+                if(isset($_POST['a'.$i])) {
+                    return $_POST['a'.$i];
                 }
                 return "";
             }
 
             $numberQuestion = 0;
-            if (isset($_POST['numberAnswer'])) {
+            if(isset($_POST['numberAnswer'])) {
                 $numberQuestion = $_POST['numberAnswer'];
             }
-            if (isset($_POST['btn-answer']) || isset($_POST['btn'])) {
+            if(isset($_POST['btn-answer']) || isset($_POST['btn'])) {
                 echo "<div class='form-group'>";
-                for ($i = 1; $i <= $numberQuestion; $i++) {
+                for($i = 1; $i <= $numberQuestion; $i++) {
                     echo "
-                        <label for='name_quiz'>Đáp án " . $i . "</label>
+                        <label for='name_quiz'>Đáp án ".$i."</label>
                         <div class='form-check'>
-                        <input class='form-check-input' type='checkbox' name='true" . $i . "' value='" . $i . "' id='flexCheckDefault'>
-                        <input class='form-control' value='" . saveValue($i) . "' type='text' name='a" . $i . "'>
+                        <input class='form-check-input' type='checkbox' name='true".$i."' value='".$i."' id='flexCheckDefault'>
+                        <input class='form-control' value='".saveValue($i)."' type='text' name='a".$i."'>
                         </div>
                        ";
                 }
@@ -108,47 +107,70 @@ $nameCourse = $course['course'];
         </form>
 
         <?php
-        if (isset($_POST['btn-add'])) {
+        if(isset($_POST['btn-add'])) {
             $question_name = $_POST['question_name'];
             $type_question = $_POST['type_question'];
             $numberAnswer = $_POST['numberAnswer'];
+            $file = $_FILES['file'];
+            $image = "";
+
             //lấy đáp án
-            if ($numberAnswer > 0) {
+            if($numberAnswer > 0) {
                 //lấy đáp án đúng
                 $true_answer = array();
-                for ($i = 1; $i <= $numberAnswer; $i++) {
-                    if (isset($_POST['true' . $i])) {
-                        $true_answer[$i] = $_POST['true' . $i];
+                for($i = 1; $i <= $numberAnswer; $i++) {
+                    if(isset($_POST['true'.$i])) {
+                        $true_answer[$i] = $_POST['true'.$i];
                     }
                 }
 
                 $answer = [];
-                for ($i = 1; $i <= $numberAnswer; $i++) {
-                    $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
-                    foreach ($true_answer as $key => $value) {
-                        if ($i == $value) {
-                            $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
+                for($i = 1; $i <= $numberAnswer; $i++) {
+                    $answer[$i] = ['answer' => $_POST['a'.$i], 'is_true' => 0];
+                    foreach($true_answer as $key => $value) {
+                        if($i == $value) {
+                            $answer[$i] = ['answer' => $_POST['a'.$i], 'is_true' => 1];
                         }
                     }
 
                 }
-                // echo "<pre>";
-                // print_r($true_answer);
-                // print_r($answer);
-                // echo "</pre>";
-        
-                $result = createQuestionChoice($question_name, $type_question, '', $course_id, $answer);
-                if ($result) {
-                    echo "<script>alert('Thêm câu hỏi thành công')</script>";
-                } else {
-                    echo "<script>alert('Thêm câu hỏi thất bại')</script>";
-                }
 
             }
 
-
-            // createQuestionChoice('advbdn', 'Trắc nghiệm', '', $course_id, 'gjghjngdsb', 1);
+            //upload image
+            if($file['error'] == 0) {
+                $fileName = $file['name'];
+                $fileTmp = $file['tmp_name'];
+                $fileSize = $file['size'];
+                $fileType = $file['type'];
+                $arr = explode('.', $fileName);
+                $fileExtension = strtolower(end($arr));
+                $allow = array('png', 'jpg', 'jpeg');
+                if(in_array($fileExtension, $allow)) {
+                    if($fileSize < 5000000) {
+                        $newFileName = uniqid('image-', true).".".$fileExtension;
+                        $image = $newFileName;
+                        if(!is_dir('../uploads/images')) {
+                            mkdir('../uploads/images');
+                        }
+                        move_uploaded_file($fileTmp, '../uploads/images/'.$newFileName);
+                    } else {
+                        echo "<div class='alert alert-warning text-center' role='alert'>File quá lớn</div>";
+                    }
+                } else {
+                    echo "<div class='alert alert-warning text-center' role='alert'>File không đúng định dạng</div>";
+                }
+            }
+            // echo $image;
         
+            $result = createQuestionChoice($question_name, $type_question, $image, $course_id, $answer);
+            if($result) {
+                echo "<script>alert('Thêm câu hỏi thành công')</script>";
+            } else {
+                echo "<script>alert('Thêm câu hỏi thất bại')</script>";
+            }
+
+
 
 
 
