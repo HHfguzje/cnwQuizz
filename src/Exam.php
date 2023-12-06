@@ -1,0 +1,215 @@
+<?php
+include '../function.php';
+session_start();
+$currentUser = $_SESSION['currentUser'];
+$questionForQuizz = getQuestionsForExam();
+$course_id = 9;
+function checkType($type) {
+    if($type == "Điền") {
+        return 0;
+    } else if($type == "Trắc nghiệm") {
+        return 1;
+    }
+}
+if(isset($_POST['countdown_expired'])) {
+    header("location: Point.php?course_id=9");
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu hỏi trắc nghiệm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .title {
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+        }
+
+        .btn-submit {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST" id='form'>
+        <?php include 'navbar.php'; ?>
+        <input type="hidden" name="countdown_expired" value="1">
+        <div class="align-items-center">
+            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+        </div>
+        <div class="countdowncontainer" id='countdowncontainer'
+            style='width: 20%;min-width:5%;display: flex; justify-content: center;position: absolute; top: 20%;left: 0;'>
+        </div>
+        <div class="container">
+            <h2>BÀI THI</h2>
+            <?php
+            $true_answer = [];
+            $currentDateTime = '';
+            $i = 0;
+            foreach($questionForQuizz as $index => $q) {
+                $numberAnswer = 0;
+                $i++;
+                if(checkType($q['type']) == 0) {
+                    $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
+                    echo "
+                        <div class='form-group'>
+                            <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
+                            <input type='hidden' name='' value=".$q['id'].">
+                    ";
+                    if($q['image'] != null) {
+                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    }
+                    echo "
+                            <input class='form-control' type='text' name='".$q['id']."' value=''>
+                        </div>
+                ";
+                } else if(checkType($q["type"]) == 1) {
+                    echo "
+                        <div class='form-group'>
+                        <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
+                    ";
+                    if($q['image'] != null) {
+                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    }
+                    foreach(getAnswer($q['id']) as $key => $a) {
+                        if($a['is_true'] == 1) {
+                            $numberAnswer++;
+                            $true_answer[$index][] = $key;
+                        }
+                    }
+                    foreach(getAnswer($q['id']) as $key => $a) {
+                        if($numberAnswer > 1) {
+                            echo "
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='checkbox' value='' name='".$q['id'].$key."' id='flexCheckDefault'>
+                                    <label class='form-check-label' for='flexCheckDefault'>".$a['answer']."</label>
+                                </div>";
+                        } else {
+                            echo "
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='radio' name='".$q['id'].$key."' id='flexRadioDefault".$key."'>
+                                    <label class='form-check-label' for='flexRadioDefault1'>
+                                        ".$a['answer']."
+                                    </label>
+                                 </div>";
+                        }
+                    }
+                    echo "</div>";
+                } else {
+                    echo "";
+                }
+            }
+            $_SESSION['true_answer'] = $true_answer;
+            ?>
+            <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
+            <!-- Tính điểm -->
+            <?php
+            $currentDateTime = date("Y-m-d H:i:s");
+            $score = 0;
+            $true_answer = $_SESSION['true_answer'];
+            foreach($true_answer as $index => $value) {
+                if(checkType($questionForQuizz[$index]['type']) == 0) {
+                    if(!empty($_POST[$questionForQuizz[$index]['id']])) {
+                        if($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
+                            $score++;
+                        }
+                    }
+                } else if(checkType($questionForQuizz[$index]['type']) == 1) {
+                    $check = true;
+                    foreach($value as $key => $v) {
+                        if(!isset($_POST[$questionForQuizz[$index]['id'].$v])) {
+                            $check = false;
+                        }
+                    }
+                    if($check) {
+                        $score++;
+                    }
+                }
+            }
+            saveResult($currentUser['id'], $score, 9, $currentDateTime);
+            ?>
+
+    </form>
+
+    <script>
+        function submit() {
+            var form = document.getElementById('form');
+            form.submit();
+        }
+    </script>
+
+
+    <!-- count down -->
+    <script type="text/javascript">
+        var duration = 5 * 60 * 1000;
+        var x;
+        window.onload = e => {
+            e.preventDefault();
+            var startTime = new Date().getTime();
+            if (x) clearInterval(x);
+            x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = startTime + duration - now;
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
+                if (distance <= 0) {
+                    clearInterval(x);
+                    document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
+                    document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
+                    submit();
+                }
+            }, 1000);
+        };
+    </script>
+
+</body>
+
+<?php include 'footer.php'; ?>
+
+</html>
