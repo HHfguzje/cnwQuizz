@@ -6,17 +6,18 @@ $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $questionForQuizz = getQuestionsForQUizz($course_id);
-if(isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
+if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
-function checkType($type) {
-    if($type == "Điền") {
+function checkType($type)
+{
+    if ($type == "Điền") {
         return 0;
-    } else if($type == "Trắc nghiệm") {
+    } else if ($type == "Trắc nghiệm") {
         return 1;
     }
 }
-if(isset($_POST['countdown_expired'])) {
+if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
 ?>
@@ -96,50 +97,50 @@ if(isset($_POST['countdown_expired'])) {
             $true_answer = [];
             $currentDateTime = '';
             $i = 0;
-            foreach($questionForQuizz as $index => $q) {
+            foreach ($questionForQuizz as $index => $q) {
                 $numberAnswer = 0;
                 $i++;
-                if(checkType($q['type']) == 0) {
+                if (checkType($q['type']) == 0) {
                     $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
                         <div class='form-group'>
-                            <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
-                            <input type='hidden' name='' value=".$q['id'].">
+                            <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                            <input type='hidden' name='' value=" . $q['id'] . ">
                     ";
-                    if($q['image'] != null) {
-                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    if ($q['image'] != null) {
+                        echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
                     echo "
-                            <input class='form-control' type='text' name='".$q['id']."' value=''>
+                            <input class='form-control' type='text' name='" . $q['id'] . "' value=''>
                         </div>
                 ";
-                } else if(checkType($q["type"]) == 1) {
+                } else if (checkType($q["type"]) == 1) {
                     echo "
                         <div class='form-group'>
-                        <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
+                        <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                     ";
-                    if($q['image'] != null) {
-                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    if ($q['image'] != null) {
+                        echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
-                    foreach(getAnswer($q['id']) as $key => $a) {
-                        if($a['is_true'] == 1) {
+                    foreach (getAnswer($q['id']) as $key => $a) {
+                        if ($a['is_true'] == 1) {
                             $numberAnswer++;
                             $true_answer[$index][] = $key;
                         }
                     }
-                    foreach(getAnswer($q['id']) as $key => $a) {
-                        if($numberAnswer > 1) {
+                    foreach (getAnswer($q['id']) as $key => $a) {
+                        if ($numberAnswer > 1) {
                             echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='' name='".$q['id'].$key."' id='flexCheckDefault'>
-                                    <label class='form-check-label' for='flexCheckDefault'>".$a['answer']."</label>
+                                    <input class='form-check-input' type='checkbox' value='' name='" . $q['id'] . $key . "' id='flexCheckDefault'>
+                                    <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
                                 </div>";
                         } else {
                             echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='radio' name='".$q['id'].$key."' id='flexRadioDefault".$key."'>
+                                    <input class='form-check-input' type='radio' name='" . $q['id'] . "' id='flexRadioDefault" . $key . "'>
                                     <label class='form-check-label' for='flexRadioDefault1'>
-                                        ".$a['answer']."
+                                        " . $a['answer'] . "
                                     </label>
                                  </div>";
                         }
@@ -157,21 +158,21 @@ if(isset($_POST['countdown_expired'])) {
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];
-            foreach($true_answer as $index => $value) {
-                if(checkType($questionForQuizz[$index]['type']) == 0) {
-                    if(!empty($_POST[$questionForQuizz[$index]['id']])) {
-                        if($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
+            foreach ($true_answer as $index => $value) {
+                if (checkType($questionForQuizz[$index]['type']) == 0) {
+                    if (!empty($_POST[$questionForQuizz[$index]['id']])) {
+                        if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
                             $score++;
                         }
                     }
-                } else if(checkType($questionForQuizz[$index]['type']) == 1) {
+                } else if (checkType($questionForQuizz[$index]['type']) == 1) {
                     $check = true;
-                    foreach($value as $key => $v) {
-                        if(!isset($_POST[$questionForQuizz[$index]['id'].$v])) {
+                    foreach ($value as $key => $v) {
+                        if (!isset($_POST[$questionForQuizz[$index]['id']])) {
                             $check = false;
                         }
                     }
-                    if($check) {
+                    if ($check) {
                         $score++;
                     }
                 }
