@@ -5,7 +5,11 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-$listQuestion = getQuestionsByCourseId($course_id);
+if($currentUser['role'] == 1) {
+    $listQuestion = getQuestionsByCourseId($course_id);
+} else {
+    $listQuestion = getQuestionsByUserId($currentUser['id'], $course_id);
+}
 if(isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -183,5 +187,5 @@ if(isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     ?>
 </body>
 
-
 </html>
+<?php include 'footer.php'; ?>

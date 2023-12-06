@@ -171,7 +171,7 @@ if(isset($_POST['btn-submit'])) {
                 saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             }
             ?>
-            <?php include 'footer.php'; ?>
+
     </form>
 
     <!-- count down -->
@@ -210,3 +210,4 @@ if(isset($_POST['btn-submit'])) {
 </body>
 
 </html>
+<?php include 'footer.php'; ?>

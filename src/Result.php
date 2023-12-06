@@ -5,7 +5,11 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-$listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
+if($currentUser['role'] == 1) {
+    $listResult = getResultByCourseId($course_id);
+} else {
+    $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
+}
 // print_r($listResult);
 // echo $course_id;
 // echo $currentUser['id'];
@@ -63,5 +67,6 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
     </div>
 
 </body>
+<?php include 'footer.php'; ?>
 
 </html>

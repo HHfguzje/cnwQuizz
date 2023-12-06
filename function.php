@@ -240,6 +240,14 @@ function getResultByUserandCourseId($userId, $courseId) {
     return $listResult;
 }
 
+function getResultByCourseId($courseId) {
+    global $conn;
+    $sql = "SELECT * FROM result WHERE course_id= $courseId ";
+    $result = mysqli_query($conn, $sql);
+    $listResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $listResult;
+}
+
 function createCourse($courseName) {
     global $conn;
     $state = 0;
