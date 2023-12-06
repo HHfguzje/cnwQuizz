@@ -114,7 +114,6 @@ function getCourse($id) {
 
 function getQuestionsByCourseId($id) {
     global $conn;
-
     $sql = "SELECT *
             FROM questions q
            
@@ -257,4 +256,12 @@ function saveResult($userId, $score, $courseId, $timeSubmit) {
         die("Query failed: ".mysqli_error($conn));
     }
     return $result;
+}
+
+function getQuestionsByUserId($userId, $courseId) {
+    global $conn;
+    $sql = "SELECT * FROM questions q WHERE course_id = '$courseId' and user_id='$userId'";
+    $result = mysqli_query($conn, $sql);
+    $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $listQuestion;
 }

@@ -31,17 +31,17 @@ $currentUser = $_SESSION['currentUser'];
 		<div class="row row-cols-1 row-cols-md-3 g-4" style="margin: 0 auto; width: 80%;">
 			<!-- begin khóa học -->
 			<?php
-			foreach ($courses as $course) {
-				if ($course['state'] == 1) {
+			foreach($courses as $course) {
+				if($course['state'] == 1) {
 					echo "
 				<div class='col'>
 				<div class='card'>
 					<img src='../images/khoahoc.jpg' class='card-img-top' alt='Course Image'>
 					<div class='card-body'>
-						<h5 class='card-title'>" . $course['course'] . "</h5>
-						<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Biên tập</a>
-						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Luyện tập</a>
-						<a href='Result.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Lịch sử làm bài</a>
+						<h5 class='card-title'>".$course['course']."</h5>
+						<a href='CourseDetail.php?course_id=".$course['id']."' class='btn btn-primary'>Đóng góp</a>
+						<a href='Practice.php?course_id=".$course['id']."' class='btn btn-primary'>Luyện tập</a>
+						<a href='Result.php?course_id=".$course['id']."' class='btn btn-primary'>Lịch sử làm bài</a>
 					</div>
 				</div>
 			</div>
