@@ -147,7 +147,6 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
 
     if ($resultQuestion) {
         $questionId = mysqli_insert_id($conn);
-
         $sqlAnswers = "INSERT INTO answers (question_id, answer, is_true)
                        VALUES ($questionId, '$answer', '$is_true')";
 
