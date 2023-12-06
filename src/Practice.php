@@ -5,7 +5,6 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-// $listQuestion = getQuestionsWithAnswersByCourseId($course_id);
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -92,6 +91,7 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
             <h2>BÀI THI</h2>
             <?php
             $true_answer = [];
+            $currentDateTime = '';
             $i = 0;
 
             foreach ($questionForQuizz as $index => $q) {
@@ -100,17 +100,17 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
                 if (checkType($q['type']) == 0) {
                     $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
-                <div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
-                    <input type='hidden' name='' value=" . $q['id'] . ">
-                    <input class='form-control' type='text' name='' value=''>
-                </div>
+                        <div class='form-group'>
+                            <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                            <input type='hidden' name='' value=" . $q['id'] . ">
+                            <input class='form-control' type='text' name='" . $q['id'] . "' value=''>
+                        </div>
                 ";
                 } else if (checkType($q["type"]) == 1) {
-                    echo "<div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>";
-
-
+                    echo "
+                        <div class='form-group'>
+                        <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                    ";
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($a['is_true'] == 1) {
                             $numberAnswer++;
@@ -121,17 +121,17 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
                         if ($numberAnswer > 1) {
                             echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='' id='flexCheckDefault'>
+                                    <input class='form-check-input' type='checkbox' value='' name='" . $q['id'] . $key . "' id='flexCheckDefault'>
                                     <label class='form-check-label' for='flexCheckDefault'>" . $a['answer'] . "</label>
                                 </div>";
                         } else {
                             echo "
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='flexRadioDefault' id='flexRadioDefault" . $key . "'>
-                                <label class='form-check-label' for='flexRadioDefault1'>
-                                    " . $a['answer'] . "
-                                </label>
-                          </div>";
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='radio' name='" . $q['id'] . $key . "' id='flexRadioDefault" . $key . "'>
+                                    <label class='form-check-label' for='flexRadioDefault1'>
+                                        " . $a['answer'] . "
+                                    </label>
+                                 </div>";
                         }
                     }
                     echo "</div>";
@@ -141,9 +141,39 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
             }
             $_SESSION['true_answer'] = $true_answer;
             ?>
-            <button class="btn-submit" type="submit" name="btn-submit">Submit</button>
+            <input class="btn-submit" type="submit" name="btn-submit" value='Nộp bài' />
+            <?php
+            if (isset($_POST['btn-submit'])) {
+                $currentDateTime = date("Y-m-d H:i:s");
+                // unset($_SESSION['questionForQuizz']);
+                $score = 0;
+                $true_answer = $_SESSION['true_answer'];
+                foreach ($true_answer as $index => $value) {
+                    if (checkType($questionForQuizz[$index]['type']) == 0) {
+                        if (!empty($_POST[$questionForQuizz[$index]['id']])) {
+                            if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
+                                $score++;
+                            }
+                        }
+                    } else if (checkType($questionForQuizz[$index]['type']) == 1) {
+                        $check = true;
+                        foreach ($value as $key => $v) {
+                            if (!isset($_POST[$questionForQuizz[$index]['id'] . $v])) {
+                                $check = false;
+                            }
+                        }
+                        if ($check) {
+                            $score++;
+                        }
+                    }
+                }
+                echo "<h2>Điểm của bạn là: " . $score . "</h2>";
+            }
+            ?>
             <?php include 'footer.php'; ?>
     </form>
+
+    <!-- count down -->
     <script type="text/javascript">
         var duration = 5 * 60 * 1000;
         var countDownBtn = document.getElementById("countdownbtn");
@@ -168,6 +198,7 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
             }, 1000);
         };
     </script>
+
 </body>
 
 </html>
