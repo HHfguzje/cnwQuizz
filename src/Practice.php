@@ -9,9 +9,6 @@ $nameCourse = $course['course'];
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
-$questionForQuizz = getQuestionsForQUizz($course_id);
-// $_SESSION['question'] = $questionForQuizz;
-
 function checkType($type)
 {
     if ($type == "Điền") {
@@ -20,6 +17,7 @@ function checkType($type)
         return 1;
     }
 }
+$questionForQuizz = getQuestionsForQUizz($course_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">

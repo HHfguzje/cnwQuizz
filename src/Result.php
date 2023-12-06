@@ -9,6 +9,8 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 // print_r($listResult);
 // echo $course_id;
 // echo $currentUser['id'];
+// $currentDateTime = date("Y-m-d H:i:s");
+// echo $currentDateTime;
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -230,7 +230,6 @@ function getQuestionsForQUizz($id)
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        $_SESSION['quiz_questions'] = $listQuestion;
     } else {
         die("Query failed: " . mysqli_error($conn));
     }
