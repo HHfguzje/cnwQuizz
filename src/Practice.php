@@ -5,12 +5,9 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-// $listQuestion = getQuestionsWithAnswersByCourseId($course_id);
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
-$questionForQuizz = getQuestionsForQUizz($course_id);
-// print_r(getQuestionsForQUizz($course_id));
 
 function checkType($type)
 {
@@ -20,6 +17,10 @@ function checkType($type)
         return 1;
     }
 }
+
+$questionForQuizz = getQuestionsForQUizz($course_id);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,6 +92,7 @@ function checkType($type)
             <h2>BÀI THI</h2>
             <?php
             $true_answer = [];
+            $currentDateTime = '';
             $i = 0;
 
             foreach ($questionForQuizz as $index => $q) {
@@ -99,26 +101,24 @@ function checkType($type)
                 if (checkType($q['type']) == 0) {
                     $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
-                <div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
-                    <input type='hidden' name='' value=" . $q['id'] . ">
-                    <input class='form-control' type='text' name='" . $q['id'] . "' value=''>
-                </div>
+                        <div class='form-group'>
+                            <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                            <input type='hidden' name='' value=" . $q['id'] . ">
+                            <input class='form-control' type='text' name='" . $q['id'] . "' value=''>
+                        </div>
                 ";
                 } else if (checkType($q["type"]) == 1) {
-                    echo "<div class='form-group'>
-                    <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>";
-
-
+                    echo "
+                        <div class='form-group'>
+                        <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                    ";
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($a['is_true'] == 1) {
                             $numberAnswer++;
                             $true_answer[$index][] = $key;
                         }
                     }
-
                     foreach (getAnswer($q['id']) as $key => $a) {
-
                         if ($numberAnswer > 1) {
                             echo "
                                 <div class='form-check'>
@@ -127,12 +127,12 @@ function checkType($type)
                                 </div>";
                         } else {
                             echo "
-                            <div class='form-check'>
-                                <input class='form-check-input' type='radio' name='flexRadioDefault' id='flexRadioDefault" . $key . "'>
-                                <label class='form-check-label' for='flexRadioDefault1'>
-                                    " . $a['answer'] . "
-                                </label>
-                          </div>";
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='radio' name='" . $q['id'] . $key . "' id='flexRadioDefault" . $key . "'>
+                                    <label class='form-check-label' for='flexRadioDefault1'>
+                                        " . $a['answer'] . "
+                                    </label>
+                                 </div>";
                         }
                     }
                     echo "</div>";
@@ -145,18 +145,17 @@ function checkType($type)
             <input class="btn-submit" type="submit" name="btn-submit" value='Nộp bài' />
             <?php
             if (isset($_POST['btn-submit'])) {
-                // echo "<h2>Điểm của bạn là: 80</h2>";
+                $currentDateTime = date("Y-m-d H:i:s");
+                // unset($_SESSION['questionForQuizz']);
                 $score = 0;
                 $true_answer = $_SESSION['true_answer'];
                 foreach ($true_answer as $index => $value) {
                     if (checkType($questionForQuizz[$index]['type']) == 0) {
-
                         if (!empty($_POST[$questionForQuizz[$index]['id']])) {
                             if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
                                 $score++;
                             }
                         }
-
                     } else if (checkType($questionForQuizz[$index]['type']) == 1) {
                         $check = true;
                         foreach ($value as $key => $v) {
@@ -200,6 +199,7 @@ function checkType($type)
             }, 1000);
         };
     </script>
+
 </body>
 
 </html>
