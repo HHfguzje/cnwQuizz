@@ -67,23 +67,53 @@ $nameCourse = $course['course'];
     </main>
 
     <?php
-    if (isset($_POST['btn'])) {
+
+    if(isset($_POST['btn'])) {
         $questionName = $_POST['question_name'];
         $typeQuestion = $_POST['type_question'];
         $file = $_FILES['file'];
         $answer = $_POST['answer'];
         $image = "";
-        if (!empty($questionName) && !empty($answer)) {
+
+        //upload image
+        if($file['error'] == 0) {
+            $fileName = $file['name'];
+            $fileTmp = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $fileType = $file['type'];
+            $arr = explode('.', $fileName);
+            $fileExtension = strtolower(end($arr));
+            $allow = array('png', 'jpg', 'jpeg');
+            if(in_array($fileExtension, $allow)) {
+                if($fileSize < 5000000) {
+                    $newFileName = uniqid('image-', true).".".$fileExtension;
+                    $image = $newFileName;
+                    if(!is_dir('../uploads/images')) {
+                        mkdir('../uploads/images');
+                    }
+                    move_uploaded_file($fileTmp, '../uploads/images/'.$newFileName);
+
+
+                } else {
+                    echo "<div class='alert alert-warning text-center' role='alert'>File quá lớn</div>";
+                }
+            } else {
+                echo "<div class='alert alert-warning text-center' role='alert'>File không đúng định dạng</div>";
+            }
+        }
+        //insert question
+        if(!empty($questionName) && !empty($answer)) {
             $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, 1);
-            if ($result) {
+            if($result) {
                 echo "<div class='alert alert-success text-center' role='alert'>Thêm câu hỏi thành công</div>";
 
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
+                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại".mysqli_error($conn)."</div>";
             }
         } else {
             echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
         }
+
 
 
     }

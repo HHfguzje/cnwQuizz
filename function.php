@@ -134,7 +134,6 @@ function createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_
 
     if($resultQuestion) {
         $questionId = mysqli_insert_id($conn);
-
         $sqlAnswers = "INSERT INTO answers (question_id, answer, is_true)
                        VALUES ($questionId, '$answer', '$is_true')";
 
@@ -203,10 +202,10 @@ function deleteCourse($courseId) {
 
 function getQuestionsForQUizz($id) {
     global $conn;
-    $sql = "SELECT q.question, q.type, q.id
-                FROM questions q
-                WHERE q.course_id = '$id' && q.state = 1
-                ORDER BY rand() limit 10";
+    $sql = "SELECT *
+            FROM questions q
+            WHERE q.course_id = '$id' && q.state = 1
+            ORDER BY rand() limit 10";
     $result = mysqli_query($conn, $sql);
     if($result) {
         $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);

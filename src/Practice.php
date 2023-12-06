@@ -5,6 +5,7 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
+$questionForQuizz = getQuestionsForQUizz($course_id);
 if(isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -15,8 +16,7 @@ function checkType($type) {
         return 1;
     }
 }
-$questionForQuizz = getQuestionsForQUizz($course_id);
-if(isset($_POST['btn-submit'])) {
+if(isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
 ?>
@@ -81,8 +81,9 @@ if(isset($_POST['btn-submit'])) {
 </head>
 
 <body>
-    <form method="POST" name="formSubmit">
+    <form method="POST" id='form'>
         <?php include 'navbar.php'; ?>
+        <input type="hidden" name="countdown_expired" value="1">
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
         </div>
@@ -95,7 +96,6 @@ if(isset($_POST['btn-submit'])) {
             $true_answer = [];
             $currentDateTime = '';
             $i = 0;
-
             foreach($questionForQuizz as $index => $q) {
                 $numberAnswer = 0;
                 $i++;
@@ -105,6 +105,11 @@ if(isset($_POST['btn-submit'])) {
                         <div class='form-group'>
                             <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
                             <input type='hidden' name='' value=".$q['id'].">
+                    ";
+                    if($q['image'] != null) {
+                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    }
+                    echo "
                             <input class='form-control' type='text' name='".$q['id']."' value=''>
                         </div>
                 ";
@@ -113,6 +118,9 @@ if(isset($_POST['btn-submit'])) {
                         <div class='form-group'>
                         <h5 class='title'>Câu ".$i.": ".$q['question']."?</h5>
                     ";
+                    if($q['image'] != null) {
+                        echo "<img src='../uploads/images/".$q['image']."' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                    }
                     foreach(getAnswer($q['id']) as $key => $a) {
                         if($a['is_true'] == 1) {
                             $numberAnswer++;
@@ -143,71 +151,70 @@ if(isset($_POST['btn-submit'])) {
             }
             $_SESSION['true_answer'] = $true_answer;
             ?>
-            <input class="btn-submit" type="submit" name="btn-submit" value='Nộp bài' />
+            <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
+            <!-- Tính điểm -->
             <?php
+            $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
-            if(isset($_POST['btn-submit'])) {
-                $currentDateTime = date("Y-m-d H:i:s");
-                $true_answer = $_SESSION['true_answer'];
-                foreach($true_answer as $index => $value) {
-                    if(checkType($questionForQuizz[$index]['type']) == 0) {
-                        if(!empty($_POST[$questionForQuizz[$index]['id']])) {
-                            if($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
-                                $score++;
-                            }
-                        }
-                    } else if(checkType($questionForQuizz[$index]['type']) == 1) {
-                        $check = true;
-                        foreach($value as $key => $v) {
-                            if(!isset($_POST[$questionForQuizz[$index]['id'].$v])) {
-                                $check = false;
-                            }
-                        }
-                        if($check) {
+            $true_answer = $_SESSION['true_answer'];
+            foreach($true_answer as $index => $value) {
+                if(checkType($questionForQuizz[$index]['type']) == 0) {
+                    if(!empty($_POST[$questionForQuizz[$index]['id']])) {
+                        if($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
                             $score++;
                         }
                     }
+                } else if(checkType($questionForQuizz[$index]['type']) == 1) {
+                    $check = true;
+                    foreach($value as $key => $v) {
+                        if(!isset($_POST[$questionForQuizz[$index]['id'].$v])) {
+                            $check = false;
+                        }
+                    }
+                    if($check) {
+                        $score++;
+                    }
                 }
-                saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             }
+            saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             ?>
 
     </form>
 
+    <script>
+        function submit() {
+            var form = document.getElementById('form');
+            form.submit();
+        }
+    </script>
+
+
     <!-- count down -->
-    <?php
-    echo <<<EOD
-                    <script type="text/javascript">
-                    var duration = 0.1 * 60 * 1000;
-                    var countDownBtn = document.getElementById("countdownbtn");
-                    var x;
-
-                    window.onload = e => {
-                        e.preventDefault();
-
-                        var startTime = new Date().getTime();
-                        if (x) clearInterval(x);
-                        x = setInterval(function () {
-                            var now = new Date().getTime();
-                            var distance = startTime + duration - now;
-                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                            document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
-                            if (distance <= 0) {
-                                clearInterval(x);
-                                document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
-                                document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
-                                
-                                // Chuyển hướng sau khi kết thúc đếm ngược
-                                window.location.href = "Point.php?course_id=$course_id";
-                            }
-                        }, 1000);
-                    };
-                </script>
-                EOD;
-    ?>
+    <script type="text/javascript">
+        var duration = 0.5 * 60 * 1000;
+        var x;
+        window.onload = e => {
+            e.preventDefault();
+            var startTime = new Date().getTime();
+            if (x) clearInterval(x);
+            x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = startTime + duration - now;
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
+                if (distance <= 0) {
+                    clearInterval(x);
+                    document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
+                    document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
+                    submit();
+                }
+            }, 1000);
+        };
+    </script>
 
 </body>
 
-</html>
 <?php include 'footer.php'; ?>
+
+</html>
