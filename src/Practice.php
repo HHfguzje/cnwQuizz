@@ -191,7 +191,7 @@ if(isset($_POST['countdown_expired'])) {
 
     <!-- count down -->
     <script type="text/javascript">
-        var duration = 0.5 * 60 * 1000;
+        var duration = 5 * 60 * 1000;
         var x;
         window.onload = e => {
             e.preventDefault();
