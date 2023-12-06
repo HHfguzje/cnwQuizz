@@ -15,7 +15,6 @@ function checkType($type) {
         return 1;
     }
 }
-$finalCountdownTime = 0;
 $questionForQuizz = getQuestionsForQUizz($course_id);
 ?>
 <!DOCTYPE html>
@@ -145,11 +144,7 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
             <?php
             $score = 0;
             if(isset($_POST['btn-submit'])) {
-                $countdownTime = isset($_POST['countdown_time']) ? $_POST['countdown_time'] : 0;
                 $currentDateTime = date("Y-m-d H:i:s");
-                // unset($_SESSION['questionForQuizz']);
-                echo "<p>Tổng thời gian countdown: ".$finalCountdownTime." milliseconds</p>";
-
                 $true_answer = $_SESSION['true_answer'];
                 foreach($true_answer as $index => $value) {
                     if(checkType($questionForQuizz[$index]['type']) == 0) {
@@ -210,6 +205,7 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
             });
         };
     </script>
+
 
 </body>
 

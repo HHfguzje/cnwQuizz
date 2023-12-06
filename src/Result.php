@@ -42,18 +42,17 @@ $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
                             <th scope="col">Số thứ tự</th>
                             <th scope="col">Thời gian nộp bài</th>
                             <th scope="col">Điểm làm bài</th>
-                            <th scope="col">Thời gian làm bàii</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $i = 0;
-                        foreach ($listResult as $r) {
+                        foreach($listResult as $r) {
                             $i++;
                             echo "<tr>
-                            <td>" . $i . "</td>
-                            <td>" . $r['timeSubmit'] . "</td>
-                            <td>" . $r['score'] . "</td>
+                            <td>".$i."</td>
+                            <td>".$r['timeSubmit']."</td>
+                            <td>".$r['score']."</td>
                             </tr>";
                         }
                         ?>
