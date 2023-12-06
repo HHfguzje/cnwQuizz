@@ -16,6 +16,9 @@ function checkType($type) {
     }
 }
 $questionForQuizz = getQuestionsForQUizz($course_id);
+if(isset($_POST['btn-submit'])) {
+    header("location: Point.php?course_id=$course_id");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +81,7 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
 </head>
 
 <body>
-    <form method="POST">
+    <form method="POST" name="formSubmit">
         <?php include 'navbar.php'; ?>
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
@@ -165,7 +168,6 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
                         }
                     }
                 }
-                echo "<h2>Điểm của bạn là: ".$score."</h2>";
                 saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             }
             ?>
@@ -173,31 +175,37 @@ $questionForQuizz = getQuestionsForQUizz($course_id);
     </form>
 
     <!-- count down -->
-    <script type="text/javascript">
-        var duration = 5 * 60 * 1000;
-        var countDownBtn = document.getElementById("countdownbtn");
-        var x;
+    <?php
+    echo <<<EOD
+                    <script type="text/javascript">
+                    var duration = 0.1 * 60 * 1000;
+                    var countDownBtn = document.getElementById("countdownbtn");
+                    var x;
 
-        window.onload = e => {
-            e.preventDefault();
+                    window.onload = e => {
+                        e.preventDefault();
 
-            var startTime = new Date().getTime();
-            if (x) clearInterval(x);
-            x = setInterval(function () {
-                var now = new Date().getTime();
-                var distance = startTime + duration - now;
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
-                if (distance <= 0) {
-                    clearInterval(x);
-                    document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
-                    document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
-                }
-            }, 1000);
-        };
-    </script>
-
+                        var startTime = new Date().getTime();
+                        if (x) clearInterval(x);
+                        x = setInterval(function () {
+                            var now = new Date().getTime();
+                            var distance = startTime + duration - now;
+                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            document.getElementById("countdowncontainer").innerHTML = 'Thời gian:  ' + minutes + "m " + seconds + "s ";
+                            if (distance <= 0) {
+                                clearInterval(x);
+                                document.getElementById("countdowncontainer").innerHTML = "Hết thời gian!";
+                                document.getElementById("countdowncontainer").setAttribute("class", "text-danger");
+                                
+                                // Chuyển hướng sau khi kết thúc đếm ngược
+                                window.location.href = "Point.php?course_id=$course_id";
+                            }
+                        }, 1000);
+                    };
+                </script>
+                EOD;
+    ?>
 
 </body>
 
