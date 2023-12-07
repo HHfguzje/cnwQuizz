@@ -215,6 +215,21 @@ function getQuestionsForQUizz($id) {
     return $listQuestion;
 }
 
+function getQuestionsForExam() {
+    global $conn;
+    $sql = "SELECT *
+            FROM questions q
+            WHERE q.state = 1
+            ORDER BY rand() limit 20";
+    $result = mysqli_query($conn, $sql);
+    if($result) {
+        $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        die("Query failed: ".mysqli_error($conn));
+    }
+    return $listQuestion;
+}
+
 function getAnswer($question_id) {
     global $conn;
     $sql = "SELECT * FROM answers WHERE question_id = $question_id";
@@ -271,4 +286,16 @@ function getQuestionsByUserId($userId, $courseId) {
     $result = mysqli_query($conn, $sql);
     $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $listQuestion;
+}
+
+function getRank() {
+    global $conn;
+    $sql = "SELECT u.fullname, r.score, r.timeSubmit 
+        FROM user u 
+        JOIN result r ON u.id = r.user_id 
+        WHERE r.course_id = 9
+        ORDER BY r.score DESC";
+    $result = mysqli_query($conn, $sql);
+    $rank = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $rank;
 }
