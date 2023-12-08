@@ -63,7 +63,8 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
             </button>
             <ul class="dropdown-menu">
 
-                <li><a class="dropdown-item" href="#?course_id=<?php echo $course_id ?>">Câu hỏi sắp xếp</a></li>
+                <li><a class="dropdown-item" href="SortingQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi sắp
+                        xếp</a></li>
                 <li><a class="dropdown-item" href="MultiChoiceQuestion.php?course_id=<?php echo $course_id ?>">Câu
                         hỏi
                         trắc nghiệm</a></li>
@@ -107,6 +108,13 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                                 echo "</li>";
                             }
                             echo "</ol></td>";
+                        } else if ($value['type'] == 'Sắp xếp') {
+                            echo "<td>";
+                            $listAnswers = getAnswer($value['id']);
+                            foreach ($listAnswers as $answer) {
+                                echo "<li>" . $answer['ordinalNumber'] . ") " . $answer['answer'] . "</li>";
+                            }
+                            echo "</td>";
                         } else {
                             echo "<td>";
                             $listAnswers = getAnswer($value['id']);

@@ -15,10 +15,24 @@ function checkType($type)
         return 0;
     } else if ($type == "Trắc nghiệm") {
         return 1;
-    }
+    } else
+        return 2;
 }
 if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
+}
+// $values = [1, 2, 3, 4, 5];
+if (isset($_POST['result'])) {
+    $result = json_decode($_POST['result'], true);
+
+    $sortedValues = [];
+    foreach ($result as $index) {
+        $sortedValues[] = $values[$index];
+    }
+
+    echo "<pre>";
+    print_r($sortedValues);
+    echo "</pre>";
 }
 ?>
 <!DOCTYPE html>
@@ -36,6 +50,11 @@ if (isset($_POST['countdown_expired'])) {
     <style>
         body {
             background-color: #f8f9fa;
+        }
+
+        *. {
+            font-family: sans-serif;
+            box-sizing: border-box;
         }
 
         .container {
@@ -76,6 +95,36 @@ if (isset($_POST['countdown_expired'])) {
 
         .btn-submit:hover {
             background-color: #218838;
+        }
+
+        .container-drag-drop {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #column {
+            width: 300px;
+            min-height: 400px;
+            margin: 20px;
+            border: solid 2px #ccc;
+        }
+
+        .list {
+            background: blue;
+            height: 40px;
+            margin: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            cursor: grab;
+        }
+
+        .list i {
+            margin-right: 15px;
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -146,7 +195,64 @@ if (isset($_POST['countdown_expired'])) {
                     }
                     echo "</div>";
                 } else {
-                    echo "";
+                    echo "
+                        <div class='form-group'>
+                        <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
+                    ";
+                    echo "<div class='container'><div id='column'>";
+                    foreach (getRandomAnswer($q['id']) as $index => $value) {
+                        echo '<div class="list" draggable="true" data-index="' . $index . '">';
+                        echo $index;
+                        echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Item ' . $value['answer'];
+                        echo '</div>';
+                        $values = $value['answer'];
+                        echo <<<EDO
+                            <script type="text/javascript">
+                                let column = document.getElementById("column");
+                                let result = <?php echo json_encode(array_keys($values)); ?>;
+
+                                column.addEventListener("dragover", function (e) {
+                                    e.preventDefault();
+                                });
+
+                                column.addEventListener("drop", function (e) {
+                                    let draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
+                                    let draggedValue = result[draggedIndex];
+
+                                    result.splice(draggedIndex, 1);
+                                    result.splice(e.target.dataset.index, 0, draggedValue);
+                                    document.getElementById("resultInput").value = JSON.stringify(result);
+                                    renderLists();
+                                    document.getElementById("myForm").submit();
+                                });
+
+                                function renderLists() {
+                                    column.innerHTML = "";
+                                    result.forEach((value, index) => {
+                                        let listItem = document.createElement("div");
+                                        listItem.className = "list";
+                                        listItem.draggable = true;
+                                        listItem.dataset.index = index;
+                                        listItem.innerHTML = '<i class="fa fa-list-ul" aria-hidden="true"></i> Item ' + value;
+                                        listItem.addEventListener("dragstart", function (e) {
+                                            e.dataTransfer.setData("text/plain", index);
+                                        });
+                                        column.appendChild(listItem);
+                                    });
+                                }
+
+                                renderLists();
+                            </script>
+                        EDO;
+
+
+                    }
+
+                    echo "</div></div>
+                    <form method='POST' id='myForm'>
+                        <input type='hidden' name='result' id='resultInput' value=''>
+                    </form>";
+
                 }
             }
             $_SESSION['true_answer'] = $true_answer;
@@ -154,6 +260,7 @@ if (isset($_POST['countdown_expired'])) {
             <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
             <!-- Tính điểm -->
             <?php
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];
@@ -212,7 +319,6 @@ if (isset($_POST['countdown_expired'])) {
             }, 1000);
         };
     </script>
-
 </body>
 
 <?php include 'footer.php'; ?>
