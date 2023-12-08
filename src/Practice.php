@@ -99,6 +99,7 @@ if (isset($_POST['countdown_expired'])) {
             foreach ($questionForQuizz as $index => $q) {
                 $numberAnswer = 0;
                 $i++;
+                //reder ra câu hỏi của từng dạng
                 if (checkType($q['type']) == 0) {
                     $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
@@ -106,6 +107,7 @@ if (isset($_POST['countdown_expired'])) {
                             <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                             <input type='hidden' name='' value=" . $q['id'] . ">
                     ";
+                    //ảnh
                     if ($q['image'] != null) {
                         echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
@@ -118,15 +120,18 @@ if (isset($_POST['countdown_expired'])) {
                         <div class='form-group'>
                         <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                     ";
+                    //ảnh
                     if ($q['image'] != null) {
                         echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
+                    // lấy ra mảng đáp án đúng của câu hỏi
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($a['is_true'] == 1) {
                             $numberAnswer++;
                             $true_answer[$index][] = $key;
                         }
                     }
+
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($numberAnswer > 1) {
                             echo "
@@ -149,26 +154,38 @@ if (isset($_POST['countdown_expired'])) {
                     echo "";
                 }
             }
-            $_SESSION['true_answer'] = $true_answer;
+
+
             ?>
             <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
             <!-- Tính điểm -->
             <?php
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
-            $true_answer = $_SESSION['true_answer'];
             foreach ($true_answer as $index => $value) {
+                //nếu câu hỏi là điền
                 if (checkType($questionForQuizz[$index]['type']) == 0) {
                     if (!empty($_POST[$questionForQuizz[$index]['id']])) {
                         if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
                             $score++;
                         }
                     }
+                    //nếu câu hỏi là trắc nghiệm
                 } else if (checkType($questionForQuizz[$index]['type']) == 1) {
                     $check = true;
-                    foreach ($value as $key => $v) {
-                        if (!isset($_POST[$questionForQuizz[$index]['id']])) {
-                            $check = false;
+                    if (count($value) == 1) {
+                        foreach ($value as $key => $v) {
+                            //nếu đáp án là dạng radio
+                            if (!isset($_POST[$questionForQuizz[$index]['id']])) {
+                                $check = false;
+                            }
+                        }
+                        //nếu đáp án là dạng checkbox
+                    } else {
+                        foreach ($value as $key => $v) {
+                            if (!isset($_POST[$questionForQuizz[$index]['id'] . $v])) {
+                                $check = false;
+                            }
                         }
                     }
                     if ($check) {
