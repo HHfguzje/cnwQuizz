@@ -344,12 +344,16 @@ function createSortingQuestion($questionName, $course_id, $answer)
             $sqlAnswers = "INSERT INTO answers (question_id, answer, ordinalNumber, is_true)
                            VALUES ($questionId, '$value[answer]', '$value[ordinal]', 1)";
             $resultAnswers = mysqli_query($conn, $sqlAnswers);
-            // if (!$resultAnswers) {
-            //     echo "Error in answers query: " . mysqli_error($conn);
-            // }
+            if (!$resultAnswers) {
+                // Nếu có lỗi trong quá trình thêm câu trả lời, hãy xóa câu hỏi đã thêm và trả về false
+                mysqli_query($conn, "DELETE FROM questions WHERE id = $questionId");
+                return false;
+            }
+
         }
-        return $resultAnswers;
+        return true;
     }
+    return false;
 }
 function getRandomAnswer($question_id)
 {

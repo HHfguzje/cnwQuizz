@@ -1,17 +1,19 @@
 <?php
 $values = [1, 2, 3, 4, 5];
 
-if (isset($_POST['result'])) {
-    $result = json_decode($_POST['result'], true);
+?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $order = json_decode($_POST['order'], true);
 
+    // Sắp xếp lại mảng values dựa trên thứ tự mới
     $sortedValues = [];
-    foreach ($result as $index) {
+    foreach ($order as $index) {
         $sortedValues[] = $values[$index];
     }
 
-    echo "<pre>";
-    print_r($sortedValues);
-    echo "</pre>";
+    // Hiển thị giá trị của mảng values sau khi được sắp xếp lại
+    echo "Sorted Values: " . implode(', ', $sortedValues);
 }
 ?>
 
@@ -23,6 +25,11 @@ if (isset($_POST['result'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -77,44 +84,41 @@ if (isset($_POST['result'])) {
     </div>
     <form method="POST" id="myForm">
         <input type="hidden" name="result" id="resultInput" value="">
+        <input type="submit" value="Submit" id="submitButton">
     </form>
     <script type="text/javascript" src="script.js"></script>
     <script>
-        let column = document.getElementById("column");
-        let result = <?php echo json_encode(array_keys($values)); ?>;
-
-        column.addEventListener("dragover", function (e) {
-            e.preventDefault();
-        });
-
-        column.addEventListener("drop", function (e) {
-            let draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
-            let draggedValue = result[draggedIndex];
-
-            result.splice(draggedIndex, 1);
-            result.splice(e.target.dataset.index, 0, draggedValue);
-            document.getElementById('resultInput').value = JSON.stringify(result);
-            renderLists();
-            document.getElementById('myForm').submit();
-        });
-
-        function renderLists() {
-            column.innerHTML = "";
-            result.forEach((value, index) => {
-                let listItem = document.createElement("div");
-                listItem.className = "list";
-                listItem.draggable = true;
-                listItem.dataset.index = index;
-                listItem.innerHTML = `<i class="fa fa-list-ul" aria-hidden="true"></i> Item ${value}`;
-                listItem.addEventListener("dragstart", function (e) {
-                    e.dataTransfer.setData("text/plain", index);
-                });
-                column.appendChild(listItem);
+        $(function () {
+            $("#column").sortable({
+                update: function (event, ui) {
+                    updateOrder();
+                }
             });
-        }
 
-        renderLists();
+            $("#myForm").submit(function (e) {
+                e.preventDefault(); // Ngăn chặn việc gửi biểu mẫu theo cách truyền thống
+                displaySortedValues();
+            });
+
+            function updateOrder() {
+                var result = $("#column").sortable("toArray");
+                $("#resultInput").val(JSON.stringify(result));
+            }
+
+            function displaySortedValues() {
+                var result = $("#resultInput").val();
+                var sortedValues = JSON.parse(result);
+
+                // In ra giá trị của mảng sau khi được sắp xếp
+                console.log("Sorted Values:", sortedValues);
+
+                // Nếu bạn muốn hiển thị trực tiếp trên trang, bạn có thể sử dụng một phần tử HTML để hiển thị
+                // Ví dụ: $("#resultDisplay").text("Sorted Values: " + sortedValues.join(', '));
+            }
+        });
     </script>
+    <div id="resultDisplay"></div>
+
 </body>
 
 </html>

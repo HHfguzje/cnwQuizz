@@ -79,7 +79,7 @@ $nameCourse = $course['course'];
             } else {
                 echo "Vui lòng nhập số đáp án";
             }
-            if (isset($_POST['btn-answer']) || isset($_POST['btn'])) {
+            if (isset($_POST['btn-answer'])) {
                 echo "<div class='form-group'>";
                 for ($i = 1; $i <= $numberQuestion; $i++) {
                     echo "
@@ -117,12 +117,12 @@ $nameCourse = $course['course'];
                 } else {
                     $ordinalArray[$i] = ['ordinal' => $ordinal,
                         'answer' => $answer];
-                    $result = createSortingQuestion($questionName, $course_id, $ordinalArray);
                 }
             }
             echo '<pre>';
             print_r($ordinalArray);
             echo '</pre>';
+            $result = createSortingQuestion($questionName, $course_id, $ordinalArray);
             if ($result) {
                 echo "<script>alert('Thêm câu hỏi thành công')</script>";
             } else {

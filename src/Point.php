@@ -7,7 +7,9 @@ $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 $finalResult = end($listResult);
-// print_r($finalResult);
+// echo "<pre>";
+// print_r($_SESSION['a']);
+// echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +17,7 @@ $finalResult = end($listResult);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Câu hỏi trắc nghiệm</title>
+    <title>Điểm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -59,7 +61,7 @@ $finalResult = end($listResult);
             </table>
             <div class="align-items-center">
                 <a href="courses.php" class="btn btn-primary">Trở lại</a>
-                <a href='<?php echo "Practice.php?course_id=".$course_id ?>' class="btn btn-primary">Làm lại</a>
+                <a href='<?php echo "Practice.php?course_id=" . $course_id ?>' class="btn btn-primary">Làm lại</a>
             </div>
 </body>
 

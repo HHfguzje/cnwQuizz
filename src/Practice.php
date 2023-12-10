@@ -21,19 +21,13 @@ function checkType($type)
 if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
-// $values = [1, 2, 3, 4, 5];
-if (isset($_POST['result'])) {
-    $result = json_decode($_POST['result'], true);
-
-    $sortedValues = [];
-    foreach ($result as $index) {
-        $sortedValues[] = $values[$index];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['sortedValues'])) {
+        $sortedValues = $_POST['sortedValues'];
+        $_SESSION['a'] = $sortedValues;
     }
-
-    echo "<pre>";
-    print_r($sortedValues);
-    echo "</pre>";
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +41,10 @@ if (isset($_POST['result'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -106,10 +104,7 @@ if (isset($_POST['result'])) {
         }
 
         #column {
-            width: 300px;
-            min-height: 400px;
-            margin: 20px;
-            border: solid 2px #ccc;
+            cursor: grab;
         }
 
         .list {
@@ -120,6 +115,7 @@ if (isset($_POST['result'])) {
             display: flex;
             align-items: center;
             cursor: grab;
+            user-select: none;
         }
 
         .list i {
@@ -128,10 +124,12 @@ if (isset($_POST['result'])) {
         }
     </style>
 </head>
+<?php include 'navbar.php'; ?>
 
 <body>
+
     <form method="POST" id='form'>
-        <?php include 'navbar.php'; ?>
+
         <input type="hidden" name="countdown_expired" value="1">
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
@@ -195,63 +193,34 @@ if (isset($_POST['result'])) {
                     }
                     echo "</div>";
                 } else {
-                    echo "
-                        <div class='form-group'>
-                        <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
-                    ";
-                    echo "<div class='container'><div id='column'>";
+                    echo '<div class="form-group">';
+                    echo '<h5 class="title">Câu ' . $i . ': ' . $q['question'] . '?</h5>';
+                    echo '<div class="container"><div id="column' . $i . '">';
+
                     foreach (getRandomAnswer($q['id']) as $index => $value) {
                         echo '<div class="list" draggable="true" data-index="' . $index . '">';
-                        echo $index;
-                        echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Item ' . $value['answer'];
+                        echo '<i class="fa fa-list-ul" aria-hidden="true"></i>' . $value['answer'];
+                        echo '<input type="hidden" name="sortedValues[' . $i . '][]" value="' . $value['answer'] . '">';
                         echo '</div>';
-                        $values = $value['answer'];
-                        echo <<<EDO
-                            <script type="text/javascript">
-                                let column = document.getElementById("column");
-                                let result = <?php echo json_encode(array_keys($values)); ?>;
-
-                                column.addEventListener("dragover", function (e) {
-                                    e.preventDefault();
-                                });
-
-                                column.addEventListener("drop", function (e) {
-                                    let draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
-                                    let draggedValue = result[draggedIndex];
-
-                                    result.splice(draggedIndex, 1);
-                                    result.splice(e.target.dataset.index, 0, draggedValue);
-                                    document.getElementById("resultInput").value = JSON.stringify(result);
-                                    renderLists();
-                                    document.getElementById("myForm").submit();
-                                });
-
-                                function renderLists() {
-                                    column.innerHTML = "";
-                                    result.forEach((value, index) => {
-                                        let listItem = document.createElement("div");
-                                        listItem.className = "list";
-                                        listItem.draggable = true;
-                                        listItem.dataset.index = index;
-                                        listItem.innerHTML = '<i class="fa fa-list-ul" aria-hidden="true"></i> Item ' + value;
-                                        listItem.addEventListener("dragstart", function (e) {
-                                            e.dataTransfer.setData("text/plain", index);
-                                        });
-                                        column.appendChild(listItem);
-                                    });
-                                }
-
-                                renderLists();
-                            </script>
-                        EDO;
-
-
                     }
-
-                    echo "</div></div>
+                    echo "</div></div></div>
                     <form method='POST' id='myForm'>
-                        <input type='hidden' name='result' id='resultInput' value=''>
+                        <input type='hidden' name='result' id='resultInput" . $i . "' value=''>
                     </form>";
+                    echo '<script>
+                            $(function () {
+                                $("#column' . $i . '").sortable({
+                                    update: function (event, ui) {
+                                        updateOrder();
+                                    }
+                                });
+
+                                function updateOrder() {
+                                    var result = $("#column' . $i . '").sortable("toArray");
+                                    $("#resultInput' . $i . '").val(JSON.stringify(result));
+                                }
+                            });
+                        </script>';
 
                 }
             }
@@ -319,8 +288,9 @@ if (isset($_POST['result'])) {
             }, 1000);
         };
     </script>
+    <!-- keo tha -->
+
 </body>
 
-<?php include 'footer.php'; ?>
-
 </html>
+<?php include 'footer.php'; ?>
