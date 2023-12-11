@@ -6,6 +6,9 @@ $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $questionForQuizz = getQuestionsForQUizz($course_id);
+
+
+
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -193,14 +196,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     echo "</div>";
                 } else {
+
+
                     echo '<div class="form-group">';
                     echo '<h5 class="title">Câu ' . $i . ': ' . $q['question'] . '?</h5>';
                     echo '<div class="container"><div id="column' . $i . '">';
 
                     foreach (getRandomAnswer($q['id']) as $index => $value) {
+
                         echo '<div class="list" draggable="true" data-index="' . $index . '">';
                         echo '<i class="fa fa-list-ul" aria-hidden="true"></i>' . $value['answer'];
-                        echo '<input type="hidden" name="sortedValues[' . $i . '][]" value="' . $value['answer'] . '">';
+                        echo '<input type="hidden" name="sortedValues[' . $i . '][]" value="' . $value['ordinalNumber'] . '">';
                         echo '</div>';
                     }
                     echo "</div></div></div>
@@ -233,6 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];
+
             foreach ($true_answer as $index => $value) {
                 if (checkType($questionForQuizz[$index]['type']) == 0) {
                     if (!empty($_POST[$questionForQuizz[$index]['id']])) {
@@ -250,10 +257,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($check) {
                         $score++;
                     }
-                } else {
-
                 }
             }
+            if (!empty($_POST['sortedValues'])) {
+                foreach ($_POST['sortedValues'] as $index => $value) {
+                    $true = true;
+                    foreach ($value as $key => $v) {
+                        if ($v != $key + 1) {
+                            $true = false;
+                            break;
+                        }
+                    }
+                    if ($true) {
+                        $score++;
+                    }
+                }
+
+            }
+
             saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             ?>
 

@@ -371,12 +371,8 @@ function getRandomAnswer($question_id)
 function getTrueAnswerInSortQuestion($questionId)
 {
     global $conn;
-    $sql = "SELECT question_id, GROUP_CONCAT(answer ORDER BY ordinalNumber) AS answers
-            FROM answers a join questions q on
-            a.question_id = q.id
-            WHERE question_id = $questionId
-            GROUP BY question_id";
+    $sql = "SELECT answer FROM answers WHERE question_id = $questionId ORDER BY ordinalNumber";
     $result = mysqli_query($conn, $sql);
-    $a = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    return $a;
+    $trueAnswer = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $trueAnswer;
 }
