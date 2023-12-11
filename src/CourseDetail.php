@@ -92,7 +92,6 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                 </tr>
                 <?php
                 $stt = 0;
-                // print_r($listQuestion);
                 if ($listQuestion) {
                     foreach ($listQuestion as $key => $value) {
                         $stt++;
@@ -172,7 +171,6 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                         </div>
                       </div>
                         ';
-
                     }
                 } else {
                     echo "<tr>

@@ -7,11 +7,6 @@ $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 $finalResult = end($listResult);
-// print_r($_SESSION['a']);
-echo "<pre>";
-
-print_r(getTrueAnswerInSortQuestion(96));
-echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,5 +61,6 @@ echo "</pre>";
                 <a href='<?php echo "Practice.php?course_id=" . $course_id ?>' class="btn btn-primary">Làm lại</a>
             </div>
 </body>
+<?php include 'footer.php'; ?>
 
 </html>

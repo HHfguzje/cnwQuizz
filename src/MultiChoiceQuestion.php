@@ -112,9 +112,6 @@ $nameCourse = $course['course'];
 
             </script>
         </form>
-
-
-
         <?php
         if (isset($_POST['btn-add'])) {
             $question_name = $_POST['question_name'];
@@ -132,8 +129,6 @@ $nameCourse = $course['course'];
                         $true_answer[$i] = $_POST['true' . $i];
                     }
                 }
-
-
                 $answer = [];
                 for ($i = 1; $i <= $numberAnswer; $i++) {
                     $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
@@ -142,12 +137,8 @@ $nameCourse = $course['course'];
                             $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
                         }
                     }
-
                 }
-
             }
-
-
             //upload image
             if ($file['error'] == 0) {
                 $fileName = $file['name'];
@@ -172,24 +163,15 @@ $nameCourse = $course['course'];
                     echo "<div class='alert alert-warning text-center' role='alert'>File không đúng định dạng</div>";
                 }
             }
-            // echo $image;
-        
             $result = createQuestionChoice($question_name, $type_question, $image, $course_id, $answer);
             if ($result) {
                 echo "<script>alert('Thêm câu hỏi thành công')</script>";
             } else {
                 echo "<script>alert('Thêm câu hỏi thất bại')</script>";
             }
-
-
-
-
-
         }
         ?>
-
     </main>
-
     <?php
     include 'footer.php';
     ?>
