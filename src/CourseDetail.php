@@ -72,6 +72,9 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
                 <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi
                         điền</a>
                 </li>
+                <li><a class="dropdown-item" href="AddQuestionCode.php?course_id=<?php echo $course_id ?>">Câu hỏi
+                        code</a>
+                </li>
             </ul>
 
         </div>

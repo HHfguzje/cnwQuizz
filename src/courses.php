@@ -19,6 +19,11 @@ $currentUser = $_SESSION['currentUser'];
 		integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
 	<!-- End bootstrap cdn -->
+	<style>
+		.card-body a {
+			margin-top: 5px;
+		}
+	</style>
 
 </head>
 
@@ -32,28 +37,28 @@ $currentUser = $_SESSION['currentUser'];
 			Thao tác
 		</button>
 		<ul class="dropdown-menu">
-
 			<li><a class="dropdown-item" href="Exam.php">Kiểm tra</a></li>
 			<li><a class="dropdown-item" href="Rank.php">Bảng xếp hạng</a></li>
 		</ul>
 		<div class="row row-cols-1 row-cols-md-3 g-4" style="margin: 0 auto; width: 80%;">
 			<!-- begin khóa học -->
 			<?php
-			foreach($courses as $course) {
-				if($course['state'] == 1) {
+			foreach ($courses as $course) {
+				if ($course['state'] == 1) {
 					echo "
 				<div class='col'>
 				<div class='card'>
 					<img src='../images/khoahoc.jpg' class='card-img-top' alt='Course Image'>
 					<div class='card-body'>
-						<h5 class='card-title'>".$course['course']."</h5>";
-					if($currentUser['role'] == 1) {
-						echo "<a href='CourseDetail.php?course_id=".$course['id']."' class='btn btn-primary'>Biên tập</a>";
+						<h5 class='card-title'>" . $course['course'] . "</h5>";
+					if ($currentUser['role'] == 1) {
+						echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Biên tập</a>";
 					} else
-						echo "<a href='CourseDetail.php?course_id=".$course['id']."' class='btn btn-primary'>Đóng góp</a>";
+						echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Đóng góp</a>";
 					echo "
-						<a href='Practice.php?course_id=".$course['id']."' class='btn btn-primary'>Luyện tập</a>
-						<a href='Result.php?course_id=".$course['id']."' class='btn btn-primary'>Lịch sử làm bài</a>
+						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Luyện tập</a>
+						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Bài giảng</a>
+						<a href='Result.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Lịch sử làm bài</a>
 					</div>
 				</div>
 			</div>

@@ -290,7 +290,7 @@ function createCourse($courseName)
 {
     global $conn;
     $state = 0;
-    $sql = "INSERT INTO courses (course, state) VALUE ($courseName, $state)";
+    $sql = "INSERT INTO courses (course, state) VALUE ('$courseName', '$state')";
     $result = mysqli_query($conn, $sql);
     return $result;
 }
