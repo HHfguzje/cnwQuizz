@@ -250,6 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($check) {
                         $score++;
                     }
+                } else {
+
                 }
             }
             saveResult($currentUser['id'], $score, $course_id, $currentDateTime);

@@ -368,3 +368,15 @@ function getRandomAnswer($question_id)
         die("Error: " . mysqli_error($conn));
     }
 }
+function getTrueAnswerInSortQuestion($questionId)
+{
+    global $conn;
+    $sql = "SELECT question_id, GROUP_CONCAT(answer ORDER BY ordinalNumber) AS answers
+            FROM answers a join questions q on
+            a.question_id = q.id
+            WHERE question_id = $questionId
+            GROUP BY question_id";
+    $result = mysqli_query($conn, $sql);
+    $a = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $a;
+}

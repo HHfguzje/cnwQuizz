@@ -119,9 +119,9 @@ $nameCourse = $course['course'];
                         'answer' => $answer];
                 }
             }
-            echo '<pre>';
-            print_r($ordinalArray);
-            echo '</pre>';
+            // echo '<pre>';
+            // print_r($ordinalArray);
+            // echo '</pre>';
             $result = createSortingQuestion($questionName, $course_id, $ordinalArray);
             if ($result) {
                 echo "<script>alert('Thêm câu hỏi thành công')</script>";

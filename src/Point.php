@@ -7,9 +7,11 @@ $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 $finalResult = end($listResult);
-// echo "<pre>";
 // print_r($_SESSION['a']);
-// echo "</pre>";
+echo "<pre>";
+
+print_r(getTrueAnswerInSortQuestion(96));
+echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
