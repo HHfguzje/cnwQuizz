@@ -7,8 +7,6 @@ $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $questionForQuizz = getQuestionsForQUizz($course_id);
 
-
-
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
@@ -21,16 +19,10 @@ function checkType($type)
     } else
         return 2;
 }
+// khi submit form thì chuyển trang
 if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['sortedValues'])) {
-        $sortedValues = $_POST['sortedValues'];
-        $_SESSION['a'] = $sortedValues;
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,12 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+<!-- include navbar -->
 <?php include 'navbar.php'; ?>
 
 <body>
-
     <form method="POST" id='form'>
-
+        <!-- thẻ input ẩn để xử lí khi form submit bằng js thì chuyển trang bằng php -->
         <input type="hidden" name="countdown_expired" value="1">
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
@@ -143,7 +135,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <h2>BÀI THI</h2>
             <?php
+            //mảng lưu giá trị đúng khi khi trang được tải
             $true_answer = [];
+            //lấy ra thời gian hiện tại
             $currentDateTime = '';
             $i = 0;
             foreach ($questionForQuizz as $index => $q) {
@@ -181,7 +175,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $true_answer[$index][] = $key;
                         }
                     }
-
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($numberAnswer > 1) {
                             echo "
@@ -200,15 +193,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
                     echo "</div>";
+                    // render câu hỏi dạng sắp xếp
                 } else {
-
-
                     echo '<div class="form-group">';
                     echo '<h5 class="title">Câu ' . $i . ': ' . $q['question'] . '?</h5>';
                     echo '<div class="container"><div id="column' . $i . '">';
-
                     foreach (getRandomAnswer($q['id']) as $index => $value) {
-
                         echo '<div class="list" draggable="true" data-index="' . $index . '">';
                         echo '<i class="fa fa-list-ul" aria-hidden="true"></i>' . $value['answer'];
                         echo '<input type="hidden" name="sortedValues[' . $i . '][]" value="' . $value['ordinalNumber'] . '">';
@@ -235,7 +225,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 }
             }
-
             $_SESSION['true_answer'] = $true_answer;
             ?>
             <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
@@ -245,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];
-
+            // tính điểm câu hỏi dạng điền và trắc nghiệm
             foreach ($true_answer as $index => $value) {
                 //nếu câu hỏi là điền
                 if (checkType($questionForQuizz[$index]['type']) == 0) {
@@ -277,6 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
+            // tính điểm câu hỏi dạng sắp xếp
             if (!empty($_POST['sortedValues'])) {
                 foreach ($_POST['sortedValues'] as $index => $value) {
                     $true = true;
@@ -292,12 +282,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
             }
-
+            // lưu điểm vào database
             saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             ?>
-
     </form>
-
+    <!-- hàm submit form -->
     <script>
         function submit() {
             var form = document.getElementById('form');
@@ -308,6 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- count down -->
     <script type="text/javascript">
+        // thời gian mặc định là 5 phút
         var duration = 5 * 60 * 1000;
         var x;
         window.onload = e => {
@@ -329,9 +319,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }, 1000);
         };
     </script>
-    <!-- keo tha -->
 
 </body>
+<?php include 'footer.php'; ?>
 
 </html>
-<?php include 'footer.php'; ?>

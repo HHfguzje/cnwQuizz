@@ -283,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- count down -->
     <script type="text/javascript">
-        var duration = 5 * 60 * 1000;
+        var duration = 10 * 60 * 1000;
         var x;
         window.onload = e => {
             e.preventDefault();

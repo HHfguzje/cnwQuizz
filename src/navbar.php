@@ -1,5 +1,4 @@
 <?php
-// session_start();
 if (!isLogin()) {
   header("Location: login.php");
 }
