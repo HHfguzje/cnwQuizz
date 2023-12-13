@@ -46,26 +46,14 @@ $currentUser = $_SESSION['currentUser'];
     </main>
 
     <?php
+    if (isset($_POST['course_name'])) {
+        $courseName = $_POST['course_name'];
+    }
 
-    $courseName = $_POST['course_name'];
     if (!empty($courseName)) {
         $result = createCourse($courseName);
         if ($result) {
-            echo "<div class='alert alert-success text-center' role='alert'>Thêm khóa học thành công</div>";
-        } else {
-            echo "<div class='alert alert-warning text-center' role='alert'>Thêm khóa học thất bại" . mysqli_error($conn) . "</div>";
-        }
-    } else {
-        echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
-    }
-
-
-    include 'footer.php';
-    if (isset($_POST['btn-return'])) {
-        header("location: courses.php");
-    }
-    ?>
-    <div class="modal" tabindex="-1" id="staticBackdrop">
+            echo '<div class="modal" tabindex="-1" id="staticBackdrop">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,7 +70,38 @@ $currentUser = $_SESSION['currentUser'];
                 </div>
             </div>
         </div>
-    </div>
+    </div>';
+        } else {
+            echo "<div class='alert alert-warning text-center' role='alert'>Thêm khóa học thất bại" . mysqli_error($conn) . "</div>";
+        }
+    } else {
+        echo '<div class="modal" tabindex="-1" id="staticBackdrop">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Vui lòng nhập đủ thông tin</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="Post">
+                        <input type="submit" class="btn btn-primary" value="Trở về" name="btn-return">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>';
+    }
+
+
+    include 'footer.php';
+    if (isset($_POST['btn-return'])) {
+        header("location: courses.php");
+    }
+    ?>
+
 </body>
 <script>
     function submit() {
