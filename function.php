@@ -214,6 +214,7 @@ function deleteCourse($courseId)
     global $conn;
     $sql = "DELETE FROM courses WHERE id = $courseId";
     $result = mysqli_query($conn, $sql);
+    return $result;
 }
 
 

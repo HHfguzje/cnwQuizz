@@ -48,57 +48,40 @@ $listCourses = getAllCourses();
 
     <?php
 
-    if (isset($_POST['btn'])) {
-        $courseName = $_POST['course_name'];
-        $check = false;
 
-        if (!empty($courseName)) {
-            foreach ($listCourses as $course) {
-                if ($course['course'] == $courseName) {
-                    $check = true;
-                    echo "<div class='alert alert-danger text-center' role='alert'>Khóa học đã tồn tại</div>";
-                    exit();
-                }
+    $courseName = $_POST['course_name'];
+    $check = false;
+
+    if (!empty($courseName)) {
+        foreach ($listCourses as $course) {
+            if ($course['course'] == $courseName) {
+                $check = true;
+                echo "<div class='alert alert-danger text-center' role='alert'>Khóa học đã tồn tại</div>";
+                exit();
             }
-            if ($check == false) {
-                $result = createCourse($courseName);
-                if ($result) {
-                    echo "<script>alert('Thêm khóa học thành công')
+        }
+        if ($check == false) {
+            $result = createCourse($courseName);
+            if ($result) {
+                echo "<script>alert('Thêm khóa học thành công')
                         window.location.href = 'CourseManagement.php';
                     </script>";
 
-                } else {
-                    echo "<div class='alert alert-warning text-center' role='alert'>Thêm khóa học thất bại" . mysqli_error($conn) . "</div>";
-                }
+            } else {
+                echo "<div class='alert alert-warning text-center' role='alert'>Thêm khóa học thất bại" . mysqli_error($conn) . "</div>";
             }
-
-        } else {
-            echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
         }
+
+    } else {
+        echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
     }
+
     include 'footer.php';
     if (isset($_POST['btn-return'])) {
         header("location: courses.php");
     }
     ?>
-    <div class="modal" tabindex="-1" id="staticBackdrop">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Thêm khóa học thành công</p>
-                </div>
-                <div class="modal-footer">
-                    <form method="Post">
-                        <input type="submit" class="btn btn-primary" value="Trở về" name="btn-return">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </body>
 <script>
     function submit() {
