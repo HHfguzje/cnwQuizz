@@ -61,5 +61,6 @@ $finalResult = end($listResult);
                 <a href='<?php echo "Practice.php?course_id=" . $course_id ?>' class="btn btn-primary">Làm lại</a>
             </div>
 </body>
+<?php include 'footer.php'; ?>
 
 </html>

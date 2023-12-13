@@ -29,7 +29,7 @@ $listCourses = getAllCourses();
         <div id="action" style="margin: 20px 0 0 13%;">
             <a href="CourseManagement.php" class="btn btn-primary">Trở lại</a>
         </div>
-        <form action="" method="POST">
+        <form action="" method="POST" id="form">
             <div style="margin: 20px 13%;">
                 <div class="form-group">
                     <label for="name_quiz"><span style="color: red;">*</span>Nhập tên khóa học</label>
@@ -38,7 +38,8 @@ $listCourses = getAllCourses();
                     ?>">
                 </div>
                 <div style="margin: 20px 0 0 0;" class="d-grid">
-                    <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm khóa học">
+                    <button type='button' class='btn btn-primary' data-bs-toggle='modal'
+                        data-bs-target='#staticBackdrop' onclick="submit()">Thêm khóa học</button>
                 </div>
             </div>
         </form>
@@ -76,7 +77,34 @@ $listCourses = getAllCourses();
         }
     }
     include 'footer.php';
+    if (isset($_POST['btn-return'])) {
+        header("location: courses.php");
+    }
     ?>
+    <div class="modal" tabindex="-1" id="staticBackdrop">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Thêm khóa học thành công</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="Post">
+                        <input type="submit" class="btn btn-primary" value="Trở về" name="btn-return">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    function submit() {
+        var form = document.getElementById('form');
+        form.submit();
+    }
+</script>
 
 </html>

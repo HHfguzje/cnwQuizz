@@ -3,7 +3,6 @@ include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
 $course_id = $_GET['course_id'];
-
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
 ?>
@@ -119,9 +118,6 @@ $nameCourse = $course['course'];
                         'answer' => $answer];
                 }
             }
-            // echo '<pre>';
-            // print_r($ordinalArray);
-            // echo '</pre>';
             $result = createSortingQuestion($questionName, $course_id, $ordinalArray);
             if ($result) {
                 echo "<script>alert('Thêm câu hỏi thành công')</script>";

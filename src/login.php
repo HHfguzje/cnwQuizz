@@ -20,8 +20,6 @@ session_start();
 </head>
 
 <body>
-
-
 	<!-- <div class="alert alert-danger text-center" role="alert">Mẫu:Tài khoản hoặc mật khẩu không chính xác</div> -->
 	<main style="min-height: 100vh; margin-top: 10%;">
 		<div class="d-flex justify-content-center">
@@ -51,7 +49,6 @@ session_start();
 		if (isset($_POST['btnLogin'])) {
 			$username = $_POST['username'];
 			$password = $_POST['password'];
-			// checkLogin($username, $password);
 			if (!empty($username) || !empty($password)) {
 				if (checkLogin($username, $password)) {
 					$_SESSION['currentUser'] = checkLogin($username, $password);

@@ -5,16 +5,12 @@ $course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
-if($currentUser['role'] == 1) {
+if ($currentUser['role'] == 1) {
     $listResult = getResultByCourseId($course_id);
 } else {
     $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 }
-// print_r($listResult);
-// echo $course_id;
-// echo $currentUser['id'];
-// $currentDateTime = date("Y-m-d H:i:s");
-// echo $currentDateTime;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,12 +47,12 @@ if($currentUser['role'] == 1) {
                     <tbody>
                         <?php
                         $i = 0;
-                        foreach($listResult as $r) {
+                        foreach ($listResult as $r) {
                             $i++;
                             echo "<tr>
-                            <td>".$i."</td>
-                            <td>".$r['timeSubmit']."</td>
-                            <td>".$r['score']."</td>
+                            <td>" . $i . "</td>
+                            <td>" . $r['timeSubmit'] . "</td>
+                            <td>" . $r['score'] . "</td>
                             </tr>";
                         }
                         ?>
