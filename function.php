@@ -127,7 +127,6 @@ function getQuestionsByCourseId($id)
     global $conn;
     $sql = "SELECT *
             FROM questions q
-           
             WHERE course_id = '$id'";
     $result = mysqli_query($conn, $sql);
     $listQuestion = mysqli_fetch_all($result, MYSQLI_ASSOC);

@@ -6,11 +6,11 @@ $currentUser = $_SESSION['currentUser'];
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
 $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
+//lấy ra bản ghi mới nhất vừa được thêm vào db
 $finalResult = end($listResult);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
