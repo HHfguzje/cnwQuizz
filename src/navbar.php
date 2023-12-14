@@ -22,7 +22,8 @@ if (!isLogin()) {
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <?php
             if ($currentUser['role'] == 1) {
-              echo "<li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa hoc</a></li>";
+              echo "<li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa học</a></li>";
+              echo "<li><a class='dropdown-item' href='NotificationManagement.php'>Quản lý thông báo</a></li>";
             } ?>
             <li><a class="dropdown-item" href="ChangePassword.php">Đổi mật khẩu</a></li>
             <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>

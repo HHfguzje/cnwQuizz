@@ -375,3 +375,45 @@ function getTrueAnswerInSortQuestion($questionId)
     $trueAnswer = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $trueAnswer;
 }
+
+function getNotifications()
+{
+    global $conn;
+    $sql = "SELECT * FROM notifications";
+    $result = mysqli_query($conn, $sql);
+    $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $notifications;
+}
+
+function getNotificationsById($id)
+{
+    global $conn;
+    $sql = "SELECT * FROM notifications WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    $notification = mysqli_fetch_assoc($result);
+    return $notification;
+}
+
+function createNotification($tittle, $description, $time)
+{
+    global $conn;
+    $sql = "INSERT INTO notifications (tittle, description, time) VALUE ('$tittle', '$description', '$time')";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
+
+function deleteNotification($id)
+{
+    global $conn;
+    $sql = "DELETE FROM notifications WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
+
+function updateNotification($id, $tittle, $description, $time)
+{
+    global $conn;
+    $sql = "UPDATE notifications SET tittle = '$tittle', description = '$description', time = '$time' WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}

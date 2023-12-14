@@ -16,7 +16,27 @@ session_start();
 		integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
 	<!-- End bootstrap cdn -->
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
 
+		main {
+			min-height: 100vh;
+			margin-top: 10%;
+		}
+
+		form {
+			background-color: #ffffff;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: #007bff;
+		}
+	</style>
 </head>
 
 <body>
