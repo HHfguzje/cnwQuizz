@@ -4,6 +4,7 @@ session_start();
 $courses = getAllCourses();
 // print_r($courses);
 $currentUser = $_SESSION['currentUser'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en	">
@@ -49,21 +50,42 @@ $currentUser = $_SESSION['currentUser'];
 				<div class='col'>
 				<div class='card'>
 					<img src='../images/khoahoc.jpg' class='card-img-top' alt='Course Image'>
-					<div class='card-body'>
-						<h5 class='card-title'>" . $course['course'] . "</h5>";
-					if ($currentUser['role'] == 1) {
-						echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Biên tập</a>";
-					} else
-						echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Đóng góp</a>";
-					echo "
+					<div class='card-body'>";
+					echo "<h5 class='card-title'>" . $course['course'] . "</h5>";
+					if (isUserEnrolled($currentUser['id'], $course['id'])) {
+						if ($currentUser['role'] == 1) {
+							echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Biên tập</a>     ";
+							echo "<a href='UserManagerment.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Quản lý người dùng</a>";
+						} else
+							echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Đóng góp</a>";
+						echo "
 						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Luyện tập</a>
 						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Bài giảng</a>
 						<a href='Result.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Lịch sử làm bài</a>
 					</div>
-				</div>
-			</div>
+						</div>
+					</div>
 				";
+					} elseif (isUserNotApproved($currentUser['id'], $course['id'])) {
+						echo "<a href=#' class='btn btn-primary'>Chờ duyệt</a>
+						</div>
+						</div>
+					</div>";
+					} else {
+						echo "<form method = 'POST'>
+						<input type='hidden' value='" . $course['id'] . "' name='id'/>
+                            <input type='submit' name='btn' value='Xin vào khóa học' class='btn btn-success'/>
+						</form>
+								
+						</div>
+                        </div>
+                    </div>";
+					}
 				}
+			}
+			if (isset($_POST['btn'])) {
+				$id = $_POST['id'];
+				enrollInTheCourse($currentUser['id'], $id);
 			}
 			?>
 			<!-- end khóa học -->

@@ -288,10 +288,21 @@ function getResultByCourseId($courseId)
 function createCourse($courseName)
 {
     global $conn;
+
+    // Thêm khóa học
     $state = 0;
-    $sql = "INSERT INTO courses (course, state) VALUE ('$courseName', '$state')";
+    $sql = "INSERT INTO courses (course, state) VALUES ('$courseName', '$state')";
     $result = mysqli_query($conn, $sql);
-    return $result;
+
+    // Lấy ID của khóa học vừa thêm
+    $courseId = mysqli_insert_id($conn);
+
+    // Thêm tài khoản admin vào khóa học
+    $adminUserId = 3; // ID của tài khoản admin
+    $sqlAddAdminToCourse = "INSERT INTO course_users (course_id, user_id, state) VALUES ('$courseId', '$adminUserId', 1)";
+    $resultAddAdminToCourse = mysqli_query($conn, $sqlAddAdminToCourse);
+
+    return $result && $resultAddAdminToCourse;
 }
 
 function saveResult($userId, $score, $courseId, $timeSubmit)
@@ -414,6 +425,131 @@ function updateNotification($id, $tittle, $description, $time)
 {
     global $conn;
     $sql = "UPDATE notifications SET tittle = '$tittle', description = '$description', time = '$time' WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
+
+function getUsersInCourse($courseId)
+{
+    global $conn;
+    $sql = "SELECT cu.id, u.username, u.fullname, cu.state FROM user u
+            JOIN course_users cu ON u.id = cu.user_id
+            WHERE cu.course_id = '$courseId'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $users;
+    } else {
+        die("Error: " . mysqli_error($conn));
+    }
+}
+
+function addUserToCourse($username, $courseId)
+{
+    global $conn;
+
+    // Lấy ID của người dùng từ tên người dùng
+    $sqlUserId = "SELECT id FROM user WHERE username = '$username'";
+    $resultUserId = mysqli_query($conn, $sqlUserId);
+
+    if ($resultUserId && mysqli_num_rows($resultUserId) > 0) {
+        $row = mysqli_fetch_assoc($resultUserId);
+        $userId = $row['id'];
+
+        //Thêm người dùng vào khóa học
+        $sql = "INSERT INTO course_users (state, course_id, user_id) VALUES (1, '$courseId', '$userId')";
+        $result = mysqli_query($conn, $sql);
+
+        return $result;
+    } else
+        die("Error: " . mysqli_error($conn));
+}
+
+function getAllUser()
+{
+    global $conn;
+    $sql = "SELECT username FROM user";
+    $result = mysqli_query($conn, $sql);
+    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $users;
+}
+
+function deleteUserInCourse($userId, $courseId)
+{
+    global $conn;
+    $sql = "DELETE FROM course_users WHERE user_id = '$userId' AND course_id = '$courseId'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        return true;
+    } else {
+        die("Error: " . mysqli_error($conn));
+    }
+}
+
+function approveUserInCourse($userId, $courseId)
+{
+    global $conn;
+    $sql = "UPDATE course_users SET state = 1 WHERE user_id = '$userId' AND course_id = '$courseId'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        return true;
+    } else {
+        die("Error: " . mysqli_error($conn));
+    }
+}
+
+function getApprovedCoursesForUser($userId)
+{
+    global $conn;
+
+    $sql = "SELECT courses.course, courses.state, courses.id FROM courses
+            INNER JOIN course_users ON courses.id = course_users.course_id
+            WHERE course_users.user_id = '$userId' AND course_users.state = 1";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        $courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $courses;
+    } else {
+        die("Error: " . mysqli_error($conn));
+    }
+}
+
+//kiem tra ng dung da duoc o trong khoa hoc hay chua
+function isUserEnrolled($userId, $courseId)
+{
+    global $conn;
+    $sql = "SELECT * FROM course_users WHERE user_id = '$userId' AND course_id = '$courseId' AND state = 1";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isUserNotApproved($userId, $courseId)
+{
+    global $conn;
+    $sql = "SELECT * FROM course_users WHERE user_id = '$userId' AND course_id = '$courseId' AND state = 0";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function enrollInTheCourse($userId, $courseId)
+{
+    global $conn;
+    $sql = "INSERT INTO course_users (state, course_id, user_id) VALUES (0, '$courseId', '$userId')";
     $result = mysqli_query($conn, $sql);
     return $result;
 }
