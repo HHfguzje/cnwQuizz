@@ -22,17 +22,26 @@ if (!isLogin()) {
             ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <?php
-            if ($currentUser['role'] == 1) {
-              echo "<li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa học</a></li>";
-              echo "<li><a class='dropdown-item' href='NotificationManagement.php'>Quản lý thông báo</a></li>";
-            } ?>
             <li><a class="dropdown-item" href="SelfCourse.php">Khóa học của tôi</a></li>
             <li><a class="dropdown-item" href="ChangePassword.php">Đổi mật khẩu</a></li>
             <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
           </ul>
         </li>
       </ul>
+      <?php if ($currentUser['role'] == 1) {
+        echo "<ul class='navbar-nav'>
+        <li class='nav-item dropdown'>
+          <a class='nav-link dropdown-toggle active' href='#' id='navbarDropdownMenuLink' role='button'
+            data-bs-toggle='dropdown' aria-expanded='false'>
+            Quản trị
+          </a>
+          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
+            <li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa học</a></li>
+            <li><a class='dropdown-item' href='NotificationManagement.php'>Quản lý thông báo</a></li>
+          </ul>
+        </li>
+      </ul>";
+      } ?>
     </div>
   </div>
 </nav>
