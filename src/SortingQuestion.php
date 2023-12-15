@@ -125,9 +125,12 @@ if (!$check) {
             }
             $result = createSortingQuestion($questionName, $course_id, $ordinalArray);
             if ($result) {
-                echo "<script>alert('Thêm câu hỏi thành công')</script>";
+                echo "<script>alert('Thêm câu hỏi thành công')
+                        window.location.href = 'CourseDetail.php?course_id=" . $course_id . "';
+                    </script>";
+
             } else {
-                echo "<script>alert('Thêm câu hỏi thất bại')</script>";
+                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
             }
         }
         ?>

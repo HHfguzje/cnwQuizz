@@ -110,7 +110,9 @@ if (!$check) {
         if (!empty($questionName) && !empty($answer)) {
             $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, 1);
             if ($result) {
-                echo "<div class='alert alert-success text-center' role='alert'>Thêm câu hỏi thành công</div>";
+                echo "<script>alert('Thêm câu hỏi thành công')
+                        window.location.href = 'CourseDetail.php?course_id=" . $course_id . "';
+                    </script>";
 
             } else {
                 echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
