@@ -6,6 +6,11 @@ $course_id = $_GET['course_id'];
 
 $course = getCourse($course_id);
 $nameCourse = $course['course'];
+
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

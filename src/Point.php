@@ -8,9 +8,15 @@ $nameCourse = $course['course'];
 $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 //lấy ra bản ghi mới nhất vừa được thêm vào db
 $finalResult = end($listResult);
+
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

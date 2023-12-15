@@ -5,6 +5,13 @@ $currentUser = $_SESSION['currentUser'];
 $course_id = $_GET['id'];
 $userInCourse = getUsersInCourse($course_id);
 $users = getAllUser();
+if ($currentUser['role'] != 1) {
+    header("Location: courses.php");
+}
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 // echo "<pre>";
 // print_r($userInCourse);
 // echo "<pre>";

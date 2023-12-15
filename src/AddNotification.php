@@ -2,6 +2,9 @@
 include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
+if ($currentUser['role'] != 1) {
+    header("Location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -8,7 +8,13 @@ $currentUser = $_SESSION['currentUser'];
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['btn-state-hidden'])) {
     header("Refresh:0");
 }
-
+if ($currentUser['role'] != 1) {
+    header("Location: courses.php");
+}
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en	">

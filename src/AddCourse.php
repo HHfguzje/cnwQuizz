@@ -3,6 +3,9 @@ include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
 $listCourses = getAllCourses();
+if ($currentUser['role'] != 1) {
+    header("Location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

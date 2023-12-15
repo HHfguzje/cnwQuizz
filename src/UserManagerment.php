@@ -9,9 +9,17 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
 $userInCourse = getUsersInCourse($course_id);
+if ($currentUser['role'] != 1) {
+    header("Location: courses.php");
+}
 // echo "<pre>";
 // print_r($userInCourse);
 // echo "</pre>";
+
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -11,6 +11,10 @@ if ($currentUser['role'] == 1) {
     $listResult = getResultByUserandCourseId($currentUser['id'], $course_id);
 }
 
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
