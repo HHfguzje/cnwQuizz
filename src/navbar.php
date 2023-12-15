@@ -1,4 +1,6 @@
 <?php
+// session_start();
+$currentUser = $_SESSION['currentUser'];
 if (!isLogin()) {
   header("Location: login.php");
 }

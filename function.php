@@ -432,7 +432,7 @@ function updateNotification($id, $tittle, $description, $time)
 function getUsersInCourse($courseId)
 {
     global $conn;
-    $sql = "SELECT cu.id, u.username, u.fullname, cu.state FROM user u
+    $sql = "SELECT cu.user_id, u.username, u.fullname, cu.state FROM user u
             JOIN course_users cu ON u.id = cu.user_id
             WHERE cu.course_id = '$courseId'";
     $result = mysqli_query($conn, $sql);
@@ -478,7 +478,7 @@ function getAllUser()
 function deleteUserInCourse($userId, $courseId)
 {
     global $conn;
-    $sql = "DELETE FROM course_users WHERE user_id = '$userId' AND course_id = '$courseId'";
+    $sql = "DELETE FROM course_users  WHERE user_id = '$userId' AND course_id = '$courseId'";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
@@ -491,9 +491,8 @@ function deleteUserInCourse($userId, $courseId)
 function approveUserInCourse($userId, $courseId)
 {
     global $conn;
-    $sql = "UPDATE course_users SET state = 1 WHERE user_id = '$userId' AND course_id = '$courseId'";
+    $sql = "UPDATE course_users cu SET cu.state = 1 WHERE cu.user_id = '$userId' AND cu.course_id = '$courseId'";
     $result = mysqli_query($conn, $sql);
-
     if ($result) {
         return true;
     } else {

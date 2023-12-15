@@ -9,7 +9,9 @@ if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
 $userInCourse = getUsersInCourse($course_id);
-
+// echo "<pre>";
+// print_r($userInCourse);
+// echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,14 +84,14 @@ $userInCourse = getUsersInCourse($course_id);
                         if ($value['state'] == 0) {
                             echo "<td>Chờ duyệt</td>";
                             echo "<td>
-                            <input type='hidden' value='" . $value['id'] . "' name='id'/>
+                            <input type='hidden' value='" . $value['user_id'] . "' name='id'/>
                             <input type='submit' class='btn btn-success' value='Duyệt' name='btn-state'>
                             <input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>
                             </td>";
                         } else {
                             echo "<td>Đã duyệt</td>";
                             echo "<td>
-                            <input type='hidden' value='" . $value['id'] . "' name='id'/>
+                            <input type='hidden' value='" . $value['user_id'] . "' name='id'/>
                             <input type='submit' name='btn-delete' value='Xóa' class='btn btn-danger'/>
                          </td>";
                         }

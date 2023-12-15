@@ -4,7 +4,9 @@ session_start();
 $courses = getAllCourses();
 // print_r($courses);
 $currentUser = $_SESSION['currentUser'];
-
+if (isset($_POST['btn'])) {
+	header("Refresh:0");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en	">
@@ -89,8 +91,6 @@ $currentUser = $_SESSION['currentUser'];
 			}
 			?>
 			<!-- end khóa học -->
-
-
 		</div>
 	</main>
 	<?php include 'footer.php'; ?>
