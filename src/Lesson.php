@@ -105,7 +105,10 @@ if (isset($_POST['edit-btn'])) {
 
 
 }
-
+$check = isUserEnrolled($currentUser['id'], $course_id);
+if (!$check) {
+    header("location: courses.php");
+}
 
 ?>
 <!DOCTYPE html>
