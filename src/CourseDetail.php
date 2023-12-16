@@ -76,11 +76,7 @@ if (!$check) {
                 <li><a class="dropdown-item" href="AddQuestion.php?course_id=<?php echo $course_id ?>">Câu hỏi
                         điền</a>
                 </li>
-                <li><a class="dropdown-item" href="AddQuestionCode.php?course_id=<?php echo $course_id ?>">Câu hỏi
-                        code</a>
-                </li>
             </ul>
-
         </div>
         <div class="d-flex flex-wrap flex-column align-items-center" style="padding: 1%;margin: 5% 0 0 0; ">
             <p class="h3">Danh sách câu hỏi đã đóng góp</p>
