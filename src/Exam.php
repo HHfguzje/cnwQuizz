@@ -3,7 +3,6 @@ include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
 $questionForQuizz = getQuestionsForExam();
-$course_id = 9;
 function checkType($type)
 {
     if ($type == "Điền") {
@@ -268,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
             }
-            saveResult($currentUser['id'], $score, 9, $currentDateTime);
+            saveResult($currentUser['id'], $score, 100, $currentDateTime);
             ?>
 
     </form>
