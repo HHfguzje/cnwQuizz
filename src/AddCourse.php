@@ -50,8 +50,10 @@ if ($currentUser['role'] != 1) {
 
     <?php
 
+    if (isset($_POST['course_name'])) {
+        $courseName = $_POST['course_name'];
+    }
 
-    $courseName = $_POST['course_name'];
     $check = false;
 
     if (!empty($courseName)) {
