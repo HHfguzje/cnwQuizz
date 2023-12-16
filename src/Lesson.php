@@ -3,7 +3,7 @@ include_once '../function.php';
 session_start();
 
 $currentUser = $_SESSION['currentUser'];
-$course_id = $_GET['course_id'];
+$course_id = urldecode($_GET['course_id']);
 $course = getCourse($course_id);
 $lessons = getListLesson($course_id);
 
@@ -278,7 +278,7 @@ if (isset($_POST['edit-btn'])) {
                     foreach ($lessons as $lesson) {
                         echo '
                         <div style="display:flex;" class="mb-4">
-                        <a style="border-radius:10px;min-height:100px;" href="/cnwQuizz/src/Lesson.php?course_id=' . $course_id . '&lesson_id=' . $lesson['id'] . '" class="list-group-item list-group-item-action ';
+                        <a style="border-radius:10px;min-height:100px;" href="/cnwQuizz/src/Lesson.php?course_id=' . urlencode($course_id) . '&lesson_id=' . urlencode($lesson['id']) . '" class="list-group-item list-group-item-action ';
                         if ($lesson['id'] == $lesson_id) {
                             echo ' active';
                         }
@@ -292,7 +292,7 @@ if (isset($_POST['edit-btn'])) {
                         </a>';
                         if ($_SESSION['currentUser']['role'] == 1) {
                             echo '
-                        <a href="/cnwQuizz/src/DeleteLesson.php?course_id=' . $course_id . '&id=' . $lesson['id'] . '" class="btn" style="border:none;background:transparent;"><i class="fa-solid fa-trash-can btn btn-danger"></i></a>';
+                        <a href="/cnwQuizz/src/DeleteLesson.php?course_id=' . urlencode($course_id) . '&id=' . urlencode($lesson['id']) . '" class="btn" style="border:none;background:transparent;"><i class="fa-solid fa-trash-can btn btn-danger"></i></a>';
                         }
                         echo '
                         </div>
