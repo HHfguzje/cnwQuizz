@@ -57,7 +57,7 @@ $currentUser = $_SESSION['currentUser'];
 						echo "<a href='CourseDetail.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Đóng góp</a>";
 					echo "
 						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Luyện tập</a>
-						<a href='Practice.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Bài giảng</a>
+						<a href='Lesson.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Bài giảng</a>
 						<a href='Result.php?course_id=" . $course['id'] . "' class='btn btn-primary'>Lịch sử làm bài</a>
 					</div>
 				</div>

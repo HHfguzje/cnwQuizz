@@ -212,9 +212,11 @@ function deleteQuestion($questionId)
 function deleteCourse($courseId)
 {
     global $conn;
-    $sql = "DELETE FROM courses WHERE id = $courseId";
+    $sql = "DELETE FROM courses WHERE id = '$courseId'";
     $result = mysqli_query($conn, $sql);
-    return $result;
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
 }
 
 
@@ -375,4 +377,53 @@ function getTrueAnswerInSortQuestion($questionId)
     $result = mysqli_query($conn, $sql);
     $trueAnswer = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $trueAnswer;
+}
+
+function addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, $file_name)
+{
+    global $conn;
+    $sql1 = "UPDATE lesson SET numericalorder = numericalorder + 1 WHERE numericalorder >= '$numericalorder' AND id_course = '$course_id'";
+    $result1 = mysqli_query($conn, $sql1);
+    if ($result1) {
+        $sql = "INSERT INTO lesson (name, video, numericalorder, description, id_course, file) VALUES ('$lesson_name', '$videoid', '$numericalorder', '$description', '$course_id', '$file_name')";
+        $result = mysqli_query($conn, $sql);
+        return $result;
+    } else {
+        return false;
+    }
+
+}
+
+function getListLesson($course_id)
+{
+    global $conn;
+    $sql = "SELECT * FROM lesson WHERE id_course = '$course_id' ORDER BY numericalorder ASC";
+    $result = mysqli_query($conn, $sql);
+    $listLesson = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $listLesson;
+}
+
+function getLesson($id)
+{
+    global $conn;
+    $sql = "SELECT * FROM lesson WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    $lesson = mysqli_fetch_assoc($result);
+    return $lesson;
+}
+
+function editLesson($lesson_name, $videoid, $numericalorder, $description, $id, $file_name)
+{
+    global $conn;
+    $sql = "UPDATE lesson SET name = '$lesson_name', video = '$videoid', numericalorder = '$numericalorder', description = '$description', file = '$file_name' WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    return $result;
+}
+
+function deleteLesson($id)
+{
+    global $conn;
+    $sql = "DELETE FROM lesson WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    return $result;
 }
