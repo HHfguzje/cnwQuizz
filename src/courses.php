@@ -22,6 +22,7 @@ if (isset($_POST['btn'])) {
 		integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
 	<!-- End bootstrap cdn -->
+	<script src="https://kit.fontawesome.com/772918bb67.js" crossorigin="anonymous"></script>
 	<style>
 		.card-body a {
 			margin-top: 5px;
@@ -92,8 +93,37 @@ if (isset($_POST['btn'])) {
 			?>
 			<!-- end khóa học -->
 		</div>
+		<div class="toast-container position-absolute p-3 bottom-0 end-0">
+			<?php
+			// Danh sách toast từ mảng
+			$toastList = getNotifications();
+
+
+			foreach ($toastList as $index => $toastMessage) {
+				echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true">';
+				echo '<div class="toast-header bg-primary">';
+				echo '<i class="fa-regular fa-bell text-light"></i>';
+				echo '<strong class="me-auto ms-2 text-light">' . $toastMessage['tittle'] . '</strong>';
+				echo '<small class="text-body-secondary text-light">just now</small>';
+				echo '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>';
+				echo '</div>';
+				echo '<div class="toast-body">' . $toastMessage['description'] . '</div>';
+				echo '</div>';
+				echo '<script>';
+				echo 'document.addEventListener(\'DOMContentLoaded\', function () {';
+				echo 'setTimeout(function () {';
+				echo 'var toast' . ($index + 1) . ' = new bootstrap.Toast(document.getElementById(\'toast' . ($index + 1) . '\'));';
+				echo 'toast' . ($index + 1) . '.show();';
+				echo '}, ' . ($index * 2000) . ');'; // Thời gian trễ giữa các toast (đơn vị: mili giây)
+				echo '});';
+				echo '</script>';
+			}
+			?>
+		</div>
 	</main>
 	<?php include 'footer.php'; ?>
+
+
 </body>
 
 
