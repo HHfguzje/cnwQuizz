@@ -38,10 +38,10 @@ if (isset($_POST['add-lesson'])) {
     if ($file_error === 0) {
         if ($file_size < 100000000) {
 
-            if (!is_dir('../uploads/files/' . $course_id . '_' . $lesson_id)) {
-                mkdir('../uploads/files/' . $course_id . '_' . $lesson_id, 0777, true);
+            if (!is_dir('../uploads/files/' . $course_id . '_')) {
+                mkdir('../uploads/files/' . $course_id . '_', 0777, true);
             }
-            $file_destination = '../uploads/files/' . $course_id . '_' . $lesson_id . '/' . $file_name;
+            $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
             move_uploaded_file($file_tmp, $file_destination);
             $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, $file_name);
             if ($result) {
@@ -82,10 +82,10 @@ if (isset($_POST['edit-btn'])) {
     if ($file_error === 0) {
         if ($file_size < 100000000) {
 
-            if (!is_dir('../uploads/files/' . $course_id . '_' . $lesson_id)) {
-                mkdir('../uploads/files/' . $course_id . '_' . $lesson_id, 0777, true);
+            if (!is_dir('../uploads/files/' . $course_id . '_')) {
+                mkdir('../uploads/files/' . $course_id . '_', 0777, true);
             }
-            $file_destination = '../uploads/files/' . $course_id . '_' . $lesson_id . '/' . $file_name;
+            $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
             move_uploaded_file($file_tmp, $file_destination);
             $result = editLesson($lesson_name, $videoid, $numericalorder, $description, $lesson_id, $file_name);
             if ($result) {
@@ -309,7 +309,7 @@ if (isset($_POST['edit-btn'])) {
             if (!empty($lessonDetail)) {
                 echo "
                 <div class='description'>
-                    <a href='/cnwQuizz/uploads/files/" . $course_id . "_" . $lesson_id . "/" . $lessonDetail['file'] . "'>" . $lessonDetail['file'] . "</a>
+                    <a href='/cnwQuizz/uploads/files/" . $course_id . "_" . "/" . $lessonDetail['file'] . "'>" . $lessonDetail['file'] . "</a>
                        " . $lessonDetail['description'] . "
                     </div>
                 <div class='content'>
