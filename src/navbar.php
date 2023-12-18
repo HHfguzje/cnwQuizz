@@ -5,7 +5,7 @@ if (!isLogin()) {
   header("Location: login.php");
 }
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="courses.php">ProjectPHP K71</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -42,6 +42,42 @@ if (!isLogin()) {
         </li>
       </ul>";
       } ?>
+    </div>
+    <button type="button" class="btn btn-white " style="scale: 1.5;" data-bs-toggle="modal"
+      data-bs-target="#noticationModal"><i class="fa-regular fa-bell"></i></button>
+
+    <div class="modal fade" id="noticationModal" tabindex="-1" aria-labelledby="noticationModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="noticationModalLabel">Thông Báo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group list-group-flush">
+
+              <?php
+              $listNotification = getNotifications();
+              foreach ($listNotification as $notification) {
+                echo '
+              <a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">' . $notification['tittle'] . '</h5>
+                <small>3 days ago</small>
+              </div>
+              <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
+              </a>
+             
+              ';
+              }
+              ?>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </nav>

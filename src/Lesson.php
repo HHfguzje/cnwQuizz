@@ -33,31 +33,34 @@ if (isset($_POST['add-lesson'])) {
     $file_size = $file['size'];
     $file_type = $file['type'];
 
+    if (!empty($lesson_name) && !empty($videoid) && !empty($numericalorder)) {
+        if ($file_error === 0) {
+            if ($file_size < 100000000) {
 
-
-    if ($file_error === 0) {
-        if ($file_size < 100000000) {
-
-            if (!is_dir('../uploads/files/' . $course_id . '_')) {
-                mkdir('../uploads/files/' . $course_id . '_', 0777, true);
-            }
-            $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
-            move_uploaded_file($file_tmp, $file_destination);
-            $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, $file_name);
-            if ($result) {
-                echo "<script>alert('Thêm bài giảng thành công')</script>";
+                if (!is_dir('../uploads/files/' . $course_id . '_')) {
+                    mkdir('../uploads/files/' . $course_id . '_', 0777, true);
+                }
+                $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
+                move_uploaded_file($file_tmp, $file_destination);
+                $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, $file_name);
+                if ($result) {
+                    echo "<script>alert('Thêm bài giảng thành công')</script>";
+                } else {
+                    echo "<script>alert('Thêm bài giảng thất bại')</script>";
+                }
+                // Redirect after form submission
+                header('refresh:0; url=lesson.php?course_id=' . $course_id);
+                exit();
             } else {
-                echo "<script>alert('Thêm bài giảng thất bại')</script>";
+                echo "<script>alert('File quá lớn')</script>";
             }
-            // Redirect after form submission
-            header('refresh:0; url=lesson.php?course_id=' . $course_id);
-            exit();
-        } else {
-            echo "<script>alert('File quá lớn')</script>";
         }
     } else {
-        echo "<script>alert('Có lỗi xảy ra khi upload file')</script>";
+        echo "<script>alert('Vui lòng điền đầy đủ thông tin')</script>";
     }
+
+
+
 
 
 
@@ -78,16 +81,29 @@ if (isset($_POST['edit-btn'])) {
     $file_size = $file['size'];
     $file_type = $file['type'];
 
+    if (!empty($lesson_name) && !empty($videoid) && !empty($numericalorder)) {
+        if ($file_error === 0) {
+            if ($file_size < 100000000) {
 
-    if ($file_error === 0) {
-        if ($file_size < 100000000) {
-
-            if (!is_dir('../uploads/files/' . $course_id . '_')) {
-                mkdir('../uploads/files/' . $course_id . '_', 0777, true);
+                if (!is_dir('../uploads/files/' . $course_id . '_')) {
+                    mkdir('../uploads/files/' . $course_id . '_', 0777, true);
+                }
+                $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
+                move_uploaded_file($file_tmp, $file_destination);
+                $result = editLesson($lesson_name, $videoid, $numericalorder, $description, $lesson_id, $file_name);
+                if ($result) {
+                    echo "<script>alert('Sửa bài giảng thành công')</script>";
+                } else {
+                    echo "<script>alert('Sửa bài giảng thất bại')</script>";
+                }
+                // Redirect after form submission
+                header('refresh:0; url=lesson.php?course_id=' . $course_id . '&lesson_id=' . $lesson_id);
+                exit();
+            } else {
+                echo "<script>alert('File quá lớn')</script>";
             }
-            $file_destination = '../uploads/files/' . $course_id . '_' . '/' . $file_name;
-            move_uploaded_file($file_tmp, $file_destination);
-            $result = editLesson($lesson_name, $videoid, $numericalorder, $description, $lesson_id, $file_name);
+        } else {
+            $result = editLesson($lesson_name, $videoid, $numericalorder, $description, $lesson_id, "");
             if ($result) {
                 echo "<script>alert('Sửa bài giảng thành công')</script>";
             } else {
@@ -96,11 +112,10 @@ if (isset($_POST['edit-btn'])) {
             // Redirect after form submission
             header('refresh:0; url=lesson.php?course_id=' . $course_id . '&lesson_id=' . $lesson_id);
             exit();
-        } else {
-            echo "<script>alert('File quá lớn')</script>";
         }
     } else {
-        echo "<script>alert('Có lỗi xảy ra khi upload file')</script>";
+        echo "<script>alert('Vui lòng điền đầy đủ thông tin')</script>";
+
     }
 
 
@@ -158,35 +173,21 @@ if (!$check) {
 
         .description {
             margin-top: 20px;
-            width: 700px;
-            height: 100%;
+            width: 500px;
+            height: max-content !important;
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 10px;
         }
 
-        .video-container {
 
-            position: relative;
-            width: 1250px;
-            /* Chiều rộng mặc định của video YouTube */
-            height: 730px;
-            /* Chiều cao mặc định của video YouTube */
+        .ratio iframe {
             border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
 
         .edit {
             position: absolute;
-            right: 20px;
+            left: 20px;
             bottom: 10px;
             width: 50px;
             height: 50px;
@@ -290,7 +291,7 @@ if (!$check) {
                             <h5 class="mb-1">' . $lesson['name'] . '</h5>
                             <small>3 days ago</small>
                         </div>
-                        <p class="mb-1">' . $lesson['description'] . '</p>
+                        <p class="mb-1 text-truncate">' . $lesson['description'] . '</p>
                         <small>And some small print.</small>
                         </a>';
                         if ($_SESSION['currentUser']['role'] == 1) {
@@ -311,12 +312,19 @@ if (!$check) {
             <?php
             if (!empty($lessonDetail)) {
                 echo "
+                <div>
                 <div class='description'>
+                    <h1>Tài Liệu</h1>
                     <a href='/cnwQuizz/uploads/files/" . $course_id . "_" . "/" . $lessonDetail['file'] . "'>" . $lessonDetail['file'] . "</a>
-                       " . $lessonDetail['description'] . "
-                    </div>
+                       
+                </div>
+                <div class='description'>
+                    <h1>Mô Tả</h1>
+                    " . $lessonDetail['description'] . "
+                </div>
+                </div>
                 <div class='content'>
-                    <div class='video-container'>
+                    <div class='ratio ratio-16x9'>
                         <iframe src='https://www.youtube.com/embed/" . $lessonDetail['video'] . "?autoplay=1'
                             title='YouTube video player' frameborder='0'
                             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
@@ -356,11 +364,11 @@ if (!$check) {
                                     </div>
                                     <div class='mb-3'>
                                         <label for='tailieu'>Tài liệu</label>
-                                        <input class='form-control' type='file' name='edit-file' id='tailieu'>
+                                        <input class='form-control' type='file' name='edit-file'  id='tailieu'>
                                     </div>
                                     <div class='mb-3'>
                                         <label for='description' class='col-form-label'>Mô tả:</label>
-                                        <textarea class='form-control' id='description' name='edit-description'>" . $lesson['description'] . "</textarea>
+                                        <textarea class='form-control' id='description' name='edit-description'>" . $lessonDetail['description'] . "</textarea>
                                     </div>
 
                             </div>
