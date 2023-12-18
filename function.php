@@ -603,3 +603,12 @@ function deleteLesson($id)
     $result = mysqli_query($conn, $sql);
     return $result;
 }
+
+function getQuestionById($id)
+{
+    global $conn;
+    $sql = "SELECT * FROM questions WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    $question = mysqli_fetch_assoc($result);
+    return $question;
+}
