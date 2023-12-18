@@ -207,6 +207,7 @@ function deleteQuestion($questionId)
     // Xóa bản ghi trong bảng questions
     $sqlDeleteQuestion = "DELETE FROM questions WHERE id = $questionId";
     mysqli_query($conn, $sqlDeleteQuestion);
+
 }
 
 function deleteCourse($courseId)
@@ -601,4 +602,13 @@ function deleteLesson($id)
     $sql = "DELETE FROM lesson WHERE id = '$id'";
     $result = mysqli_query($conn, $sql);
     return $result;
+}
+
+function getQuestionById($id)
+{
+    global $conn;
+    $sql = "SELECT * FROM questions WHERE id = '$id'";
+    $result = mysqli_query($conn, $sql);
+    $question = mysqli_fetch_assoc($result);
+    return $question;
 }

@@ -188,8 +188,8 @@ if (!$check) {
                 }
                 if (isset($_POST["btn-delete"])) {
                     $id = $_POST['id'];
+                    unlink("../uploads/images/" . getQuestionById($id)['image']);
                     deleteQuestion($id);
-
                 }
                 ?>
             </table>
