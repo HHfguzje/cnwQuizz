@@ -54,6 +54,16 @@ if (isset($_POST['add-lesson'])) {
             } else {
                 echo "<script>alert('File quá lớn')</script>";
             }
+        } else {
+            $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, "");
+            if ($result) {
+                echo "<script>alert('Thêm bài giảng thành công')</script>";
+            } else {
+                echo "<script>alert('Thêm bài giảng thất bại')</script>";
+            }
+            // Redirect after form submission
+            header('refresh:0; url=lesson.php?course_id=' . $course_id);
+            exit();
         }
     } else {
         echo "<script>alert('Vui lòng điền đầy đủ thông tin')</script>";
