@@ -288,24 +288,30 @@ function getResultByCourseId($courseId)
     return $listResult;
 }
 
-function createCourse($courseName)
+function createCourse($courseName, $adminUserId)
 {
     global $conn;
 
     // Thêm khóa học
     $state = 0;
-    $sql = "INSERT INTO courses (course, state) VALUES ('$courseName', '$state')";
+    $sql = "INSERT INTO courses (course, state) VALUES ('$courseName', $state)";
     $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        return false;
+    }
 
     // Lấy ID của khóa học vừa thêm
     $courseId = mysqli_insert_id($conn);
 
     // Thêm tài khoản admin vào khóa học
-    $adminUserId = 3; // ID của tài khoản admin
     $sqlAddAdminToCourse = "INSERT INTO course_users (course_id, user_id, state) VALUES ('$courseId', '$adminUserId', 1)";
+
     $resultAddAdminToCourse = mysqli_query($conn, $sqlAddAdminToCourse);
 
-    return $result && $resultAddAdminToCourse;
+    if (!$resultAddAdminToCourse) {
+        return false;
+    }
+    return true;
 }
 
 function saveResult($userId, $score, $courseId, $timeSubmit)
@@ -408,6 +414,16 @@ function getNotificationsById($id)
     return $notification;
 }
 
+function getNotificationsByUserId($userId)
+{
+    global $conn;
+   $sql = "SELECT n.id, n.tittle, n.description, n.time, un.is_read FROM notifications n
+            JOIN user_notifications un ON n.id = un.notification_id
+            WHERE un.user_id = '$userId'";
+    $result = mysqli_query($conn, $sql);
+    $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $notifications;
+}
 function createNotification($tittle, $description, $time)
 {
     global $conn;
@@ -416,12 +432,46 @@ function createNotification($tittle, $description, $time)
     return $result;
 }
 
+function createNotificationForCourses($tittle, $description, $time, $courseId)
+{
+    global $conn;
+    $createNotification = createNotification($tittle, $description, $time);
+    if ($createNotification) {
+        $notificationId = mysqli_insert_id($conn);
+        $users = getUsersInCourse($courseId);
+        if ($users) {
+            foreach ($users as $user) {
+                $sql = "INSERT INTO user_notifications (user_id, notification_id, is_read) VALUES ('$user[user_id]', '$notificationId', 0)";
+                mysqli_query($conn, $sql);
+
+            }
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
 function deleteNotification($id)
 {
     global $conn;
+    mysqli_begin_transaction($conn);
     $sql = "DELETE FROM notifications WHERE id = $id";
     $result = mysqli_query($conn, $sql);
-    return $result;
+    if ($result) {
+        $sql = "DELETE FROM user_notifications WHERE notification_id = $id";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            mysqli_commit($conn);
+            return true;
+        } else {
+            mysqli_rollback($conn);
+            return false;
+        }
+    } else {
+        mysqli_rollback($conn);
+        return false;
+    }
 }
 
 function updateNotification($id, $tittle, $description, $time)

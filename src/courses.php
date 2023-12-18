@@ -96,14 +96,13 @@ if (isset($_POST['btn'])) {
 			?>
 			<!-- end khóa học -->
 		</div>
-		<div class="toast-container position-absolute p-3 bottom-0 end-0">
+		<div class="toast-container position-absolute p-3 bottom-0 end-0" style="height: 150px; margin-bottom: 20">
 			<?php
 			// Danh sách toast từ mảng
-			$toastList = getNotifications();
-
+			$toastList = getNotificationsByUserId($currentUser['id']);
 
 			foreach ($toastList as $index => $toastMessage) {
-				echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true">';
+				echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-bottom: ' . ($index * 70) . 'px;">';
 				echo '<div class="toast-header bg-primary">';
 				echo '<i class="fa-regular fa-bell text-light"></i>';
 				echo '<strong class="me-auto ms-2 text-light">' . $toastMessage['tittle'] . '</strong>';
@@ -116,13 +115,18 @@ if (isset($_POST['btn'])) {
 				echo 'document.addEventListener(\'DOMContentLoaded\', function () {';
 				echo 'setTimeout(function () {';
 				echo 'var toast' . ($index + 1) . ' = new bootstrap.Toast(document.getElementById(\'toast' . ($index + 1) . '\'));';
-				echo 'toast' . ($index + 1) . '.show();';
-				echo '}, ' . ($index * 2000) . ');'; // Thời gian trễ giữa các toast (đơn vị: mili giây)
+				if ($index > 0) {
+					echo 'var toast' . $index . ' = new bootstrap.Toast(document.getElementById(\'toast' . $index . '\'));';
+					echo 'toast' . $index . '.hide();'; // Ẩn thông báo trước
+				}
+				echo 'toast' . ($index + 1) . '.show();'; // Hiển thị thông báo hiện tại
+				echo '}, ' . ($index * 3000) . ');'; // Thời gian trễ giữa các thông báo (đơn vị: mili giây)
 				echo '});';
 				echo '</script>';
 			}
 			?>
 		</div>
+
 	</main>
 	<?php include 'footer.php'; ?>
 

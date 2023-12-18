@@ -68,7 +68,7 @@ if ($currentUser['role'] != 1) {
                     </script>";
 
             } else {
-                echo "<script>alert('Sửa thông thất bại')
+                echo "<script>alert('Sửa thông báo thất bại')
                     </script>";
             }
         } else {

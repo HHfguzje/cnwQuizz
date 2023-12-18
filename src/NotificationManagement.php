@@ -84,7 +84,7 @@ if ($currentUser['role'] != 1) {
                     $check = deleteNotification($id);
                     if ($check) {
                         echo "<script>alert(Xóa thông báo thành công')
-                    </script>";
+                         </script>";
                     }
                 }
                 ?>

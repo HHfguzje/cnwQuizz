@@ -44,7 +44,7 @@ if ($currentUser['role'] != 1) {
                     ?>">
                 </div>
                 <div style="margin: 20px 0 0 0;" class="d-grid">
-                    <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm khóa học">
+                    <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm thông báo">
                 </div>
             </div>
         </form>
@@ -60,7 +60,7 @@ if ($currentUser['role'] != 1) {
         $currentDateTime = date("Y-m-d H:i:s");
 
         if (!empty($tittle) && !empty($description)) {
-            $result = createNotification($tittle, $description, $currentDateTime);
+            $result = createNotificationForCourses($tittle, $description, $currentDateTime, 104);
             if ($result) {
                 echo "<script>alert('Thêm thông báo thành công')
                         window.location.href = 'NotificationManagement.php';
