@@ -49,36 +49,39 @@ if ($currentUser['role'] != 1) {
     </main>
 
     <?php
-
     if (isset($_POST['course_name'])) {
         $courseName = $_POST['course_name'];
     }
 
     $check = false;
-
-    if (!empty($courseName)) {
-        foreach ($listCourses as $course) {
-            if ($course['course'] == $courseName) {
-                $check = true;
-                echo "<div class='alert alert-danger text-center' role='alert'>Khóa học đã tồn tại</div>";
-                exit();
+    if (isset($_POST['btn'])) {
+        if (!empty($courseName)) {
+            foreach ($listCourses as $course) {
+                if ($course['course'] == $courseName) {
+                    $check = true;
+                    echo "<div class='alert alert-danger text-center' role='alert'>Khóa học đã tồn tại</div>";
+                    exit();
+                }
             }
-        }
-        if ($check == false) {
-            $result = createCourse($courseName);
-            if ($result) {
-                echo "<script>alert('Thêm khóa học thành công')
+            if ($check == false) {
+                $result = createCourse($courseName);
+                if ($result) {
+                    echo "<script>alert('Thêm khóa học thành công')
                         window.location.href = 'CourseManagement.php';
                     </script>";
 
-            } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm khóa học thất bại" . mysqli_error($conn) . "</div>";
+                } else {
+                    echo "<script>alert('Thêm khóa học thất bại" . mysqli_error($conn) . "')
+                    </script>";
+                }
             }
-        }
 
-    } else {
-        echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
+        } else {
+            echo "<script>alert('Thêm khóa học thất bại, Vui lòng nhập đủ thông tin')
+                    </script>";
+        }
     }
+
 
     include 'footer.php';
     if (isset($_POST['btn-return'])) {

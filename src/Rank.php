@@ -2,6 +2,7 @@
 include '../function.php';
 session_start();
 $rank = getRank();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,13 +40,13 @@ $rank = getRank();
                     <tbody>
                         <?php
                         $i = 0;
-                        foreach($rank as $r) {
+                        foreach ($rank as $r) {
                             $i++;
                             echo "<tr>
-                            <td>".$i."</td>
-                            <td>".$r['fullname']."</td>
-                            <td>".$r['timeSubmit']."</td>
-                            <td>".$r['score']."</td>
+                            <td>" . $i . "</td>
+                            <td>" . $r['fullname'] . "</td>
+                            <td>" . $r['timeSubmit'] . "</td>
+                            <td>" . $r['score'] . "</td>
                             </tr>";
                         }
                         ?>

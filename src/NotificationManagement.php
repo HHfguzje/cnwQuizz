@@ -81,7 +81,11 @@ if ($currentUser['role'] != 1) {
                 }
                 if (isset($_POST['btn-delete'])) {
                     $id = $_POST['id'];
-                    deleteNotification($id);
+                    $check = deleteNotification($id);
+                    if ($check) {
+                        echo "<script>alert(Xóa thông báo thành công')
+                    </script>";
+                    }
                 }
                 ?>
             </table>

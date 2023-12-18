@@ -97,6 +97,7 @@ if (!$check) {
                     <input class="btn btn-primary btn-block" name="btn-add" type="submit" value="Thêm câu hỏi">
                 </div>
             </div>
+
             <script>
                 var listAnswerContainer = document.getElementById('list-answer-container');
                 var numberAnswerInput = document.getElementById('numberAnswer');
@@ -104,15 +105,18 @@ if (!$check) {
                     var numberAnswer = e.target.value;
                     var listAnswerContainer = document.getElementById('list-answer-container');
                     listAnswerContainer.innerHTML = "";
-                    for (let i = 1; i <= numberAnswer; i++) {
-                        listAnswerContainer.innerHTML += `
+                    if (numberAnswer > 1) {
+                        for (let i = 1; i <= numberAnswer; i++) {
+                            listAnswerContainer.innerHTML += `
                     <label for='name_quiz'>Đáp án ${i}</label>
                         <div class='form-check'>
                         <input class='form-check-input' type='checkbox' name='true${i}' value='${i}' id='flexCheckDefault'>
                         <input class='form-control'  type='text' name='a${i}'>
                         </div>
                 `;
+                        }
                     }
+                    else alert('Số lượng đáp án phải lớn hơn 1');
                 })
 
             </script>
@@ -124,58 +128,65 @@ if (!$check) {
             $numberAnswer = $_POST['numberAnswer'];
             $file = $_FILES['file'];
             $image = "";
-
-            //lấy đáp án
-            if ($numberAnswer > 0) {
-                //lấy đáp án đúng
-                $true_answer = array();
-                for ($i = 1; $i <= $numberAnswer; $i++) {
-                    if (isset($_POST['true' . $i])) {
-                        $true_answer[$i] = $_POST['true' . $i];
+            if (!empty($question_name) && !empty($numberAnswer)) {
+                //lấy đáp án
+                if ($numberAnswer > 1) {
+                    //lấy đáp án đúng
+                    $true_answer = array();
+                    for ($i = 1; $i <= $numberAnswer; $i++) {
+                        if (isset($_POST['true' . $i])) {
+                            $true_answer[$i] = $_POST['true' . $i];
+                        }
                     }
-                }
-                $answer = [];
-                for ($i = 1; $i <= $numberAnswer; $i++) {
-                    $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
-                    foreach ($true_answer as $key => $value) {
-                        if ($i == $value) {
-                            $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
+                    $answer = [];
+                    for ($i = 1; $i <= $numberAnswer; $i++) {
+                        $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 0];
+                        foreach ($true_answer as $key => $value) {
+                            if ($i == $value) {
+                                $answer[$i] = ['answer' => $_POST['a' . $i], 'is_true' => 1];
+                            }
                         }
                     }
                 }
-            }
-            //upload image
-            if ($file['error'] == 0) {
-                $fileName = $file['name'];
-                $fileTmp = $file['tmp_name'];
-                $fileSize = $file['size'];
-                $fileType = $file['type'];
-                $arr = explode('.', $fileName);
-                $fileExtension = strtolower(end($arr));
-                $allow = array('png', 'jpg', 'jpeg');
-                if (in_array($fileExtension, $allow)) {
-                    if ($fileSize < 5000000) {
-                        $newFileName = uniqid('image-', true) . "." . $fileExtension;
-                        $image = $newFileName;
-                        if (!is_dir('../uploads/images')) {
-                            mkdir('../uploads/images');
+                //upload image
+                if ($file['error'] == 0) {
+                    $fileName = $file['name'];
+                    $fileTmp = $file['tmp_name'];
+                    $fileSize = $file['size'];
+                    $fileType = $file['type'];
+                    $arr = explode('.', $fileName);
+                    $fileExtension = strtolower(end($arr));
+                    $allow = array('png', 'jpg', 'jpeg');
+                    if (in_array($fileExtension, $allow)) {
+                        if ($fileSize < 5000000) {
+                            $newFileName = uniqid('image-', true) . "." . $fileExtension;
+                            $image = $newFileName;
+                            if (!is_dir('../uploads/images')) {
+                                mkdir('../uploads/images');
+                            }
+                            move_uploaded_file($fileTmp, '../uploads/images/' . $newFileName);
+                        } else {
+                            echo "<script>alert('File quá lớn')
+                    </script>";
                         }
-                        move_uploaded_file($fileTmp, '../uploads/images/' . $newFileName);
                     } else {
-                        echo "<div class='alert alert-warning text-center' role='alert'>File quá lớn</div>";
+                        echo "<script>alert('File không đúng định dạng')
+                    </script>";
                     }
-                } else {
-                    echo "<div class='alert alert-warning text-center' role='alert'>File không đúng định dạng</div>";
                 }
-            }
-            $result = createQuestionChoice($question_name, $type_question, $image, $course_id, $answer);
-            if ($result) {
-                echo "<script>alert('Thêm câu hỏi thành công')
+                $result = createQuestionChoice($question_name, $type_question, $image, $course_id, $answer);
+                if ($result) {
+                    echo "<script>alert('Thêm câu hỏi thành công')
                         window.location.href = 'CourseDetail.php?course_id=" . $course_id . "';
                     </script>";
 
+                } else {
+                    echo "<script>alert('Thêm câu hỏi thất bại')
+                    </script>";
+                }
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
+                echo "<script>alert('Thêm câu hỏi thất bại, không được để trống thông tin')
+                    </script>";
             }
         }
         ?>

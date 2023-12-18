@@ -67,10 +67,12 @@ if ($currentUser['role'] != 1) {
                     </script>";
 
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm thông báo thất bại" . mysqli_error($conn) . "</div>";
+                echo "<script>alert('Thêm thông báo thất bại')
+                    </script>";
             }
         } else {
-            echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
+            echo "<script>alert('Thêm thông báo thất bại, vui lòng nhập đầy đủ thông tin')
+                    </script>";
         }
     }
     include 'footer.php';

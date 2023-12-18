@@ -207,6 +207,8 @@ function deleteQuestion($questionId)
     // Xóa bản ghi trong bảng questions
     $sqlDeleteQuestion = "DELETE FROM questions WHERE id = $questionId";
     mysqli_query($conn, $sqlDeleteQuestion);
+    return $sqlDeleteQuestion && $sqlDeleteQuestion;
+
 }
 
 function deleteCourse($courseId)
@@ -214,9 +216,7 @@ function deleteCourse($courseId)
     global $conn;
     $sql = "DELETE FROM courses WHERE id = '$courseId'";
     $result = mysqli_query($conn, $sql);
-    if (!$result) {
-        die("Query failed: " . mysqli_error($conn));
-    }
+    return $result;
 }
 
 
@@ -334,7 +334,8 @@ function getRank()
     $sql = "SELECT u.fullname, r.score, r.timeSubmit 
         FROM user u 
         JOIN result r ON u.id = r.user_id 
-        WHERE r.course_id = 9
+        WHERE r.course_id = 100 
+        GROUP BY u.fullname 
         ORDER BY r.score DESC";
     $result = mysqli_query($conn, $sql);
     $rank = mysqli_fetch_all($result, MYSQLI_ASSOC);

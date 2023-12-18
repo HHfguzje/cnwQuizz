@@ -90,23 +90,27 @@ session_start();
 				$validationErrors = validateRegister($username, $password, $fullname);
 				if (!empty($validationErrors)) {
 					// Hiển thị thông báo lỗi nếu có
-					echo '<div class="alert alert-danger" role="alert">';
+					echo "<script>alert('";
 					foreach ($validationErrors as $error) {
-						echo $error . '<br>';
+						echo $error . " ";
 					}
-					echo '</div>';
+					echo "')</script>;";
 				} else {
 					// Lưu tài khoản vào database
 					$check = register($username, $password, $fullname);
 
 					if ($check === true) {
-						echo '<div class="alert alert-success" role="alert">Đăng ký thành công!</div>';
+						echo "<script>alert('Đăng ký thành công!')
+                        window.location.href = 'login.php';
+                    </script>";
 					} else {
-						echo '<div class="alert alert-danger" role="alert">Đăng ký thất bại. Vui lòng thử lại!</div>';
+						echo "<script>alert('Đăng ký thất bại!')
+                    </script>";
 					}
 				}
 			} else {
-				echo '<div class="alert alert-success" role="alert">Mật khẩu với nhập lại mật khẩu không khớp!</div>';
+				echo "<script>alert('Mật khẩu với nhập lại mật khẩu không khớp!')
+                    </script>";
 			}
 		}
 		?>

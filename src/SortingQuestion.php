@@ -117,7 +117,8 @@ if (!$check) {
                 $ordinal = $_POST['select_' . $i];
                 $answer = $_POST['textbox_' . $i];
                 if (empty($ordinal) && empty($answer)) {
-                    echo "Vui lòng nhập đầy đủ thông tin";
+                    echo "<script>alert('Vui lòng nhập đầy đủ thông tin')
+                    </script>";
                 } else {
                     $ordinalArray[$i] = ['ordinal' => $ordinal,
                         'answer' => $answer];
@@ -130,7 +131,8 @@ if (!$check) {
                     </script>";
 
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
+                echo "<script>alert('Thêm câu hỏi thất bại')
+                    </script>";
             }
         }
         ?>

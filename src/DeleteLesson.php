@@ -4,10 +4,13 @@ $id = urldecode($_GET['id']);
 $course_id = urldecode($_GET['course_id']);
 $result = deleteLesson($id);
 if ($result) {
-    header("Location: Lesson.php?course_id=$course_id");
+    echo "<script>alert('Xóa bài giảng thành công')
+          window.location.href = 'Lesson.php?course_id=" . $course_id . "';
+                    </script>";
 } else {
-    echo "something wrong";
-    header("Location: Lesson.php?course_id=$course_id");
+    echo "<script>alert('Xóa bài giảng thất bại')
+    window.location.href = 'Lesson.php?course_id=" . $course_id . "';
+                    </script>";
 }
 
 ?>

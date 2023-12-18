@@ -180,12 +180,19 @@ if (!$check) {
 
                 if (isset($_POST["btn-state"])) {
                     $id = $_POST['id'];
-                    approveQuestion($id);
+                    $checkApprove = approveQuestion($id);
+                    if ($checkApprove == true) {
+                        echo "<script>alert('Duyệt câu hỏi thành công')
+                    </script>";
+                    }
                 }
                 if (isset($_POST["btn-delete"])) {
                     $id = $_POST['id'];
-                    deleteQuestion($id);
-
+                    $checkDelete = deleteQuestion($id);
+                    if ($checkDelete) {
+                        echo "<script>alert('Xóa câu hỏi thành công')
+                    </script>";
+                    }
                 }
                 ?>
             </table>

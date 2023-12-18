@@ -13,13 +13,19 @@ function checkType($type)
         return 2;
 }
 if (isset($_POST['countdown_expired'])) {
-    header("location: Point.php?course_id=9");
+    header("location: Point.php?course_id=100");
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['sortedValues'])) {
         $sortedValues = $_POST['sortedValues'];
         $_SESSION['a'] = $sortedValues;
     }
+}
+$check = isUserEnrolled($currentUser['id'], 100);
+if (!$check) {
+    echo "<script>alert('Hiện tại bạn không có bài kiểm tra nào')
+                        window.location.href = 'courses.php';
+                    </script>";
 }
 ?>
 <!DOCTYPE html>
@@ -219,6 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="btn btn-submit" onclick="submit()">Nộp bài</button>
             <!-- Tính điểm -->
             <?php
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];

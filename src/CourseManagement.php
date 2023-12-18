@@ -81,15 +81,28 @@ if ($currentUser['role'] != 1) {
                 }
                 if (isset($_POST["btn-state"])) {
                     $id = $_POST['id'];
-                    approveCourse($id);
+                    $checkApprove = approveCourse($id);
+                    if ($checkApprove) {
+                        echo "<script>alert('Duyệt khóa học thành công')
+                    </script>";
+                    }
                 }
                 if (isset($_POST["btn-state-hidden"])) {
                     $id = $_POST['id'];
-                    hiddenCourse($id);
+                    $checkHidden = hiddenCourse($id);
+                    if ($checkHidden) {
+                        echo "<script>alert('Ẩn khóa học thành công')
+                    </script>";
+                    }
+
                 }
                 if (isset($_POST['btn-delete'])) {
                     $id = $_POST['id'];
-                    deleteCourse($id);
+                    $checkDelete = deleteCourse($id);
+                    if ($checkDelete) {
+                        echo "<script>alert('Xóa khóa học thành công')
+                    </script>";
+                    }
                 }
                 ?>
             </table>

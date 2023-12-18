@@ -48,6 +48,9 @@ if (isset($_POST['btn'])) {
 			<!-- begin khóa học -->
 			<?php
 			foreach ($courses as $course) {
+				if ($course['id'] == 100) {
+					continue;
+				}
 				if ($course['state'] == 1) {
 					echo "
 				<div class='col'>

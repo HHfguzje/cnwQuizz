@@ -68,9 +68,12 @@ if ($currentUser['role'] != 1) {
                     </script>";
 
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Sửa thông báo thất bại" . mysqli_error($conn) . "</div>";
+                echo "<script>alert('Sửa thông thất bại')
+                    </script>";
             }
         } else {
+            echo "<script>alert('Sửa thông thất bại, vui lòng nhập đủ thông tin')
+                    </script>";
             echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
         }
     }

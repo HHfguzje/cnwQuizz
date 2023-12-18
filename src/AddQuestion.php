@@ -100,10 +100,12 @@ if (!$check) {
 
 
                 } else {
-                    echo "<div class='alert alert-warning text-center' role='alert'>File quá lớn</div>";
+                    echo "<script>alert('File quá lớn')
+                    </script>";
                 }
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>File không đúng định dạng</div>";
+                echo "<script>alert('File không đúng định dạng')
+                    </script>";
             }
         }
         //insert question
@@ -115,10 +117,12 @@ if (!$check) {
                     </script>";
 
             } else {
-                echo "<div class='alert alert-warning text-center' role='alert'>Thêm câu hỏi thất bại" . mysqli_error($conn) . "</div>";
+                echo "<script>alert('Thêm câu hỏi thất bại')
+                    </script>";
             }
         } else {
-            echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
+            echo "<script>alert('Vui lòng nhập đủ thông tin')
+                    </script>";
         }
 
 

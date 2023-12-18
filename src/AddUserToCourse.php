@@ -91,14 +91,17 @@ if (!$check) {
                                 window.location.href = 'UserManagerment.php?course_id=" . $course_id . "';
                             </script>";
                     } else {
-                        echo "<div class='alert alert-warning text-center' role='alert'>Thêm thất bại" . mysqli_error($conn) . "</div>";
+                        echo "<script>alert('Thêm thất bại')
+                            </script>";
                     }
                 } else {
-                    echo "<div class='alert alert-success text-center' role='alert'>Người dùng không tồn tại</div>";
+                    echo "<script>alert('Người dùng không tồn tại')
+                            </script>";
                 }
             }
         } else {
-            echo "<div class='alert alert-success text-center' role='alert'>Vui lòng nhập đủ thông tin</div>";
+            echo "<script>alert('Vui lòng nhập đủ thông tin')
+                            </script>";
         }
     }
 

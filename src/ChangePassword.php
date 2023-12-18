@@ -75,16 +75,21 @@ if (!isLogin()) {
 				if (md5($oldPW) == $currentPassword) {
 					$md5NewPassword = md5($newPW);
 					if (updatePassword($username, $md5NewPassword)) {
-						echo '<div class="alert alert-success text-center" role="alert">Đổi mật khẩu thành công!</div>';
+						echo "<script>alert('Đổi mật khẩu thành công!')
+						      window.location.href = 'courses.php';
+                            </script>";
 					} else {
-						echo '<div class="alert alert-danger text-center" role="alert">Đã xảy ra lỗi, vui lòng thử lại sau.</div>';
+						echo "<script>alert('Đã xảy ra lỗi, vui lòng thử lại sau')
+                            </script>";
 					}
 				} else {
-					echo '<div class="alert alert-danger text-center" role="alert">Mật khẩu cũ không chính xác.</div>';
+					echo "<script>alert('Mật khẩu cũ không chính xác')
+                            </script>";
 				}
 			} else {
 				foreach ($validationErrors as $error) {
-					echo '<div class="alert alert-danger text-center" role="alert">' . $error . '</div>';
+					echo "<script>alert('" . $error . "')
+                            </script>";
 				}
 			}
 		}

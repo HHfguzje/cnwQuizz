@@ -114,12 +114,20 @@ if (!$check) {
 
                 if (isset($_POST['btn-state'])) {
                     $id = $_POST['id'];
-                    approveUserInCourse($id, $course_id);
+                    $check = approveUserInCourse($id, $course_id);
+                    if ($check) {
+                        echo "<script>alert('Duyệt người dùng thành công')
+                    </script>";
+                    }
                 }
 
                 if (isset($_POST['btn-delete'])) {
                     $id = $_POST['id'];
-                    deleteUserInCourse($id, $course_id);
+                    $checkDelete = deleteUserInCourse($id, $course_id);
+                    if ($checkDelete) {
+                        echo "<script>alert('Xóa người dùng thành công')
+                    </script>";
+                    }
                 }
                 ?>
             </table>
