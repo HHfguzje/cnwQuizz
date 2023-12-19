@@ -4,7 +4,7 @@ session_start();
 $notifications = getNotifications();
 $currentUser = $_SESSION['currentUser'];
 
-if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['btn-state-hidden'])) {
+if (isset($_POST['btn-delete'])) {
     header("Refresh:0");
 }
 if ($currentUser['role'] != 1) {
@@ -43,7 +43,7 @@ if ($currentUser['role'] != 1) {
         </style>
 
         <div class="align-items-center">
-            <a href="Lesson.php" class="btn btn-primary">Trở lại</a>
+            <a href="courses.php" class="btn btn-primary">Trở lại</a>
             <button type="button" class="btn btn-primary">
                 <a href="AddNotification.php" style="color: inherit; text-decoration: none;">Thêm thông báo</a>
             </button>
@@ -56,6 +56,7 @@ if ($currentUser['role'] != 1) {
                     <th>Tiêu đề</th>
                     <th>Nội dung</th>
                     <th>Thời gian</th>
+                    <th>Số người đã đọc</th>
                     <th>Thao tác</th>
                 </tr>
                 <?php
@@ -66,7 +67,8 @@ if ($currentUser['role'] != 1) {
                     <td>" . $i . "</td>
                     <td>" . $n['tittle'] . "</td>
                     <td>" . $n['description'] . "</td>
-                    <td>" . $n['time'] . "</td>";
+                    <td>" . $n['time'] . "</td>
+                    <td>" . $n['readNumber'] . "</td>";
                     echo "<td>
                        <form method='GET' action='editNotification.php'>
                             <input type='hidden' value='" . $n['id'] . "' name='id'/>
