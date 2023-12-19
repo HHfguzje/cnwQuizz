@@ -65,6 +65,8 @@ if ($currentUser['role'] != 1) {
             }
             if ($check == false) {
                 $result = createCourse($courseName, $currentUser['id']);
+               
+
                 if ($result) {
                     echo "<script>alert('Thêm khóa học thành công')
                         window.location.href = 'CourseManagement.php';

@@ -70,21 +70,54 @@ if (!isLogin()) {
             <div class="list-group list-group-flush">
 
               <?php
+              foreach ($listNotification as $notification) {
+                // Chuyển đổi chuỗi thành đối tượng DateTime
+                $dateTimeFromDatabase = new DateTime($notification['time']);
 
-              
-                foreach ($listNotification as $notification) {
+                // Thời điểm hiện tại
+                $currentTime = new DateTime();
+
+                // Tính toán số giờ và số ngày
+                $timeDifference = $currentTime->diff($dateTimeFromDatabase);
+                $daysDifference = $timeDifference->days;
+
+
+                if ($notification['is_read'] == 1) {
                   echo '
-                <a href="#" class="list-group-item list-group-item-action " aria-current="true">
-                  <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">' . $notification['tittle'] . '</h5>
-                  <small>3 days ago</small>
-                </div>
-                <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
-                </a>
-               
-                ';
+                    <a href="#" class="mt-1 rounded-1 list-group-item list-group-item-action " aria-current="true">
+                      <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">' . $notification['tittle'] . '</h5>';
+                  if ($daysDifference == 0) {
+                    echo '<small>Today</small>';
+                  } else {
+                    echo '<small>' . $daysDifference . ' days ago</small>';
+                  }
+                  echo '
+                    </div>
+                    <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
+                    </a>
+                   
+                    ';
+                } else {
+                  echo '
+                    <a href="#" class="mt-1 rounded-1 list-group-item list-group-item-action bg-secondary text-light " aria-current="true">
+                      <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">' . $notification['tittle'] . '</h5>';
+                  if ($daysDifference == 0) {
+                    echo '<small>Today</small>';
+                  } else {
+                    echo '<small>' . $daysDifference . ' days ago</small>';
+                  }
+                  echo '
+                    </div>
+                    <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
+                    </a>
+                   
+                    ';
                 }
-              
+
+              }
+
               ?>
             </div>
 

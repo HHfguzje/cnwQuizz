@@ -44,6 +44,9 @@ if (isset($_POST['add-lesson'])) {
                 move_uploaded_file($file_tmp, $file_destination);
                 $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, $file_name);
                 if ($result) {
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $currentDateTime = date("Y-m-d H:i:s");
+                    $result = createNotificationForCourses($course['course'], "Admin đã thêm bài giảng mới", $currentDateTime, $course_id);
                     echo "<script>alert('Thêm bài giảng thành công')</script>";
                 } else {
                     echo "<script>alert('Thêm bài giảng thất bại')</script>";
@@ -57,6 +60,9 @@ if (isset($_POST['add-lesson'])) {
         } else {
             $result = addLesson($lesson_name, $videoid, $numericalorder, $description, $course_id, "");
             if ($result) {
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $currentDateTime = date("Y-m-d H:i:s");
+                $result = createNotificationForCourses($course['course'], "Admin đã thêm bài giảng mới", $currentDateTime, $course_id);
                 echo "<script>alert('Thêm bài giảng thành công')</script>";
             } else {
                 echo "<script>alert('Thêm bài giảng thất bại')</script>";
@@ -236,6 +242,7 @@ if (!$check) {
                         bài
                         giảng</button>
                        
+                       
                         ';
                 }
                 ?>
@@ -281,6 +288,7 @@ if (!$check) {
                                         data-bs-dismiss="modal">Đóng</button>
                                     <input type="submit" class="btn btn-primary" value="Thêm bài giảng"
                                         name='add-lesson'>
+
                                 </div>
                             </form>
 
@@ -292,19 +300,21 @@ if (!$check) {
 
                     <?php
                     foreach ($lessons as $lesson) {
+
+
                         echo '
                         <div style="display:flex;" class="mb-4">
-                        <a style="border-radius:10px;min-height:100px;" href="/cnwQuizz/src/Lesson.php?course_id=' . urlencode($course_id) . '&lesson_id=' . urlencode($lesson['id']) . '" class="list-group-item list-group-item-action ';
+                        <a style="border-radius:10px;min-height:70px;" href="/cnwQuizz/src/Lesson.php?course_id=' . urlencode($course_id) . '&lesson_id=' . urlencode($lesson['id']) . '" class="list-group-item list-group-item-action ';
                         if ($lesson['id'] == $lesson_id) {
                             echo ' active';
                         }
                         echo ' " aria-current="true">
                         <div  class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">' . $lesson['name'] . '</h5>
-                            <small>3 days ago</small>
+                           
                         </div>
                         <p class="mb-1 text-truncate">' . $lesson['description'] . '</p>
-                        <small>And some small print.</small>
+                        
                         </a>';
                         if ($_SESSION['currentUser']['role'] == 1) {
                             echo '

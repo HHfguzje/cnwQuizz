@@ -102,11 +102,29 @@ if (isset($_POST['btn'])) {
 			$toastList = getNotificationsByUserId($currentUser['id']);
 			if ($_SESSION['is_show'] == false) {
 				foreach ($toastList as $index => $toastMessage) {
+					// Chuyển đổi chuỗi thành đối tượng DateTime
+					$dateTimeFromDatabase = new DateTime($toastMessage['time']);
+
+					// Thời điểm hiện tại
+					$currentTime = new DateTime();
+
+					// Tính toán số giờ và số ngày
+					$timeDifference = $currentTime->diff($dateTimeFromDatabase);
+					$daysDifference = $timeDifference->days;
+
 					echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-bottom: ' . ($index * 70) . 'px;">';
 					echo '<div class="toast-header bg-primary">';
 					echo '<i class="fa-regular fa-bell text-light"></i>';
 					echo '<strong class="me-auto ms-2 text-light">' . $toastMessage['tittle'] . '</strong>';
-					echo '<small class="text-body-secondary text-light">just now</small>';
+					echo '<small class="text-body-secondary text-light">
+					';
+					if ($daysDifference == 0) {
+						echo '<small>Today</small>';
+					} else {
+						echo '<small>' . $daysDifference . ' days ago</small>';
+					}
+					echo '
+					</small>';
 					echo '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>';
 					echo '</div>';
 					echo '<div class="toast-body">' . $toastMessage['description'] . '</div>';

@@ -110,8 +110,12 @@ if (!$check) {
         }
         //insert question
         if (!empty($questionName) && !empty($answer)) {
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $currentDateTime = date("Y-m-d H:i:s");
+
             $result = createQuestionAndAnswers($questionName, $typeQuestion, $image, $course_id, $answer, 1);
             if ($result) {
+                createNotificationForUser($nameCourse, $currentUser['fullname'] . " đã đóng góp câu hỏi mới", $currentDateTime, 13);
                 echo "<script>alert('Thêm câu hỏi thành công')
                         window.location.href = 'CourseDetail.php?course_id=" . $course_id . "';
                     </script>";

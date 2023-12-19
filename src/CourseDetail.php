@@ -154,7 +154,8 @@ if (!$check) {
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                            <h6> Đáp án :</h6>  <ol type="A">';
+                                <div class="left">
+                                    <h6> Đáp án :</h6>  <ol type="A">';
                         foreach ($listAnswers as $answer) {
                             echo "<li>" . $answer['answer'];
                             if ($answer['is_true'] == 1) {
@@ -163,7 +164,34 @@ if (!$check) {
                             echo "</li>";
                         }
                         echo '
-                            </ol>
+                                    </ol>
+                                </div>
+                                <div class="right">
+                                    ';
+                        if (isset($value['image']) && $value['image'] != "") {
+                            echo "
+                        <button type='button' style='border:none; background:transparent;' data-bs-toggle='modal' data-bs-target='#imageModal" . $stt . "'>
+                        <img src='../uploads/images/" . $value['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>
+                        </button>
+                        <!-- Modal -->
+                            <div class='modal fade' id='imageModal" . $stt . "' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='imageModalLabel' aria-hidden='true'>
+                            <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                <div class='modal-content ' style='scale:1.1;'>
+                                <div class='modal-header'>
+                                   
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                </div>
+                                <div class='modal-body' >
+                                <img src='../uploads/images/" . $value['image'] . "' class='img-fluid' alt='...'>
+                                </div>
+                               
+                                </div>
+                            </div>
+                            </div>
+                        ";
+                        }
+                        echo '
+                                </div>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -181,8 +209,11 @@ if (!$check) {
 
                 if (isset($_POST["btn-state"])) {
                     $id = $_POST['id'];
+                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                    $currentDateTime = date("Y-m-d H:i:s");
                     $checkApprove = approveQuestion($id);
                     if ($checkApprove == true) {
+                        createNotificationForUser($nameCourse, "Câu hỏi của bạn đã được duyệt", $currentDateTime, $value['user_id']);
                         echo "<script>alert('Duyệt câu hỏi thành công')
                     </script>";
                     }
@@ -190,7 +221,7 @@ if (!$check) {
                 if (isset($_POST["btn-delete"])) {
                     $id = $_POST['id'];
                     if (isset(getQuestionById($id)['image']) && getQuestionById($id)['image'] != "") {
-                        unlink("../" . getQuestionById($id)['image']);
+                        unlink("../uploads/images/" . getQuestionById($id)['image']);
                     }
                     $checkDelete = deleteQuestion($id);
                     if ($checkDelete) {

@@ -2,6 +2,8 @@
 include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
+$courses = getAllCourses();
+
 if ($currentUser['role'] != 1) {
     header("Location: courses.php");
 }
@@ -42,6 +44,15 @@ if ($currentUser['role'] != 1) {
                     <input class="form-control" type="text" name="description" id="" value="<?php
                     echo isset($_POST['description']) ? $_POST['description'] : "";
                     ?>">
+                    <label for="name_quiz"><span style="color: red;">*</span>Chọn Khóa Học</label>
+                    <select class="form-select" name="course_id" aria-label="Default select example">
+                        <option selected>---Khóa Học---</option>
+                        <?php
+                        foreach ($courses as $course) {
+                            echo "<option value='$course[id]'>$course[course]</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div style="margin: 20px 0 0 0;" class="d-grid">
                     <input class="btn btn-primary btn-block" name="btn" type="submit" value="Thêm thông báo">
@@ -56,11 +67,13 @@ if ($currentUser['role'] != 1) {
     if (isset($_POST['btn'])) {
         $tittle = $_POST['tittle'];
         $description = $_POST['description'];
+        $course_id = $_POST['course_id'];
+
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $currentDateTime = date("Y-m-d H:i:s");
 
         if (!empty($tittle) && !empty($description)) {
-            $result = createNotificationForCourses($tittle, $description, $currentDateTime, 104);
+            $result = createNotificationForCourses($tittle, $description, $currentDateTime, $course_id);
             if ($result) {
                 echo "<script>alert('Thêm thông báo thành công')
                         window.location.href = 'NotificationManagement.php';

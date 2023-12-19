@@ -171,7 +171,26 @@ if (!$check) {
                     ";
                     //ảnh
                     if ($q['image'] != null) {
-                        echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
+                        echo "
+                        <button type='button' style='border:none; background:transparent;' data-bs-toggle='modal' data-bs-target='#imageModal" . $i . "'>
+                        <img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>
+                        </button>
+                        <!-- Modal -->
+                            <div class='modal fade' id='imageModal" . $i . "' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='imageModalLabel' aria-hidden='true'>
+                            <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
+                                <div class='modal-content ' style='scale:1.1;'>
+                                <div class='modal-header'>
+                                   
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                </div>
+                                <div class='modal-body' >
+                                <img src='../uploads/images/" . $q['image'] . "' class='img-fluid' alt='...'>
+                                </div>
+                               
+                                </div>
+                            </div>
+                            </div>
+                        ";
                     }
                     // lấy ra mảng đáp án đúng của câu hỏi
                     foreach (getAnswer($q['id']) as $key => $a) {

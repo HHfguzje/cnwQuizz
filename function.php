@@ -432,6 +432,19 @@ function createNotification($tittle, $description, $time)
     $result = mysqli_query($conn, $sql);
     return $result;
 }
+function createNotificationForUser($tittle, $description, $time, $userId)
+{
+    global $conn;
+    $createNotification = createNotification($tittle, $description, $time);
+    if ($createNotification) {
+        $notificationId = mysqli_insert_id($conn);
+        $sql = "INSERT INTO user_notifications (user_id, notification_id, is_read) VALUES ('$userId', '$notificationId', 0)";
+        $result = mysqli_query($conn, $sql);
+        return $result;
+    } else {
+        return false;
+    }
+}
 
 function createNotificationForCourses($tittle, $description, $time, $courseId)
 {
