@@ -23,11 +23,6 @@ function checkType($type)
 if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
-
-$check = isUserEnrolled($currentUser['id'], $course_id);
-if (!$check) {
-    header("location: courses.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
