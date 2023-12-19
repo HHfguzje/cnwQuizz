@@ -189,7 +189,9 @@ if (!$check) {
                 }
                 if (isset($_POST["btn-delete"])) {
                     $id = $_POST['id'];
-                    unlink("../uploads/images/" . getQuestionById($id)['image']);
+                    if (isset(getQuestionById($id)['image']) && getQuestionById($id)['image'] != "") {
+                        unlink("../" . getQuestionById($id)['image']);
+                    }
                     $checkDelete = deleteQuestion($id);
                     if ($checkDelete) {
                         echo "<script>alert('Xóa câu hỏi thành công')

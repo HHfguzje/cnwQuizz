@@ -72,6 +72,7 @@ session_start();
 			if (!empty($username) || !empty($password)) {
 				if (checkLogin($username, $password)) {
 					$_SESSION['currentUser'] = checkLogin($username, $password);
+					$_SESSION['is_show'] = false;
 					echo "<script>alert('Đăng nhập thành công!')
                         window.location.href = 'courses.php';
                     </script>";

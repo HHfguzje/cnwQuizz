@@ -234,7 +234,9 @@ if (!$check) {
                 if ($_SESSION['currentUser']['role'] == 1) {
                     echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Thêm
                         bài
-                        giảng</button>';
+                        giảng</button>
+                       
+                        ';
                 }
                 ?>
 
