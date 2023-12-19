@@ -94,7 +94,7 @@ if (!$check) {
                     $newFileName = uniqid('image-', true) . "." . $fileExtension;
                     $image = $newFileName;
                     if (!is_dir('../uploads/images/')) {
-                        mkdir('../uploads/images/');
+                        mkdir('../uploads/images/', 0777, true);
                     }
                     move_uploaded_file($fileTmp, '../uploads/images/' . $newFileName);
 

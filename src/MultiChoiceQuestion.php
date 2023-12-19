@@ -161,8 +161,8 @@ if (!$check) {
                         if ($fileSize < 5000000) {
                             $newFileName = uniqid('image-', true) . "." . $fileExtension;
                             $image = $newFileName;
-                            if (!is_dir('../uploads/images')) {
-                                mkdir('../uploads/images');
+                            if (!is_dir('../uploads/images/')) {
+                                mkdir('../uploads/images/', 0777, true);
                             }
                             move_uploaded_file($fileTmp, '../uploads/images/' . $newFileName);
                         } else {
