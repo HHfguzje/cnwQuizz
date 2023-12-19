@@ -1,5 +1,4 @@
 <?php
-// session_start();
 $currentUser = $_SESSION['currentUser'];
 $listNotification = getNotificationsByUserId($currentUser['id']);
 $read = 0;
@@ -12,6 +11,7 @@ if (!isLogin()) {
   header("Location: login.php");
 }
 ?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="courses.php">ProjectPHP K71</a>
@@ -83,19 +83,18 @@ if (!isLogin()) {
             <div class="list-group list-group-flush">
 
               <?php
-              $listNotification = getNotifications();
               foreach ($listNotification as $notification) {
                 echo '
-              <a href="#" class="list-group-item list-group-item-action " aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">' . $notification['tittle'] . '</h5>
-                <small>3 days ago</small>
-              </div>
-              <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
-              </a>
-             
-              ';
+                <a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                  <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">' . $notification['tittle'] . '</h5>
+                  <small>3 days ago</small>
+                </div>
+                <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
+                </a>
+                ';
               }
+
               ?>
             </div>
 
@@ -106,3 +105,11 @@ if (!isLogin()) {
     </div>
   </div>
 </nav>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

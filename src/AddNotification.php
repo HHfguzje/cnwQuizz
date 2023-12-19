@@ -60,7 +60,7 @@ if ($currentUser['role'] != 1) {
         $currentDateTime = date("Y-m-d H:i:s");
 
         if (!empty($tittle) && !empty($description)) {
-            $result = createNotificationForCourses($tittle, $description, $currentDateTime, 104);
+            $result = createNotification($tittle, $description, $currentDateTime);
             if ($result) {
                 echo "<script>alert('Thêm thông báo thành công')
                         window.location.href = 'NotificationManagement.php';

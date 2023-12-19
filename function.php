@@ -427,33 +427,64 @@ function getNotificationsByUserId($userId)
     $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $notifications;
 }
+
+function getNotifications()
+{
+    global $conn;
+    $sql = "SELECT n.id, n.tittle, n.description, n.time, COUNT(un.user_id) AS readNumber
+              FROM notifications AS n
+              LEFT JOIN user_notifications AS un ON n.id = un.notification_id AND un.is_read = 1
+              GROUP BY n.id, n.tittle, n.description, n.time";
+    $result = mysqli_query($conn, $sql);
+    $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $notifications;
+}
+
+function getAllUsers()
+{
+    global $conn;
+    $sql = "Select * from User";
+    $result = mysqli_query($conn, $sql);
+    $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    return $user;
+}
 function createNotification($tittle, $description, $time)
 {
     global $conn;
     $sql = "INSERT INTO notifications (tittle, description, time) VALUE ('$tittle', '$description', '$time')";
     $result = mysqli_query($conn, $sql);
-    return $result;
-}
-
-function createNotificationForCourses($tittle, $description, $time, $courseId)
-{
-    global $conn;
-    $createNotification = createNotification($tittle, $description, $time);
-    if ($createNotification) {
+    if ($result) {
         $notificationId = mysqli_insert_id($conn);
-        $users = getUsersInCourse($courseId);
-        if ($users) {
-            foreach ($users as $user) {
-                $sql = "INSERT INTO user_notifications (user_id, notification_id, is_read) VALUES ('$user[user_id]', '$notificationId', 0)";
-                mysqli_query($conn, $sql);
-
-            }
-            return true;
+        foreach (getAllUsers() as $user) {
+            $sql = "INSERT INTO user_notifications (user_id, notification_id, is_read) VALUES ('$user[id]', '$notificationId', 0)";
+            $result = mysqli_query($conn, $sql);
         }
-    } else {
-        return false;
+        if ($result) {
+            return $result;
+        }
     }
+    return false;
 }
+
+// function createNotificationForCourses($tittle, $description, $time, $courseId)
+// {
+//     global $conn;
+//     $createNotification = createNotification($tittle, $description, $time);
+//     if ($createNotification) {
+//         $notificationId = mysqli_insert_id($conn);
+//         $users = getUsersInCourse($courseId);
+//         if ($users) {
+//             foreach ($users as $user) {
+//                 $sql = "INSERT INTO user_notifications (user_id, notification_id, is_read) VALUES ('$user[user_id]', '$notificationId', 0)";
+//                 mysqli_query($conn, $sql);
+
+//             }
+//             return true;
+//         }
+//     } else {
+//         return false;
+//     }
+// }
 
 function deleteNotification($id)
 {
