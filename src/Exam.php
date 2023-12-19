@@ -13,7 +13,7 @@ function checkType($type)
         return 2;
 }
 if (isset($_POST['countdown_expired'])) {
-    header("location: Point.php?course_id=100");
+    header("location: Point.php?course_id=106");
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['sortedValues'])) {
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['a'] = $sortedValues;
     }
 }
-$check = isUserEnrolled($currentUser['id'], 100);
+$check = isUserEnrolled($currentUser['id'], 106);
 if (!$check) {
     echo "<script>alert('Hiện tại bạn không có bài kiểm tra nào')
                         window.location.href = 'courses.php';
@@ -34,7 +34,7 @@ if (!$check) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Câu hỏi trắc nghiệm</title>
+    <title>Exam</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -121,7 +121,7 @@ if (!$check) {
 
 <body>
     <form method="POST" id='form'>
-        <?php include 'navbar.php'; ?>
+
         <input type="hidden" name="countdown_expired" value="1">
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
@@ -274,7 +274,7 @@ if (!$check) {
                 }
 
             }
-            saveResult($currentUser['id'], $score, 100, $currentDateTime);
+            saveResult($currentUser['id'], $score, 106, $currentDateTime);
             ?>
 
     </form>

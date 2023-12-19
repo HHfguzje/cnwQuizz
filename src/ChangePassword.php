@@ -26,13 +26,14 @@ if (!isLogin()) {
 
 <body>
 	<?php include 'navbar.php'; ?>
-	<main style="min-height: 100vh; margin-top: 10%;">
+	<main style="min-height: 100vh;">
+		<div class="ms-4 mt-4">
+			<a href="courses.php" class="btn btn-primary">Trở lại</a>
+		</div>
 		<div class="d-flex justify-content-center">
 			<h1>Đổi mật khẩu</h1>
 		</div>
-		<div class="align-items-center">
-			<a href="courses.php" class="btn btn-primary">Trở lại</a>
-		</div>
+
 		<div class="d-flex justify-content-center">
 			<form class="w-25" method="POST">
 				<div class="mb-3">

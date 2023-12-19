@@ -42,10 +42,11 @@ if ($currentUser['role'] != 1) {
             }
         </style>
 
-        <div class="align-items-center">
-            <a href="Lesson.php" class="btn btn-primary">Trở lại</a>
+        <div class="align-items-center ms-5">
+            <a href="Lesson.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
             <button type="button" class="btn btn-primary">
-                <a href="AddNotification.php" style="color: inherit; text-decoration: none;">Thêm thông báo</a>
+                <a href="AddNotification.php" style="color: inherit; text-decoration: none;"><i
+                        class="fa-solid fa-plus"></i> Thêm thông báo</a>
             </button>
         </div>
 
@@ -67,17 +68,17 @@ if ($currentUser['role'] != 1) {
                     <td>" . $n['tittle'] . "</td>
                     <td>" . $n['description'] . "</td>
                     <td>" . $n['time'] . "</td>";
-                    echo "<td>
+                    echo "<td style='display: flex;gap:5px;'>
                        <form method='GET' action='editNotification.php'>
                             <input type='hidden' value='" . $n['id'] . "' name='id'/>
                             <button type='submit' class='btn btn-success' title='Edit'>
-                                <i class='bi bi-pencil'></i> Sửa
+                            <i class='fa-solid fa-pen'></i> 
                             </button>
                         </form>
                         <form method='POST'>
                             <input type='hidden' value='" . $n['id'] . "' name='id'/>
                             <button type='submit' name='btn-delete' class='btn btn-danger' title='Delete'>
-                                <i class='bi bi-trash'></i> Xóa
+                            <i class='fa-solid fa-trash'></i> 
                             </button>
                         </form>
                     </td>";

@@ -37,7 +37,7 @@ if (isset($_POST['btn'])) {
 		<div class="" style="text-align: center;">
 			<h2>Tất cả khóa học </h2>
 		</div>
-		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+		<button type="button" class="ms-4 btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
 			Thao tác
 		</button>
 		<ul class="dropdown-menu">
