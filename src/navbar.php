@@ -58,7 +58,7 @@ if (!isLogin()) {
             <div class="list-group list-group-flush">
 
               <?php
-              $listNotification = getNotificationsByUserId($currentUser['id']);
+              $listNotification = getNotifications();
               foreach ($listNotification as $notification) {
                 echo '
               <a href="#" class="list-group-item list-group-item-action " aria-current="true">

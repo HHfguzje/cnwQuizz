@@ -72,16 +72,12 @@ session_start();
 			if (!empty($username) || !empty($password)) {
 				if (checkLogin($username, $password)) {
 					$_SESSION['currentUser'] = checkLogin($username, $password);
-					echo "<script>alert('Đăng nhập thành công!')
-                        window.location.href = 'courses.php';
-                    </script>";
+					header('Location: courses.php');
 				} else {
-					echo "<script>alert('Tài khoản hoặc mật khẩu không chính xác!')
-                    </script>";
+					echo '<div class="alert alert-danger text-center" role="alert">Tài khoản hoặc mật khẩu không chính xác</div>';
 				}
 			} else {
-				echo "<script>alert('Vui lòng nhập đầy đủ thông tin!')
-                    </script>";
+				echo '<div class="alert alert-danger text-center" role="alert">Vui lòng nhập đầy đủ thông tin</div>';
 			}
 		}
 		?>
