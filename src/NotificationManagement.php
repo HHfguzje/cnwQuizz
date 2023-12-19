@@ -3,6 +3,7 @@ include_once "../function.php";
 session_start();
 $notifications = getNotifications();
 $currentUser = $_SESSION['currentUser'];
+
 if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['btn-state-hidden'])) {
     header("Refresh:0");
 }
@@ -17,6 +18,8 @@ if ($currentUser['role'] != 1) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông báo</title>
+    <script src="https://kit.fontawesome.com/772918bb67.js" crossorigin="anonymous"></script>
+
     <!-- Begin bootstrap cdn -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -40,7 +43,7 @@ if ($currentUser['role'] != 1) {
         </style>
 
         <div class="align-items-center">
-            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+            <a href="Lesson.php" class="btn btn-primary">Trở lại</a>
             <button type="button" class="btn btn-primary">
                 <a href="AddNotification.php" style="color: inherit; text-decoration: none;">Thêm thông báo</a>
             </button>

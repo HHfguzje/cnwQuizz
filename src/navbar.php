@@ -1,6 +1,13 @@
 <?php
 // session_start();
 $currentUser = $_SESSION['currentUser'];
+$listNotification = getNotificationsByUserId($currentUser['id']);
+$read = 0;
+foreach ($listNotification as $notification) {
+  if ($notification['is_read'] == 1) {
+    $read++;
+  }
+}
 if (!isLogin()) {
   header("Location: login.php");
 }
@@ -56,9 +63,13 @@ if (!isLogin()) {
         <?php } ?>
       </ul>
     </div>
-
-    <button type="button" class="btn btn-white " style="scale: 1.5;" data-bs-toggle="modal"
-      data-bs-target="#noticationModal"><i class="fa-regular fa-bell"></i></button>
+    <div class="notification-badge" data-badge="3">
+      <button type="button" class="btn btn-white " style="scale: 1.5;" data-bs-toggle="modal"
+        data-bs-target="#noticationModal"><i class="fa-regular fa-bell"></i></button>
+      <span class="badge bg-primary rounded-pill">
+        <?php echo count($listNotification) - $read; ?>
+      </span>
+    </div>
 
     <div class="modal fade" id="noticationModal" tabindex="-1" aria-labelledby="noticationModalLabel"
       aria-hidden="true">
@@ -72,12 +83,12 @@ if (!isLogin()) {
             <div class="list-group list-group-flush">
 
               <?php
-              $listNotification = getNotificationsByUserId($currentUser['id']);
+              $listNotification = getNotifications();
               foreach ($listNotification as $notification) {
                 echo '
               <a href="#" class="list-group-item list-group-item-action " aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">' . $notification['tittle'] . '</h5> 
+                <h5 class="mb-1">' . $notification['tittle'] . '</h5>
                 <small>3 days ago</small>
               </div>
               <p class="mb-1 text-truncate">' . $notification['description'] . '</p>

@@ -396,10 +396,13 @@ function getTrueAnswerInSortQuestion($questionId)
     $trueAnswer = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $trueAnswer;
 }
-function getNotifications()
+function getNotificationsForAllUser()
 {
     global $conn;
-    $sql = "SELECT * FROM notifications";
+    $sql = "SELECT n.id, n.tittle, n.description, n.time, un.is_read FROM notifications n
+            JOIN user_notifications un ON n.id = un.notification_id
+            WHERE un.user_id = '0'
+            ";
     $result = mysqli_query($conn, $sql);
     $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $notifications;

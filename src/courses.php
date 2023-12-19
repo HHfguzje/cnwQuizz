@@ -35,7 +35,7 @@ if (isset($_POST['btn'])) {
 	<?php include 'navbar.php'; ?>
 	<main style="min-height: 100vh; width: 100%;">
 		<div class="" style="text-align: center;">
-			<h2>Tất cả hóa học </h2>
+			<h2>Tất cả khóa học </h2>
 		</div>
 		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
 			Thao tác
@@ -100,29 +100,31 @@ if (isset($_POST['btn'])) {
 			<?php
 			// Danh sách toast từ mảng
 			$toastList = getNotificationsByUserId($currentUser['id']);
-
-			foreach ($toastList as $index => $toastMessage) {
-				echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-bottom: ' . ($index * 70) . 'px;">';
-				echo '<div class="toast-header bg-primary">';
-				echo '<i class="fa-regular fa-bell text-light"></i>';
-				echo '<strong class="me-auto ms-2 text-light">' . $toastMessage['tittle'] . '</strong>';
-				echo '<small class="text-body-secondary text-light">just now</small>';
-				echo '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>';
-				echo '</div>';
-				echo '<div class="toast-body">' . $toastMessage['description'] . '</div>';
-				echo '</div>';
-				echo '<script>';
-				echo 'document.addEventListener(\'DOMContentLoaded\', function () {';
-				echo 'setTimeout(function () {';
-				echo 'var toast' . ($index + 1) . ' = new bootstrap.Toast(document.getElementById(\'toast' . ($index + 1) . '\'));';
-				if ($index > 0) {
-					echo 'var toast' . $index . ' = new bootstrap.Toast(document.getElementById(\'toast' . $index . '\'));';
-					echo 'toast' . $index . '.hide();'; // Ẩn thông báo trước
+			if ($_SESSION['is_show'] == false) {
+				foreach ($toastList as $index => $toastMessage) {
+					echo '<div id="toast' . ($index + 1) . '" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-bottom: ' . ($index * 70) . 'px;">';
+					echo '<div class="toast-header bg-primary">';
+					echo '<i class="fa-regular fa-bell text-light"></i>';
+					echo '<strong class="me-auto ms-2 text-light">' . $toastMessage['tittle'] . '</strong>';
+					echo '<small class="text-body-secondary text-light">just now</small>';
+					echo '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>';
+					echo '</div>';
+					echo '<div class="toast-body">' . $toastMessage['description'] . '</div>';
+					echo '</div>';
+					echo '<script>';
+					echo 'document.addEventListener(\'DOMContentLoaded\', function () {';
+					echo 'setTimeout(function () {';
+					echo 'var toast' . ($index + 1) . ' = new bootstrap.Toast(document.getElementById(\'toast' . ($index + 1) . '\'));';
+					if ($index > 0) {
+						echo 'var toast' . $index . ' = new bootstrap.Toast(document.getElementById(\'toast' . $index . '\'));';
+						echo 'toast' . $index . '.hide();'; // Ẩn thông báo trước
+					}
+					echo 'toast' . ($index + 1) . '.show();'; // Hiển thị thông báo hiện tại
+					echo '}, ' . ($index * 3000) . ');'; // Thời gian trễ giữa các thông báo (đơn vị: mili giây)
+					echo '});';
+					echo '</script>';
 				}
-				echo 'toast' . ($index + 1) . '.show();'; // Hiển thị thông báo hiện tại
-				echo '}, ' . ($index * 3000) . ');'; // Thời gian trễ giữa các thông báo (đơn vị: mili giây)
-				echo '});';
-				echo '</script>';
+				$_SESSION['is_show'] = true;
 			}
 			?>
 		</div>
