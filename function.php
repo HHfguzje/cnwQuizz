@@ -417,7 +417,7 @@ function getNotificationsById($id)
 function getNotificationsByUserId($userId)
 {
     global $conn;
-   $sql = "SELECT n.id, n.tittle, n.description, n.time, un.is_read FROM notifications n
+    $sql = "SELECT n.id, n.tittle, n.description, n.time, un.is_read FROM notifications n
             JOIN user_notifications un ON n.id = un.notification_id
             WHERE un.user_id = '$userId'";
     $result = mysqli_query($conn, $sql);

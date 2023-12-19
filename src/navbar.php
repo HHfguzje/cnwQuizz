@@ -17,9 +17,7 @@ if (!isLogin()) {
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button"
             data-bs-toggle="dropdown" aria-expanded="false">
-            <?php
-            echo $_SESSION['currentUser']['fullname'];
-            ?>
+            <?php echo $_SESSION['currentUser']['fullname']; ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="SelfCourse.php">Khóa học của tôi</a></li>
@@ -27,22 +25,38 @@ if (!isLogin()) {
             <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
           </ul>
         </li>
-      </ul>
-      <?php if ($currentUser['role'] == 1) {
-        echo "<ul class='navbar-nav'>
-        <li class='nav-item dropdown'>
-          <a class='nav-link dropdown-toggle active' href='#' id='navbarDropdownMenuLink' role='button'
-            data-bs-toggle='dropdown' aria-expanded='false'>
-            Quản trị
-          </a>
-          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa học</a></li>
-            <li><a class='dropdown-item' href='NotificationManagement.php'>Quản lý thông báo</a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link active" href="SelfCourse.php">Khóa học của tôi</a>
         </li>
-      </ul>";
-      } ?>
+        <!-- Tất cả khóa học -->
+        <li class="nav-item">
+          <a class="nav-link" href="courses.php">Tất cả khóa học</a>
+        </li>
+        <?php if ($currentUser['role'] == 1) { ?>
+          <li class='nav-item dropdown'>
+            <a class='nav-link dropdown-toggle active' href='#' id='adminDropdownMenuLink' role='button'
+              data-bs-toggle='dropdown' aria-expanded='false'>
+              Quản trị
+            </a>
+            <ul class='dropdown-menu' aria-labelledby='adminDropdownMenuLink'>
+              <li><a class='dropdown-item' href='CourseManagement.php'>Quản lý khóa học</a></li>
+              <li><a class='dropdown-item' href='NotificationManagement.php'>Quản lý thông báo</a></li>
+              <li class='dropdown'>
+                <a class='dropdown-item dropdown-toggle' href='#' role='button' data-bs-toggle='dropdown'
+                  aria-expanded='false'>
+                  Quản lý kì thi
+                </a>
+                <ul class='dropdown-menu'>
+                  <li><a class='dropdown-item' href='UserManagerment.php?course_id=100'>Quản lý người thi</a></li>
+                  <li><a class='dropdown-item' href='Result.php?course_id=100'>Thống kê kết quả</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        <?php } ?>
+      </ul>
     </div>
+
     <button type="button" class="btn btn-white " style="scale: 1.5;" data-bs-toggle="modal"
       data-bs-target="#noticationModal"><i class="fa-regular fa-bell"></i></button>
 
@@ -58,12 +72,12 @@ if (!isLogin()) {
             <div class="list-group list-group-flush">
 
               <?php
-              $listNotification = getNotifications();
+              $listNotification = getNotificationsByUserId($currentUser['id']);
               foreach ($listNotification as $notification) {
                 echo '
               <a href="#" class="list-group-item list-group-item-action " aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">' . $notification['tittle'] . '</h5>
+                <h5 class="mb-1">' . $notification['tittle'] . '</h5> 
                 <small>3 days ago</small>
               </div>
               <p class="mb-1 text-truncate">' . $notification['description'] . '</p>
