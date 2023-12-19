@@ -77,12 +77,10 @@ session_start();
                         window.location.href = 'courses.php';
                     </script>";
 				} else {
-					echo "<script>alert('Tài khoản hoặc mật khẩu không chính xác!')
-                    </script>";
+					echo '<div class="alert alert-danger text-center" role="alert">Tài khoản hoặc mật khẩu không chính xác</div>';
 				}
 			} else {
-				echo "<script>alert('Vui lòng nhập đầy đủ thông tin!')
-                    </script>";
+				echo '<div class="alert alert-danger text-center" role="alert">Vui lòng nhập đầy đủ thông tin</div>';
 			}
 		}
 		?>
