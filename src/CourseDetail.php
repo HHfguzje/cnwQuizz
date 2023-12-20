@@ -61,7 +61,7 @@ if (!$check) {
             <p class="h3">Khóa học
                 <?php echo $nameCourse; ?>
             </p>
-            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+            <a href="courses.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
 
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                 Thêm câu hỏi
@@ -106,7 +106,7 @@ if (!$check) {
                             foreach ($listAnswers as $answer) {
                                 echo "<li>" . $answer['answer'];
                                 if ($answer['is_true'] == 1) {
-                                    echo "<span style='color: green; margin-left: 10px'>(Đáp án đúng)</span>";
+                                    echo "<span style='color: green; margin-left: 10px'><i class='fa-solid fa-circle-check'></i></span>";
                                 }
                                 echo "</li>";
                             }
@@ -115,7 +115,7 @@ if (!$check) {
                             echo "<td>";
                             $listAnswers = getAnswer($value['id']);
                             foreach ($listAnswers as $answer) {
-                                echo "<li>" . $answer['ordinalNumber'] . ") " . $answer['answer'] . "</li>";
+                                echo "<li>" . $answer['ordinalNumber'] . ") " . htmlspecialchars($answer['answer']) . "</li>";
                             }
                             echo "</td>";
                         } else {
@@ -151,7 +151,6 @@ if (!$check) {
                           <div class="modal-content">
                             <div class="modal-header">
                               <h1 class="modal-title fs-5" id="staticBackdropLabel">' . $value['question'] . '</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="left">
@@ -159,7 +158,7 @@ if (!$check) {
                         foreach ($listAnswers as $answer) {
                             echo "<li>" . $answer['answer'];
                             if ($answer['is_true'] == 1) {
-                                echo "<span style='color: green; margin-left: 10px'>(Đáp án đúng)</span>";
+                                echo "<span style='color: green; margin-left: 10px'><i class='fa-solid fa-circle-check'></i></span>";
                             }
                             echo "</li>";
                         }
@@ -171,7 +170,7 @@ if (!$check) {
                         if (isset($value['image']) && $value['image'] != "") {
                             echo "
                         <button type='button' style='border:none; background:transparent;' data-bs-toggle='modal' data-bs-target='#imageModal" . $stt . "'>
-                        <img src='../uploads/images/" . $value['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>
+                        <img src='../uploads/images/" . $value['image'] . "' alt='image' style=' margin-bottom: 10px;'>
                         </button>
                         <!-- Modal -->
                             <div class='modal fade' id='imageModal" . $stt . "' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='imageModalLabel' aria-hidden='true'>

@@ -3,6 +3,7 @@ include '../function.php';
 session_start();
 $currentUser = $_SESSION['currentUser'];
 $course_id = $_GET['id'];
+$courseName = getCourse($course_id)['course'];
 $userInCourse = getUsersInCourse($course_id);
 $users = getAllUser();
 if ($currentUser['role'] != 1) {
@@ -30,6 +31,7 @@ if (!$check) {
         integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <!-- End bootstrap cdn -->
+    <script src="https://kit.fontawesome.com/772918bb67.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -39,7 +41,8 @@ if (!$check) {
     ?>
     <main style=" max-width: 100%;">
         <div id="action" style="margin: 20px 0 0 13%;">
-            <a href="UserManagerment.php?course_id=<?php echo $course_id ?>" class="btn btn-primary">Trở lại</a>
+            <a href="UserManagerment.php?course_id=<?php echo $course_id ?>" class="btn btn-primary"><i
+                    class="fa-solid fa-arrow-left"></i></a>
         </div>
         <form action="" method="POST">
             <div style="margin: 20px 13%;">
@@ -85,8 +88,13 @@ if (!$check) {
                 if ($userExists) {
                     // Thêm người dùng vào khóa học
                     $result = addUserToCourse($username, $course_id);
+                    $user = isUsernameExists($username);
+                    $user_id = $user['id'];
 
                     if ($result) {
+                        date_default_timezone_set('Asia/Ho_Chi_Minh');
+                        $currentDateTime = date("Y-m-d H:i:s");
+                        createNotificationForUser($courseName, "Bạn đã được thêm vào khóa học", $currentDateTime, $user_id);
                         echo "<script>alert('Thêm thành công')
                                 window.location.href = 'UserManagerment.php?course_id=" . $course_id . "';
                             </script>";

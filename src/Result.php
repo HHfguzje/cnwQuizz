@@ -35,7 +35,6 @@ if (!$check) {
 </head>
 
 <body>
-
     <?php include 'navbar.php' ?>
     <div class="container mt-5">
         <div class="align-items-center">

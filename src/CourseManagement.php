@@ -5,7 +5,7 @@ $courses = getAllCourses();
 // print_r($courses);
 $currentUser = $_SESSION['currentUser'];
 
-if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['btn-state-hidden'])) {
+if (isset($_POST['btn-state']) or isset($_POST['btn-state-hidden'])) {
     header("Refresh:0");
 }
 if ($currentUser['role'] != 1) {
@@ -42,10 +42,11 @@ if ($currentUser['role'] != 1) {
             }
         </style>
 
-        <div class="align-items-center">
-            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+        <div class="align-items-center ms-5">
+            <a href="courses.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
             <button type="button" class="btn btn-primary">
-                <a href="AddCourse.php" style="color: inherit; text-decoration: none;">Thêm khóa học</a>
+                <a href="AddCourse.php" style="color: inherit; text-decoration: none;"><i
+                        class="fa-solid fa-plus"></i></a>
             </button>
         </div>
 
@@ -102,7 +103,10 @@ if ($currentUser['role'] != 1) {
                     $checkDelete = deleteCourse($id);
                     if ($checkDelete) {
                         echo "<script>alert('Xóa khóa học thành công')
+                        window.location.href = 'CourseManagement.php';
                     </script>";
+                    } else {
+                        echo "Xóa khóa học thất bại";
                     }
                 }
                 ?>

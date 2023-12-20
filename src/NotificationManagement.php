@@ -4,7 +4,18 @@ session_start();
 $notifications = getNotifications();
 $currentUser = $_SESSION['currentUser'];
 
-if (isset($_POST['btn-state']) or isset($_POST['btn-delete']) or isset($_POST['btn-state-hidden'])) {
+if (isset($_POST['btn-delete'])) {
+    $id = $_POST['id'];
+    $check = deleteNotification($id);
+    if ($check) {
+        echo "<script>alert('Xóa thông báo thành công')</script>";
+        header("Refresh:0");
+    } else {
+        echo "<script>alert('Xóa thông báo thất bại')</script>";
+        header("Refresh:0");
+    }
+}
+if (isset($_POST['btn-state']) or isset($_POST['btn-state-hidden'])) {
     header("Refresh:0");
 }
 if ($currentUser['role'] != 1) {
@@ -46,7 +57,7 @@ if ($currentUser['role'] != 1) {
             <a href="Lesson.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
             <button type="button" class="btn btn-primary">
                 <a href="AddNotification.php" style="color: inherit; text-decoration: none;"><i
-                        class="fa-solid fa-plus"></i> Thêm thông báo</a>
+                        class="fa-solid fa-plus"></i> </a>
             </button>
         </div>
 
@@ -83,14 +94,7 @@ if ($currentUser['role'] != 1) {
                         </form>
                     </td>";
                 }
-                if (isset($_POST['btn-delete'])) {
-                    $id = $_POST['id'];
-                    $check = deleteNotification($id);
-                    if ($check) {
-                        echo "<script>alert(Xóa thông báo thành công')
-                         </script>";
-                    }
-                }
+
                 ?>
             </table>
         </div>

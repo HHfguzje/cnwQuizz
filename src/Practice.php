@@ -1,15 +1,9 @@
 <?php
 include '../function.php';
 session_start();
-$course_id = $_GET['course_id'];
 $currentUser = $_SESSION['currentUser'];
-$course = getCourse($course_id);
-$nameCourse = $course['course'];
+$course_id = $_GET['course_id'];
 $questionForQuizz = getQuestionsForQUizz($course_id);
-
-if (isset($_POST['btn-state']) or isset($_POST['btn-delete'])) {
-    header("Refresh:0");
-}
 function checkType($type)
 {
     if ($type == "Điền") {
@@ -19,14 +13,20 @@ function checkType($type)
     } else
         return 2;
 }
-// khi submit form thì chuyển trang
 if (isset($_POST['countdown_expired'])) {
     header("location: Point.php?course_id=$course_id");
 }
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['sortedValues'])) {
+        $sortedValues = $_POST['sortedValues'];
+        $_SESSION['a'] = $sortedValues;
+    }
+}
 $check = isUserEnrolled($currentUser['id'], $course_id);
 if (!$check) {
-    header("location: courses.php");
+    echo "<script>alert('Hiện tại bạn không có bài kiểm tra nào')
+                        window.location.href = 'courses.php';
+                    </script>";
 }
 ?>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ if (!$check) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Câu hỏi trắc nghiệm</title>
+    <title>Exam</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -44,15 +44,10 @@ if (!$check) {
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <style>
         body {
             background-color: #f8f9fa;
-        }
 
-        *. {
-            font-family: sans-serif;
-            box-sizing: border-box;
         }
 
         .container {
@@ -124,12 +119,10 @@ if (!$check) {
         }
     </style>
 </head>
-<!-- include navbar -->
-<?php include 'navbar.php'; ?>
 
 <body>
     <form method="POST" id='form'>
-        <!-- thẻ input ẩn để xử lí khi form submit bằng js thì chuyển trang bằng php -->
+
         <input type="hidden" name="countdown_expired" value="1">
         <div class="align-items-center">
             <a href="courses.php" class="btn btn-primary">Trở lại</a>
@@ -140,15 +133,12 @@ if (!$check) {
         <div class="container">
             <h2>BÀI THI</h2>
             <?php
-            //mảng lưu giá trị đúng khi khi trang được tải
             $true_answer = [];
-            //lấy ra thời gian hiện tại
             $currentDateTime = '';
             $i = 0;
             foreach ($questionForQuizz as $index => $q) {
                 $numberAnswer = 0;
                 $i++;
-                //reder ra câu hỏi của từng dạng
                 if (checkType($q['type']) == 0) {
                     $true_answer[$index] = [0 => getAnswer($q['id'])[0]['answer']];
                     echo "
@@ -156,7 +146,6 @@ if (!$check) {
                             <h5 class='title'>Câu " . $i . ": " . $q['question'] . "?</h5>
                             <input type='hidden' name='' value=" . $q['id'] . ">
                     ";
-                    //ảnh
                     if ($q['image'] != null) {
                         echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
@@ -171,26 +160,7 @@ if (!$check) {
                     ";
                     //ảnh
                     if ($q['image'] != null) {
-                        echo "
-                        <button type='button' style='border:none; background:transparent;' data-bs-toggle='modal' data-bs-target='#imageModal" . $i . "'>
-                        <img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>
-                        </button>
-                        <!-- Modal -->
-                            <div class='modal fade' id='imageModal" . $i . "' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='imageModalLabel' aria-hidden='true'>
-                            <div class='modal-dialog modal-dialog-centered modal-dialog-scrollable'>
-                                <div class='modal-content ' style='scale:1.1;'>
-                                <div class='modal-header'>
-                                   
-                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                                </div>
-                                <div class='modal-body' >
-                                <img src='../uploads/images/" . $q['image'] . "' class='img-fluid' alt='...'>
-                                </div>
-                               
-                                </div>
-                            </div>
-                            </div>
-                        ";
+                        echo "<img src='../uploads/images/" . $q['image'] . "' alt='image' style='max-width:500px;max-height:250px; margin-bottom: 10px;'>";
                     }
                     // lấy ra mảng đáp án đúng của câu hỏi
                     foreach (getAnswer($q['id']) as $key => $a) {
@@ -199,6 +169,7 @@ if (!$check) {
                             $true_answer[$index][] = $key;
                         }
                     }
+
                     foreach (getAnswer($q['id']) as $key => $a) {
                         if ($numberAnswer > 1) {
                             echo "
@@ -217,14 +188,15 @@ if (!$check) {
                         }
                     }
                     echo "</div>";
-                    // render câu hỏi dạng sắp xếp
                 } else {
                     echo '<div class="form-group">';
                     echo '<h5 class="title">Câu ' . $i . ': ' . $q['question'] . '?</h5>';
                     echo '<div class="container"><div id="column' . $i . '">';
+
                     foreach (getRandomAnswer($q['id']) as $index => $value) {
+
                         echo '<div class="list" draggable="true" data-index="' . $index . '">';
-                        echo '<i class="fa fa-list-ul" aria-hidden="true"></i>' . $value['answer'];
+                        echo '<i class="fa fa-list-ul" aria-hidden="true"></i>' . htmlspecialchars($value['answer']);
                         echo '<input type="hidden" name="sortedValues[' . $i . '][]" value="' . $value['ordinalNumber'] . '">';
                         echo '</div>';
                     }
@@ -258,16 +230,13 @@ if (!$check) {
             $currentDateTime = date("Y-m-d H:i:s");
             $score = 0;
             $true_answer = $_SESSION['true_answer'];
-            // tính điểm câu hỏi dạng điền và trắc nghiệm
             foreach ($true_answer as $index => $value) {
-                //nếu câu hỏi là điền
                 if (checkType($questionForQuizz[$index]['type']) == 0) {
                     if (!empty($_POST[$questionForQuizz[$index]['id']])) {
                         if ($value[0] == $_POST[$questionForQuizz[$index]['id']]) {
                             $score++;
                         }
                     }
-                    //nếu câu hỏi là trắc nghiệm
                 } else if (checkType($questionForQuizz[$index]['type']) == 1) {
                     $check = true;
                     if (count($value) == 1) {
@@ -290,7 +259,7 @@ if (!$check) {
                     }
                 }
             }
-            // tính điểm câu hỏi dạng sắp xếp
+
             if (!empty($_POST['sortedValues'])) {
                 foreach ($_POST['sortedValues'] as $index => $value) {
                     $true = true;
@@ -306,11 +275,11 @@ if (!$check) {
                 }
 
             }
-            // lưu điểm vào database
             saveResult($currentUser['id'], $score, $course_id, $currentDateTime);
             ?>
+
     </form>
-    <!-- hàm submit form -->
+
     <script>
         function submit() {
             var form = document.getElementById('form');
@@ -321,8 +290,7 @@ if (!$check) {
 
     <!-- count down -->
     <script type="text/javascript">
-        // thời gian mặc định là 5 phút
-        var duration = 5 * 60 * 1000;
+        var duration = 10 * 60 * 1000;
         var x;
         window.onload = e => {
             e.preventDefault();
@@ -345,6 +313,7 @@ if (!$check) {
     </script>
 
 </body>
+
 <?php include 'footer.php'; ?>
 
 </html>

@@ -7,7 +7,7 @@ function isUsernameExists($username)
     $sql = "SELECT * FROM user WHERE username = '$username'";
     $result = mysqli_query($conn, $sql);
     $user = mysqli_fetch_assoc($result);
-    return $user ? true : false;
+    return $user ? $user : false;
 }
 function validateRegister($username, $password, $fullname)
 {
@@ -214,9 +214,37 @@ function deleteQuestion($questionId)
 function deleteCourse($courseId)
 {
     global $conn;
-    $sql = "DELETE FROM courses WHERE id = '$courseId'";
-    $result = mysqli_query($conn, $sql);
-    return $result;
+    // Xóa bản ghi trong bảng answers
+    mysqli_begin_transaction($conn);
+    $sqlDeleteAnswers = "DELETE FROM answers WHERE question_id IN (SELECT id FROM questions WHERE course_id = $courseId)";
+    $resultDeleteAnswers = mysqli_query($conn, $sqlDeleteAnswers);
+    // Xóa bản ghi trong bảng questions
+    $sqlDeleteQuestion = "DELETE FROM questions WHERE course_id = $courseId";
+    $resultDeleteQuestion = mysqli_query($conn, $sqlDeleteQuestion);
+    // Xóa bản ghi trong bảng course_users
+    $sqlDeleteCourseUsers = "DELETE FROM course_users WHERE course_id = $courseId";
+    $resultDeleteCourseUsers = mysqli_query($conn, $sqlDeleteCourseUsers);
+    //xóa bản ghi trong bảng result
+    $sqlDeleteResult = "DELETE FROM result WHERE course_id = $courseId";
+    $resultDeleteResult = mysqli_query($conn, $sqlDeleteResult);
+    //xóa bản ghi trong bảng lesson
+    $sqlDeleteLesson = "DELETE FROM lesson WHERE id_course = $courseId";
+    $resultDeleteLesson = mysqli_query($conn, $sqlDeleteLesson);
+    //xóa bản ghi bảng user_notifications và notifications
+    $sqlDeleteNotification = "DELETE FROM notifications WHERE id IN (SELECT notification_id FROM user_notifications WHERE user_id IN (SELECT user_id FROM course_users WHERE course_id = $courseId))";
+    $resultDeleteNotification = mysqli_query($conn, $sqlDeleteNotification);
+    $sqlDeleteUserNotification = "DELETE FROM user_notifications WHERE user_id IN (SELECT user_id FROM course_users WHERE course_id = $courseId)";
+    $resultDeleteUserNotification = mysqli_query($conn, $sqlDeleteUserNotification);
+    // Xóa bản ghi trong bảng courses
+    $sqlDeleteCourse = "DELETE FROM courses WHERE id = $courseId";
+    $resultDeleteCourse = mysqli_query($conn, $sqlDeleteCourse);
+    if ($resultDeleteAnswers && $resultDeleteQuestion && $resultDeleteCourseUsers && $resultDeleteResult && $resultDeleteLesson && $resultDeleteCourse && $resultDeleteNotification && $resultDeleteUserNotification) {
+        mysqli_commit($conn);
+        return true;
+    } else {
+        mysqli_rollback($conn);
+        return false;
+    }
 }
 
 
@@ -474,8 +502,8 @@ function deleteNotification($id)
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $sql = "DELETE FROM user_notifications WHERE notification_id = $id";
-        $result = mysqli_query($conn, $sql);
-        if ($result) {
+        $result1 = mysqli_query($conn, $sql);
+        if ($result1) {
             mysqli_commit($conn);
             return true;
         } else {

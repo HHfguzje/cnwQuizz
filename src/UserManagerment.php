@@ -35,6 +35,7 @@ if (!$check) {
         integrity="	sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <!-- End bootstrap cdn -->
+    <script src="https://kit.fontawesome.com/772918bb67.js" crossorigin="anonymous"></script>
     <style>
         img {
             max-width: 400px;
@@ -63,7 +64,7 @@ if (!$check) {
             <p class="h3">Quản lý người dùng trong khóa học
                 <?php echo $nameCourse; ?>
             </p>
-            <a href="courses.php" class="btn btn-primary">Trở lại</a>
+            <a href="courses.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
             <a href='AddUserToCourse.php?id=<?php echo $course_id; ?>' class='btn btn-primary'>Thêm người
                 dùng</a>
 

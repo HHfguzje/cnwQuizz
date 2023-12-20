@@ -28,7 +28,7 @@ if (!isLogin()) {
 	<?php include 'navbar.php'; ?>
 	<main style="min-height: 100vh;">
 		<div class="ms-4 mt-4">
-			<a href="courses.php" class="btn btn-primary">Trở lại</a>
+			<a href="courses.php" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i></a>
 		</div>
 		<div class="d-flex justify-content-center">
 			<h1>Đổi mật khẩu</h1>
@@ -38,21 +38,21 @@ if (!isLogin()) {
 			<form class="w-25" method="POST">
 				<div class="mb-3">
 
-					<label for="inputPassword" class=" col-form-label">Old Password</label>
+					<label for="inputPassword" class=" col-form-label">Mật khẩu cũ</label>
 					<div class="col">
 						<input type="password" class="form-control" id="inputPassword" placeholder="Nhập Password cũ"
 							name="old_password">
 					</div>
 				</div>
 				<div class="mb-3">
-					<label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+					<label for="inputPassword" class=" col-form-label">Mật khẩu mới</label>
 					<div class="col">
 						<input type="password" class="form-control" id="inputPassword" placeholder="Nhập Password mới"
 							name="new_password">
 					</div>
 				</div>
 				<div class="mb-3">
-					<label for="inputPassword" class=" col-form-label">Confirm Password</label>
+					<label for="inputPassword" class=" col-form-label">Nhập lại mật khẩu mới</label>
 					<div class="col">
 						<input type="password" class="form-control" id="inputPassword"
 							placeholder="Nhập lại Password mới" name="confirm_new_password">

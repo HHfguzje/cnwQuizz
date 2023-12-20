@@ -34,7 +34,7 @@ $courses = getApprovedCoursesForUser($currentUser['id']);
         <div class="" style="text-align: center;">
             <h2>Khóa học của tôi</h2>
         </div>
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle ms-5" data-bs-toggle="dropdown">
             Thao tác
         </button>
         <ul class="dropdown-menu">

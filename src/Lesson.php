@@ -299,11 +299,11 @@ if (!$check) {
                 <div class="list-group mt-4">
 
                     <?php
-                    foreach ($lessons as $lesson) {
-
-
+                    foreach ($lessons as $key => $lesson) {
                         echo '
-                        <div style="display:flex;" class="mb-4">
+                        
+                        <div style="display:flex;align-items:center;gap:5px;" class="mb-4">
+                        <span style="font-size:20px;">#' . $key + 1 . '</span>
                         <a style="border-radius:10px;min-height:70px;" href="/cnwQuizz/src/Lesson.php?course_id=' . urlencode($course_id) . '&lesson_id=' . urlencode($lesson['id']) . '" class="list-group-item list-group-item-action ';
                         if ($lesson['id'] == $lesson_id) {
                             echo ' active';
